@@ -4,10 +4,12 @@
 import web
 
 
-urls = ( '/', 'index' ) 
+urls = ( '/', 'index',
+         '/login', 'login',
+ ) 
 class index: 
     def GET(self): 
-        return "Hello, world!" 
+        raise web.seeother('/static/login.html') 
 
 
 
