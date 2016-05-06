@@ -19,7 +19,9 @@ except ImportError:
 import shutil
 
 from app.static import StaticHandler
-
+from utils.log import Log
+from utils.log import level
+log = Log("Server").get(level)
 LISTENERS = []
 AUDIO_PATH = "/tmp/audio"
 
@@ -82,17 +84,18 @@ class RealtimeHandler(tornado.websocket.WebSocketHandler):
 
 class BaseHandler(tornado.web.RequestHandler):
     def get(self):
-        self.("404")
+        self.redirect("/static/index.html")
         pass
 
 settings = {
     'auto_reload': True,
+    'debug': True,
     }
 
 application = tornado.web.Application([ 
      ('/record',RealtimeHandler),
-     ('/static',StaticHandler),
-     ('/*', BaseHandler), 
+     ('/static/(.*)',StaticHandler),
+     ('/.*', BaseHandler),
 ],**settings)
 
 
@@ -100,15 +103,18 @@ application = tornado.web.Application([
 #openssl genrsa -out privatekey.pem 2048
 #openssl req -new -key privatekey.pem -out certrequest.csr
 #openssl x509 -req -in certrequest.csr -signkey privatekey.pem -out certificate.pem
-http_server = tornado.httpserver.HTTPServer(
+if __name__ == "__main__":
+    http_server = tornado.httpserver.HTTPServer(
             application,
             ssl_options={
                 "certfile": os.path.join("./", "certificate.pem"),
                 "keyfile": os.path.join("./", "privatekey.pem"),
                 }
         )
-http_server.listen(443)
-tornado.ioloop.IOLoop.instance().start()
+
+    http_server.listen(443)
+    log.info("server start")
+    tornado.ioloop.IOLoop.instance().start()
 
 
 
