@@ -57,6 +57,7 @@ class RealtimeHandler(tornado.websocket.WebSocketHandler):
         if filelist == []:
             print "no audio file find"
             return
+        print filelist
         for file_temp in filelist:
              audiolist.append(AudioFileClip("%s/%s"%(AUDIO_PATH,file_temp)))
        
