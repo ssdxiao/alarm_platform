@@ -7,7 +7,13 @@ from utils.mysqlpasswd import mysql_password
 import uuid
 
 db = DB()
-class LoginHandler(BaseHandler):
+class AlarmHandler(BaseHandler):
+    def get(self, id):
+        if id == all:
+            log.debug("alarm list" )
+        else:
+            log.debug("alarm id %s"% id)
+
 
     def post(self):
         log.debug("login come")
@@ -36,33 +42,4 @@ class LoginHandler(BaseHandler):
         result = {}
         result["result"] = "error"
         result["message"] = "user or passwd is not correct"
-        self.send_data(result)
-
-class LogoutHandler(BaseHandler):
-
-    def post(self):
-        log.debug("logout come")
-        data = self.get_data()
-        if data:
-            log.debug(data)
-            if data.has_key("user") and data.has_key("token"):
-                token = db.get_token(data["user"]);
-                log.debug(" mysql  token %s  token %s"%(token,data["token"]))
-                if token == data["token"]:
-                    db.del_token(data["user"])
-                    result ={}
-                    result["result"] = "ok"
-                    result["user"] = data["user"]
-                    self.send_data(result)
-                    return
-                else:
-                    log.error("logout  token %s is not correct"%data["token"])
-            else:
-                log.error("logout not has user or token ")
-        else:
-            log.error("data is none")
-
-        result = {}
-        result["result"] = "error"
-        result["message"] = "user or token is not correct"
         self.send_data(result)

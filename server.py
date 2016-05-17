@@ -19,9 +19,13 @@ except ImportError:
 import shutil
 
 from app.static import StaticHandler
-from utils.log import Log
-from utils.log import level
-log = Log("Server").get(level)
+from app.login import LoginHandler
+from app.login import LogoutHandler
+from app.alarm import AlarmHandler
+from app.custumer import CustumerHandler
+from app.custumer import CustumerAllHandler
+from utils.log import log
+
 LISTENERS = []
 AUDIO_PATH = "/tmp/audio"
 
@@ -81,21 +85,28 @@ class RealtimeHandler(tornado.websocket.WebSocketHandler):
         print "close"
         LISTENERS.remove(self)
 
-
-class BaseHandler(tornado.web.RequestHandler):
+class RedirectHandler(tornado.web.RequestHandler):
     def get(self):
         self.redirect("/static/index.html")
         pass
 
+
 settings = {
     'auto_reload': True,
+    "cookie_secret": "61oETzKXQAGaYdkL5g3mGeJJFuYh7EQnp2XdTP1o/Vo=",
+    "login_url": "/static/login.html",
     'debug': True,
     }
 
 application = tornado.web.Application([ 
      ('/record',RealtimeHandler),
+    ('/app/login', LoginHandler),
+    ('/app/logout', LogoutHandler),
+    ('/app/alarm/(.*)', AlarmHandler),
+    ('/app/custumer', CustumerHandler),
+    ('/app/custumerlist', CustumerAllHandler),
      ('/static/(.*)',StaticHandler),
-     ('/.*', BaseHandler),
+     ('/.*', RedirectHandler),
 ],**settings)
 
 

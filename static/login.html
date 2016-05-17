@@ -3,43 +3,32 @@
 <html lang="">
 <head>
 	<meta charset="utf-8">
-	<title>Retina Dashboard</title>
+	<title>告警监控平台后台管理系统</title>
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
 	<meta name="robots" content="" />
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
-	<link rel="stylesheet" href="css/style.css" media="all" />
-	<!--[if IE]><link rel="stylesheet" href="css/ie.css" media="all" /><![endif]-->
+	<link rel="stylesheet" href="/static/css/style.css" media="all" />
+	<!--[if IE]><link rel="stylesheet" href="static/css/ie.css" media="all" /><![endif]-->
 </head>
 <body class="login">
 	<section>
-		<h1><strong>Retina</strong> Dashboard</h1>
-		<form method="link" action="dashboard.html">
-			<input type="text" value="Email" />
-			<input value="Password" type="password" />
+		<h1><strong>欢迎</strong> 登陆</h1>
+			<input type="text" value="账户名" id ="user"/>
+			<input type="paswword" value="密码"  id="passwd"/>
 			<button class="blue">Login</button>
-		</form>
-		<p><a href="#">Forgot your password?</a></p>
-	</section>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-<script type="text/javascript">
-// Page load delay by Curtis Henson - http://curtishenson.com/articles/quick-tip-delay-page-loading-with-jquery/
-$(function(){
-	$('.login button').click(function(e){ 
-		// Get the url of the link 
-		var toLoad = $(this).attr('href');  
- 
-		// Do some stuff 
-		$(this).addClass("loading"); 
- 
-			// Stop doing stuff  
-			// Wait 700ms before loading the url 
-			setTimeout(function(){window.location = toLoad}, 10000);	  
- 
-		// Don't let the link do its natural thing 
-		e.preventDefault
-	});
-	
+	</section></p>
+
+	<script type="text/javascript" src="/static/js/jquery.min.js"> </script>
+	<script type="text/javascript" src="/static/js/api.js"> </script>
+	<script type="text/javascript">
+
+		$(function(){
+			$('.login button').click(function(e){
+				login($("#user").val(), $("#passwd").val())
+                // Don't let the link do its natural thing
+                e.preventDefault
+            });
 	$('input').each(function() {
 
        var default_value = this.value;

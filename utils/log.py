@@ -21,6 +21,7 @@ class Log:
         else:
             self.logger.setLevel(logging.ERROR)
 
+log = Log("Server").get(level)
 
 if __name__ == '__main__':
     log = Log("root").get("DEBUG")
