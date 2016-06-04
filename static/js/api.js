@@ -34,10 +34,10 @@ function RestServiceJs(newurl) {
         });
     };
 
-    this.find = function (id, callback) {
+    this.find = function (callback) {
         $.ajax({
             type: 'GET',
-            url: this.myurl + '/' + id,
+            url: this.myurl,
             contentType: 'application/json',
             success: callback,
             error: function (req, status, ex) {
@@ -139,6 +139,15 @@ function add_custumer(CustumerName, CustumerTelephone, CustumerEmail, CustumerRe
     url.post(data, callback)
 
 }
+function get_custumer(CustumerID , callback) {
+    url = new RestServiceJs("/app/custumer?id="+CustumerID);
+    url.find(callback)
+}
+
+function update_custumer(data , callback) {
+    url = new RestServiceJs("/app/custumer")
+    url.put(data,callback)
+}
 function get_custumer_list(index,callback) {
     url = new RestServiceJs("/app/custumerlist?index="+index);
     url.findAll(callback)
@@ -154,4 +163,11 @@ function get_alarm_list(user) {
     //console.log(JSON.stringify(data))
     url.post(data, callback)
 
+}
+
+
+function tr_del(e){
+         console.log($(e.currentTarget).parent())
+         console.log("delete tr")
+         $(e.currentTarget).parent().parent().remove();
 }

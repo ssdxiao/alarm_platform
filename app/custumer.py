@@ -5,9 +5,38 @@ from utils.log import log
 from database import DB
 from utils.mysqlpasswd import mysql_password
 import uuid
+import json
 
 db = DB()
 class CustumerHandler(BaseHandler):
+
+    def get(self):
+        log.debug("CustumerHandler get in")
+        try:
+            id = int(self.get_argument("id"))
+        except:
+            log.debug("param id is not int")
+            return
+        data = db.get_custumer(id)
+        result = {}
+        if data:
+
+            result["result"] = "ok"
+            result["data"] = {"custumerid" : data[0],
+                                        "custumername" : data[1],
+                                        "custumertelephone" : data[2],
+                                        "custumeremail" : data[3],
+                                        "custumerremark": data[4],
+                                        "other":json.loads(data[5])
+                                       }
+
+        else:
+            result["result"] = "ok"
+            result["message"] = "can not find this user"
+
+        self.send_data(result)
+
+
 
     def post(self):
         log.debug("CustumerHandler post in")
@@ -16,13 +45,18 @@ class CustumerHandler(BaseHandler):
             log.debug(data)
             if data.has_key("CustumerTelephone") and data.has_key("CustumerEmail") \
                     and data.has_key("CustumerName") and data.has_key("CustumerRemark"):
-                db.insert_custumer(data["CustumerName"], data["CustumerTelephone"],
+
+                if data["CustumerName"] == "":
+                    log.error("CustumerName is NULL")
+                else:
+                    db.insert_custumer(data["CustumerName"], data["CustumerTelephone"],
                                    data["CustumerEmail"],data["CustumerRemark"])
 
-                result ={}
-                result["result"] = "ok"
-                self.send_data(result)
-                return
+
+                    result ={}
+                    result["result"] = "ok"
+                    self.send_data(result)
+                    return
 
             else:
                 log.error("custumer data key is not right")
@@ -33,6 +67,29 @@ class CustumerHandler(BaseHandler):
         result["result"] = "error"
         result["message"] = "custumer info is error"
         self.send_data(result)
+
+    def put(self):
+        log.debug("CustumerHandler put in")
+        data = self.get_data()
+        if data:
+            log.debug(data)
+            if data.has_key("CustumerTelephone") and data.has_key("CustumerEmail") \
+                    and data.has_key("CustumerName") and data.has_key("CustumerRemark")\
+                    and data.has_key("CustumerId")and data.has_key("other"):
+                db.update_custumer(data["CustumerId"],data["CustumerName"], data["CustumerTelephone"],
+                                   data["CustumerEmail"],data["CustumerRemark"],json.dumps(data["other"]))
+                result = {}
+                result["result"] = "ok"
+                self.send_data(result)
+                return
+            else:
+                result = {}
+                result["result"] = "error"
+                result["message"] = "data is error"
+                self.send_data(result)
+
+
+
 
 
 class CustumerAllHandler(BaseHandler):

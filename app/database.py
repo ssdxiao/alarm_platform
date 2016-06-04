@@ -69,12 +69,32 @@ class DB:
         self.conn.commit()
 
     def insert_custumer(self, CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark):
-        sqlcmd = '''insert into custumer (name, telephone, email, remark) values('%s', '%s', '%s', '%s') '''%\
+        sqlcmd = '''insert into custumer (name, telephone, email, remark, other) values('%s', '%s', '%s', '%s', '{}') '''%\
                  (CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark)
         log.debug(sqlcmd)
         self.cur.execute(sqlcmd)
         self.conn.commit()
 
+    def update_custumer(self,  CustumerId, CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark, other):
+        sqlcmd = '''update custumer set name='%s',telephone='%s',email='%s', remark='%s', other ='%s' where  user_id= %s '''%\
+                 (CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark, other, CustumerId)
+        log.debug(sqlcmd)
+
+        self.cur.execute(sqlcmd)
+        self.conn.commit()
+    def get_custumer(self, CustumerId):
+        sqlcmd = '''select * from custumer where user_id = %s'''% CustumerId
+        log.debug(sqlcmd)
+
+        self.cur.execute(sqlcmd)
+        result = self.cur.fetchone()
+        self.conn.commit()
+
+        if result:
+            log.debug(result)
+            return result
+        else:
+            return None
 
     def get_custumer_list(self, index):
         sqlcmd = '''select max(user_id) from custumer'''
