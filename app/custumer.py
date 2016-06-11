@@ -7,9 +7,11 @@ from utils.mysqlpasswd import mysql_password
 import uuid
 import json
 
+from base import authenticated_self
 db = DB()
 class CustumerHandler(BaseHandler):
 
+    @authenticated_self
     def get(self):
         log.debug("CustumerHandler get in")
         try:
@@ -36,8 +38,7 @@ class CustumerHandler(BaseHandler):
 
         self.send_data(result)
 
-
-
+    @authenticated_self
     def post(self):
         log.debug("CustumerHandler post in")
         data = self.get_data()
@@ -68,6 +69,7 @@ class CustumerHandler(BaseHandler):
         result["message"] = "custumer info is error"
         self.send_data(result)
 
+    @authenticated_self
     def put(self):
         log.debug("CustumerHandler put in")
         data = self.get_data()
@@ -93,7 +95,7 @@ class CustumerHandler(BaseHandler):
 
 
 class CustumerAllHandler(BaseHandler):
-
+    @authenticated_self
     def get(self):
         log.debug("CustumerAllHandler get in")
         try:

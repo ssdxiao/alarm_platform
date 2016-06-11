@@ -95,12 +95,11 @@ class RedirectHandler(tornado.web.RequestHandler):
 settings = {
     'auto_reload': True,
     "cookie_secret": "61oETzKXQAGaYdkL5g3mGeJJFuYh7EQnp2XdTP1o/Vo=",
-    "login_url": "/static/login.html",
+    "login_url": "/static/error.html",
     'debug': True,
     }
 
-application = tornado.web.Application([ 
-     ('/record',RealtimeHandler),
+application = tornado.web.Application([
     ('/app/login', LoginHandler),
     ('/app/logout', LogoutHandler),
     ('/app/alarm', AlarmHandler),

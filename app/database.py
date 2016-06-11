@@ -21,12 +21,22 @@ class DB:
         self.event_table = EVENTTABLE
         self.log = log
 
-    def get_user(self, name):
+    def get_user_by_passwd(self, name):
         self.cur.execute('''select passwd from %s where name = "%s" ''' % (self.user_table, name))
         result = self.cur.fetchone()
         self.conn.commit()
         self.log.debug(result)
         if result :
+            return result[0]
+        else:
+            return None
+
+    def get_user_by_token(self, token):
+        self.cur.execute('''select name from %s where token = "%s" ''' % (self.user_table, token))
+        result = self.cur.fetchone()
+        self.conn.commit()
+        self.log.debug(result)
+        if result:
             return result[0]
         else:
             return None

@@ -1,7 +1,7 @@
 from base import BaseHandler
 from base import BASEDIR
 from utils.log import log
-
+from base import authenticated_self
 from database import DB
 from utils.mysqlpasswd import mysql_password
 import uuid
@@ -15,7 +15,7 @@ class LoginHandler(BaseHandler):
         if data:
             log.debug(data)
             if data.has_key("user") and data.has_key("passwd"):
-                passwd = db.get_user(data["user"]);
+                passwd = db.get_user_by_passwd(data["user"]);
                 log.debug(" mysql passwd %s  passwd %s"%(mysql_password(data["passwd"]),passwd))
                 if mysql_password(data["passwd"]) == passwd:
                     token = uuid.uuid1()
@@ -39,7 +39,7 @@ class LoginHandler(BaseHandler):
         self.send_data(result)
 
 class LogoutHandler(BaseHandler):
-
+    @authenticated_self
     def post(self):
         log.debug("logout come")
         data = self.get_data()

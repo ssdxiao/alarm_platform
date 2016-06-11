@@ -94,7 +94,7 @@
                             else {
                                 $('#modal_add_custumer').modal('hide');
                                 //重新刷新用户列表
-                                var index = window.current_custumer_page
+                                var index = window.current_page
                                 get_custumer_list_refresh(index);
 
                             }
@@ -159,7 +159,7 @@
                     }
                     else {
                         $("#modal_custumer_detail").modal('hide')
-                        var index = window.current_custumer_page
+                        var index = window.current_page
                         get_custumer_list_refresh(index);
                     }
 
@@ -172,7 +172,7 @@
             $('#custumer_list').click(function (e) {
                 get_custumer_list_refresh(1)
             });
-//------------------------------------------------------//
+//-----------------------------告警-------------------------//
 
 
             $('#alarm_list').click(function (e) {
@@ -180,8 +180,31 @@
             })
 
 
-//------------------------------------------------------//
+//----------------------------管理员------------------------//
 
+
+              $('#add_manage_modal').click(function (e) {
+                add_manage($("#inputManageName").val(),
+                        $("#inputManageTelephone").val(),
+                        $("#inputManagePassword").val(),
+
+                        function (data) {
+                            var result = JSON.parse(data);
+                            console.log(result);
+                            if (result.result == "error") {
+                                $("#message_modal_manage").text("增加用户失败")
+                            }
+                            else {
+                                $('#modal_add_manage').modal('hide');
+                                //重新刷新用户列表
+                                var index = window.current_page
+                               // get_manage_list_refresh(index);
+
+                            }
+                        });
+                // Don't let the link do its natural thing
+                e.preventDefault()
+            });
 
         });
     </script>
@@ -222,20 +245,20 @@
             <div class="tabbable" id="tabs-619833">
                 <ul class="nav nav-tabs">
                     <li class="active">
-                        <a data-toggle="tab" href="#panel-878780" id="alarm_list">告警列表</a>
+                        <a data-toggle="tab" href="#panel-alarm" id="alarm_list">告警列表</a>
                     </li>
                     <li>
-                        <a data-toggle="tab" href="#panel-620525" id="custumer_list">客户列表</a>
+                        <a data-toggle="tab" href="#panel-custumer" id="custumer_list">客户列表</a>
                     </li>
                     <li>
-                        <a data-toggle="tab" href="#panel-620525" id="log_list">日志列表</a>
+                        <a data-toggle="tab" href="#panel-log" id="log_list">日志列表</a>
                     </li>
                     <li>
-                        <a data-toggle="tab" href="#panel-620525" id="manage_list" style="display:none">管理员列表</a>
+                        <a data-toggle="tab" href="#panel-manage" id="manage_list" style="display:none">管理员列表</a>
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane active" id="panel-878780">
+                    <div class="tab-pane active" id="panel-alarm">
                         <div id="modal_alarm_detail" class="modal hide fade in" style=" display: none; ">
                             <div class="modal-header">
                                 <a class="close" data-dismiss="modal">×</a>
@@ -350,7 +373,7 @@
 
                     </div>
 
-                    <div class="tab-pane" id="panel-620525">
+                    <div class="tab-pane" id="panel-custumer">
 
                         <!-- 新增用户详细信息的modal-->
                         <div id="modal_custumer_detail" class="modal hide fade in" style=" display: none; ">
@@ -474,6 +497,105 @@
                             </ul>
                         </div>
                     </div>
+
+                    <div class="tab-pane" id="panel-manage">
+
+                        <!-- 新增用户详细信息的modal-->
+                        <div id="modal_manage_detail" class="modal hide fade in" style=" display: none; ">
+                            <div class="modal-header">
+                                <a class="close" data-dismiss="modal">×</a>
+                                <h3>管理员详情</h3>
+                            </div>
+                            <div class="modal-body">
+                                <label for="inputManageIdDetail">管理员id</label>
+                                <input id="inputManageIdDetail" type="text" disabled>
+                                <label for="inputManageNameDetail">管理员姓名</label>
+                                <input id="inputManageNameDetail" placeholder="管理员姓名"
+                                       type="text">
+                                <label for="inputManageTelephoneDetail">管理员电话</label>
+                                <input id="inputManageTelephoneDetail"
+                                       placeholder="管理员电话"
+                                       type="text">
+                                <label for="inputManagePasswordDetail">管理员密码</label>
+                                <input id="inputManagePasswordDetail" placeholder="管理员密码"
+                                       type="text">
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <a href="#" class="btn btn-success" id="update_manage_modal">修改</a>
+                                <a href="#" class="btn" data-dismiss="modal">关闭</a>
+                            </div>
+                        </div>
+                        <p><a data-toggle="modal" href="#modal_custumer_detail" class="btn btn-primary"
+                              id="magage_detail" style="display: none"></a>
+                        </p>
+
+                        <!-- 新增用户的modal-->
+                        <div id="modal_add_manage" class="modal" style="display: none; ">
+                            <div class="modal-header">
+                                <a class="close" data-dismiss="modal">×</a>
+                                <h3>新增管理员</h3>
+                            </div>
+
+                            <div class="modal-body">
+                                <label for="inputManageName">管理员姓名</label>
+                                <input id="inputManageName" placeholder="管理员姓名" class="form-control"
+                                       type="text">
+                                <label for="inputManageTelephone">管理员电话</label>
+                                <input id="inputManageTelephone"
+                                       placeholder="管理员电话"
+                                       type="text">
+                                <label for="inputManagePassword">管理员密码</label>
+                                <input id="inputManagePassword" placeholder="管理员密码"
+                                       type="text">
+
+                                <div id="message_modal_manage"></div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <a href="#" class="btn btn-success" id="add_manage_modal">增加</a>
+                                <a href="#" class="btn" data-dismiss="modal">关闭</a>
+                            </div>
+                        </div>
+                        <p><a data-toggle="modal" href="#modal_add_manage" class="btn btn-primary"
+                              id="add_manage">新增管理员</a>
+                        </p>
+                        <table class="table table-hover table-condensed table-layout:fixed" id="manage_table">
+                            <thead>
+                            <tr>
+                                <th width="20%">
+                                    管理员id
+                                </th>
+                                <th width="20%">
+                                    管理员姓名
+                                </th>
+                                <th width="20%">
+                                    管理员电话
+                                </th>
+                                <th>
+                                    最后登录时间
+                                </th>
+
+                                <th>
+                                    最后登出时间
+                                </th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+
+                        <div id="manage_page" class="pagination" style="display:none">
+                            <ul>
+                            </ul>
+                        </div>
+                    </div>
+
+
+
                 </div>
             </div>
 

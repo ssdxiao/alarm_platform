@@ -24,6 +24,7 @@ function get_alarm_list_refresh(index) {
         console.log(result);
         if (result.result == "error") {
             console.log("获取告警列表失败")
+            return
         }
         else {
             //显示表信息

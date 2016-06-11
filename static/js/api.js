@@ -8,6 +8,9 @@ function RestServiceJs(newurl) {
         $.ajax({
             type: 'POST',
             url: this.myurl,
+            beforeSend: function(request) {
+                        request.setRequestHeader("X-Auth", getCookie("user"));
+                    },
             data: JSON.stringify(model), // '{"name":"' + model.name + '"}',  
             dataType: 'text',
             processData: false,
@@ -23,6 +26,9 @@ function RestServiceJs(newurl) {
         $.ajax({
             type: 'PUT',
             url: this.myurl,
+            beforeSend: function(request) {
+                        request.setRequestHeader("X-Auth", getCookie("user"));
+                    },
             data: JSON.stringify(model), // '{"name":"' + model.name + '"}',  
             dataType: 'text',
             processData: false,
@@ -38,6 +44,9 @@ function RestServiceJs(newurl) {
         $.ajax({
             type: 'GET',
             url: this.myurl,
+            beforeSend: function(request) {
+                        request.setRequestHeader("X-Auth", getCookie("user"));
+                    },
             contentType: 'application/json',
             success: callback,
             error: function (req, status, ex) {
@@ -53,6 +62,9 @@ function RestServiceJs(newurl) {
         $.ajax({
             type: 'GET',
             url: this.myurl,
+            beforeSend: function(request) {
+                        request.setRequestHeader("X-Auth", getCookie("user"));
+                    },
             contentType: 'application/json',
             success: callback,
             error: function (req, status, ex) {
@@ -65,6 +77,9 @@ function RestServiceJs(newurl) {
         $.ajax({
             type: 'DELETE',
             url: this.myurl + '/' + id,
+            beforeSend: function(request) {
+                        request.setRequestHeader("X-Auth", getCookie("user"));
+                    },
             contentType: 'application/json',
             success: callback,
             error: function (req, status, ex) {
@@ -139,6 +154,20 @@ function add_custumer(CustumerName, CustumerTelephone, CustumerEmail, CustumerRe
     url.post(data, callback)
 
 }
+
+function add_manage(ManageName, ManageTelephone, ManagePassword, callback) {
+    url = new RestServiceJs("/app/custumer");
+    var data = new Object();
+    data.ManageName = ManageName;
+    data.ManageTelephone = ManageTelephone;
+    data.ManagePassword = ManagePassword;
+    
+    //console.log(JSON.stringify(data))
+    url.post(data, callback)
+
+}
+
+
 function get_custumer(CustumerID , callback) {
     url = new RestServiceJs("/app/custumer?id="+CustumerID);
     url.find(callback)

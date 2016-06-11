@@ -1,15 +1,18 @@
 from base import BaseHandler
 from base import BASEDIR
+from base import authenticated_self
 from utils.log import log
 
 from database import DB
 from utils.mysqlpasswd import mysql_password
 import uuid
 import json
+import tornado.web
 
 db = DB()
 class AlarmHandler(BaseHandler):
 
+    @authenticated_self
     def get(self):
         log.debug("AlarmHandler get in")
         try:
@@ -39,8 +42,7 @@ class AlarmHandler(BaseHandler):
 
         self.send_data(result)
 
-
-
+    @authenticated_self
     def post(self):
         log.debug("alarmHandler post in")
         data = self.get_data()
@@ -71,6 +73,7 @@ class AlarmHandler(BaseHandler):
         result["message"] = "alarm info is error"
         self.send_data(result)
 
+    @authenticated_self
     def put(self):
         log.debug("alarmHandler put in")
         data = self.get_data()
@@ -97,6 +100,8 @@ class AlarmHandler(BaseHandler):
 
 class AlarmAllHandler(BaseHandler):
 
+
+    @authenticated_self
     def get(self):
         log.debug("alarmAllHandler get in")
         try:
@@ -126,7 +131,6 @@ class AlarmAllHandler(BaseHandler):
                                        })
 
             self.send_data(result)
-
         else:
 
             result["result"] = "error"
