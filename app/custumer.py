@@ -31,7 +31,7 @@ class CustumerHandler(BaseHandler):
                                        }
 
         else:
-            result["result"] = "ok"
+            result["result"] = "error"
             result["message"] = "can not find this user"
 
         self.send_data(result)

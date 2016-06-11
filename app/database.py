@@ -10,7 +10,7 @@ USERTABLE = "user"
 EVENTTABLE = "td_eventforthirdpart"
 MAXSIZE = 3
 TIMEEXAMPLE = "%Y-%m-%d %H:%M:%S"
-PERPAGENUM = 2
+PERPAGENUM = 3
 
 
 class DB:
@@ -124,8 +124,47 @@ class DB:
         else:
             return None
 
+    def get_alarm(self, id):
+        sqlcmd = '''select * from alarm where id = %s''' % id
+        log.debug(sqlcmd)
 
+        self.cur.execute(sqlcmd)
+        result = self.cur.fetchone()
+        self.conn.commit()
 
+        if result:
+            log.debug(result)
+            return result
+        else:
+            return None
+
+    def get_alarm_list(self, index):
+        sqlcmd = '''select max(id) from alarm'''
+        self.cur.execute(sqlcmd)
+        maxid = self.cur.fetchone()[0]
+        self.conn.commit()
+        index = int(index)
+        if ((PERPAGENUM * index) > maxid):
+            limit = maxid / PERPAGENUM
+        else:
+            limit = index - 1
+
+        sqlcmd = '''select * from alarm limit %d,%d''' % (limit * PERPAGENUM, PERPAGENUM)
+        self.cur.execute(sqlcmd)
+        data = self.cur.fetchall()
+        self.conn.commit()
+        self.log.debug(data)
+        result = {}
+        if maxid == 0:
+            maxid = 1
+        result["maxindex"] = (maxid - 1) / PERPAGENUM + 1
+        result["data"] = data
+        result["curruntindex"] = limit + 1
+
+        if result:
+            return result
+        else:
+            return None
     def close(self):
         self.cur.close()
         self.conn.close()

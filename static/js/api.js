@@ -148,20 +148,23 @@ function update_custumer(data , callback) {
     url = new RestServiceJs("/app/custumer")
     url.put(data,callback)
 }
+
+
+
 function get_custumer_list(index,callback) {
     url = new RestServiceJs("/app/custumerlist?index="+index);
     url.findAll(callback)
 
 }
 
+function get_alarm(CustumerID , callback) {
+    url = new RestServiceJs("/app/alarm?id="+CustumerID);
+    url.find(callback)
+}
 
-function get_alarm_list(user) {
-    url = new RestServiceJs("/app/alarm");
-    var data = new Object();
-    data.user = user;
-    data.passwd = passwd;
-    //console.log(JSON.stringify(data))
-    url.post(data, callback)
+function get_alarm_list(index,callback) {
+    url = new RestServiceJs("/app/alarmlist?index="+index);
+    url.findAll(callback)
 
 }
 
@@ -170,4 +173,58 @@ function tr_del(e){
          console.log($(e.currentTarget).parent())
          console.log("delete tr")
          $(e.currentTarget).parent().parent().remove();
+}
+
+function split_page(name, result, fresh_function){
+            window.current_page = result.curruntindex;
+            $("#"+name+"_page ul").empty();
+            $("#"+name+"_page ul").append("<li> <a >上一页</a> </li>");
+            var start_index = 0;
+            var end_index = 0;
+            if (result.curruntindex > 3) {
+                var start_index = result.curruntindex - 3
+
+            }
+            var diff = result.maxindex - result.curruntindex
+            if (diff > 3) {
+                end_index = result.curruntindex + 3
+                if (result.curruntindex < 3) {
+                    end_index = end_index + 3 - result.curruntindex
+                }
+                if (end_index > result.maxindex) {
+                    end_index = result.maxindex;
+                }
+            }
+            else {
+                end_index = result.maxindex;
+
+                start_index = start_index - 3 + diff;
+                if (start_index < 0) {
+                    start_index = 0
+
+                }
+
+            }
+
+            for (var i = start_index; i < end_index; i++) {
+                $("#"+name+"_page ul").append("<li> <a >" + (i + 1) + "</a> </li>");
+            }
+            $("#"+name+"_page ul").append("<li> <a >下一页</a> </li>");
+
+            $("#"+name+"_page").attr("style", "display:''");
+            $("#"+name+"_page ul a").each(function () {
+                $(this).click(function (e) {
+                    var index;
+                    if ($(this).text() == "上一页") {
+                        index = window.current_page - 1;
+                    }
+                    else if ($(this).text() == "下一页") {
+                        index = window.current_page + 1;
+                    }
+                    else {
+                        index = $(this).text();
+                    }
+                    fresh_function(index)
+                })
+            })
 }

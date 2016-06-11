@@ -5,7 +5,8 @@
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/api.js"></script>
-     <script src="/static/js/custumer.js"></script>
+    <script src="/static/js/custumer.js"></script>
+    <script src="/static/js/alarm.js"></script>
 
     <script type="text/javascript">
 
@@ -17,12 +18,20 @@
                 console.log(data.user + " is login" + " " + data.token);
                 if (data.user) {
                     $('#login_index').attr('style', 'display:none');
-                    $("#message_index").text("欢迎 " + data.user);
+                    $("#manage_index").text("欢迎 " + data.user);
                     $("#title").attr("style", "display:''")
+
+                    if (data.user == "admin")
+                    {
+                        $("#manage_list").attr("style", "display:''")
+                    }
+                    get_alarm_list_refresh(1)
+
                 }
             }
             else {
                 console.log("no user login")
+                $('#login_index').trigger("click")
 
             }
         }
@@ -41,112 +50,22 @@
                             else {
                                 $('#modal_login').modal('hide');
                                 //登陆成功以后 开始获取相关参数并刷新界面
+                                /*
                                 $('#login_index').attr('style', 'display:none');
-                                $("#message_index").text("欢迎 " + result.user);
+                                $("#manage_index").text("欢迎 " + result.user);
                                 $("#title").attr("style", "display:''");
+                                */
                                 delCookie("user");
                                 setCookie("user", data);
+                                location.reload()
 
-                                //显示告警列表
+
 
                             }
                         });
                 // Don't let the link do its natural thing
                 e.preventDefault()
             });
-
-    $('#add_custumer_modal').click(function (e) {
-         add_custumer($("#inputCustumerName").val(),
-             $("#inputCustumerTelephone").val(),
-             $("#inputCustumerEmail").val(),
-             $("#inputCustumerRemark").val(),
-             function (data) {
-                 var result = JSON.parse(data);
-                 console.log(result);
-                 if (result.result == "error") {
-                     $("#message_modal_custumer").text("增加用户失败")
-                 }
-                 else {
-                     $('#modal_add_custumer').modal('hide');
-                     //重新刷新用户列表
-                     var index = window.current_custumer_page
-                     get_custumer_list_refresh(index);
-
-                 }
-             });
-         // Don't let the link do its natural thing
-         e.preventDefault()
-     });
-
-     $("#custumer_add_other").click(function (e) {
-         var data = {}
-         data.name = "";
-         data.token = "";
-         data.famliyphone = "";
-         data.workphone = "";
-         data.telphone = "";
-         insert_to_custumer_detail_table(data)
-
-     });
-
-
-     $("#update_custumer_modal").click(function (e) {
-         var data = {}
-         data.CustumerId = $("#inputCustumerIdDetail").val();
-         data.CustumerName = $("#inputCustumerNameDetail").val();
-         data.CustumerTelephone = $("#inputCustumerTelephoneDetail").val();
-         data.CustumerEmail = $("#inputCustumerEmailDetail").val();
-         data.CustumerRemark = $("#inputCustumerRemarkDetail").val();
-         data.other = new Array()
-         //获取other元素
-         $("#custumer_table_detail tbody tr").each(function () {
-             var other = {}
-             $(this).find("td input").each(function () {
-                 if ($(this).attr("name") == "name") {
-                     other.name = $(this).val();
-                 }
-                 else if ($(this).attr("name") == "token") {
-                     other.token = $(this).val();
-                 }
-                 else if ($(this).attr("name") == "famliyphone") {
-                     other.famliyphone = $(this).val();
-                 }
-                 else if ($(this).attr("name") == "workphone") {
-                     other.workphone = $(this).val();
-                 }
-                 else if ($(this).attr("name") == "telphone") {
-                     other.telphone = $(this).val();
-                 }
-
-             });
-             if (other.name) {
-                 data.other.push(other)
-             }
-         })
-
-         console.log(data)
-         //发送信息
-         update_custumer(data, function (data) {
-             var result = JSON.parse(data);
-             console.log(result);
-             if (result.result == "error") {
-                 console.log("更新用户失败")
-             }
-             else {
-                 $("#modal_custumer_detail").modal('hide')
-                 var index = window.current_custumer_page
-                 get_custumer_list_refresh(index);
-             }
-
-         })
-
-
-     });
-
-            $('#user_list').click(function (e) {
-                get_custumer_list_refresh(1)
-            })
-
             $('#logout_index').click(function () {
                 var value = getCookie("user");
                 if (value) {
@@ -159,9 +78,112 @@
 
             })
 
-        })
+
+//-----------------------custumer function -------------------------------//
+            $('#add_custumer_modal').click(function (e) {
+                add_custumer($("#inputCustumerName").val(),
+                        $("#inputCustumerTelephone").val(),
+                        $("#inputCustumerEmail").val(),
+                        $("#inputCustumerRemark").val(),
+                        function (data) {
+                            var result = JSON.parse(data);
+                            console.log(result);
+                            if (result.result == "error") {
+                                $("#message_modal_custumer").text("增加用户失败")
+                            }
+                            else {
+                                $('#modal_add_custumer').modal('hide');
+                                //重新刷新用户列表
+                                var index = window.current_custumer_page
+                                get_custumer_list_refresh(index);
+
+                            }
+                        });
+                // Don't let the link do its natural thing
+                e.preventDefault()
+            });
+
+            $("#custumer_add_other").click(function (e) {
+                var data = {}
+                data.name = "";
+                data.token = "";
+                data.famliyphone = "";
+                data.workphone = "";
+                data.telphone = "";
+                insert_to_custumer_detail_table(data)
+
+            });
 
 
+            $("#update_custumer_modal").click(function (e) {
+                var data = {}
+                data.CustumerId = $("#inputCustumerIdDetail").val();
+                data.CustumerName = $("#inputCustumerNameDetail").val();
+                data.CustumerTelephone = $("#inputCustumerTelephoneDetail").val();
+                data.CustumerEmail = $("#inputCustumerEmailDetail").val();
+                data.CustumerRemark = $("#inputCustumerRemarkDetail").val();
+                data.other = new Array()
+                //获取other元素
+                $("#custumer_table_detail tbody tr").each(function () {
+                    var other = {}
+                    $(this).find("td input").each(function () {
+                        if ($(this).attr("name") == "name") {
+                            other.name = $(this).val();
+                        }
+                        else if ($(this).attr("name") == "token") {
+                            other.token = $(this).val();
+                        }
+                        else if ($(this).attr("name") == "famliyphone") {
+                            other.famliyphone = $(this).val();
+                        }
+                        else if ($(this).attr("name") == "workphone") {
+                            other.workphone = $(this).val();
+                        }
+                        else if ($(this).attr("name") == "telphone") {
+                            other.telphone = $(this).val();
+                        }
+
+                    });
+                    if (other.name) {
+                        data.other.push(other)
+                    }
+                })
+
+                console.log(data)
+                //发送信息
+                update_custumer(data, function (data) {
+                    var result = JSON.parse(data);
+                    console.log(result);
+                    if (result.result == "error") {
+                        console.log("更新用户失败")
+                    }
+                    else {
+                        $("#modal_custumer_detail").modal('hide')
+                        var index = window.current_custumer_page
+                        get_custumer_list_refresh(index);
+                    }
+
+                })
+
+
+            });
+
+
+            $('#custumer_list').click(function (e) {
+                get_custumer_list_refresh(1)
+            });
+//------------------------------------------------------//
+
+
+            $('#alarm_list').click(function (e) {
+                get_alarm_list_refresh(1)
+            })
+
+
+//------------------------------------------------------//
+
+
+        });
     </script>
 </head>
 <body onload="load()">
@@ -192,23 +214,36 @@
                 </div>
             </div>
             <p><a data-toggle="modal" href="#modal_login" class="btn btn-primary" id="login_index">登陆</a></p>
-            <div class="control-list" id="title" style="display:none">
-                <div class="span2" id="message_index"></div>
-                <a class="btn btn-primary" id="logout_index">登出</a></div>
-
+            <div class="control-list" id="title"   style="display:none">
+               <a data-toggle="modal" href="#modal_user_update" class="btn" class ="btn" id="manage_index"></a>
+                <a class="btn btn-primary" id="logout_index">登出</a>
+                </div>
+            <hr>
             <div class="tabbable" id="tabs-619833">
                 <ul class="nav nav-tabs">
                     <li class="active">
                         <a data-toggle="tab" href="#panel-878780" id="alarm_list">告警列表</a>
                     </li>
                     <li>
-                        <a data-toggle="tab" href="#panel-620525" id="user_list">用户列表</a>
+                        <a data-toggle="tab" href="#panel-620525" id="custumer_list">客户列表</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#panel-620525" id="log_list">日志列表</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#panel-620525" id="manage_list" style="display:none">管理员列表</a>
                     </li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="panel-878780">
-
-                        <table class="table table-hover table-condensed">
+                        <div id="modal_alarm_detail" class="modal hide fade in" style=" display: none; ">
+                            <div class="modal-header">
+                                <a class="close" data-dismiss="modal">×</a>
+                                <h3>告警详情</h3>
+                            </div>
+                            <h3 id="deal_progress"></h3>
+                            <div class="modal-body">
+                                <table class="table table-hover table-condensed" id="modal_alarm_table">
                             <thead>
                             <tr>
                                 <th>
@@ -219,6 +254,80 @@
                                 </th>
                                 <th>
                                     告警时间
+                                </th>
+                                <th>
+                                    告警对象
+                                </th>
+                                <th>
+                                    告警内容
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+
+                               <div class="span">
+                                <div class="span2"><span>火警: </span><a href="#" class="btn" >911</a></div>
+                                <div class="span2"><span>急救: </span><a href="#" class="btn" >120</a></div>
+                                <div class="span2"><span>漏水: </span><a href="#" class="btn" >111</a></div>
+                                <div class="span2"><span>漏气: </span><a href="#" class="btn" >112</a></div>
+                                <div class="span4"><span>主人: </span><a href="#" class="btn" id="custumer_telephone" ></a></div>
+                               </div>
+
+
+
+                                <table class="table table-hover table-condensed table-layout:fixed"
+                                       id="alarm_table_other">
+                                    <thead>
+                                    <tr>
+                                        <th width="18%">
+                                            姓名
+                                        </th>
+                                        <th width="18%">
+                                            口令
+                                        </th>
+                                        <th width="18%">
+                                            家庭电话
+                                        </th>
+                                        <th width="18%">
+                                            工作电话
+                                        </th>
+                                        <th width="18%">
+                                            手机
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                            <div class="modal-footer">
+                                <a href="#" class="btn btn-success" id="deal_alarm_ok">处理完成</a>
+                                <a href="#" class="btn" data-dismiss="modal">暂时关闭</a>
+                            </div>
+                        </div>
+                        <p><a data-toggle="modal" href="#modal_alarm_detail" class="btn btn-primary"
+                              id="alarm_detail" style="display: none"></a>
+                        </p>
+
+                        <table class="table table-hover table-condensed" id="alarm_table">
+                            <thead>
+                            <tr>
+                                <th>
+                                    告警编号
+                                </th>
+                                <th>
+                                    告警级别
+                                </th>
+                                <th>
+                                    告警时间
+                                </th>
+                                <th>
+                                    告警对象
                                 </th>
                                 <th>
                                     告警内容
@@ -232,7 +341,7 @@
                             </tbody>
                         </table>
 
-                        <div id="alarm_page" class="pagination" style="display: none">
+                        <div id="alarm_page" class="pagination" styple="display : none" >
                             <ul>
 
                             </ul>
@@ -243,58 +352,59 @@
 
                     <div class="tab-pane" id="panel-620525">
 
-
+                        <!-- 新增用户详细信息的modal-->
                         <div id="modal_custumer_detail" class="modal hide fade in" style=" display: none; ">
                             <div class="modal-header">
                                 <a class="close" data-dismiss="modal">×</a>
                                 <h3>客户详情</h3>
                             </div>
-                        <div class="modal-body">
+                            <div class="modal-body">
                                 <label for="inputCustumerIdDetail">客户id</label>
                                 <input id="inputCustumerIdDetail" type="text" disabled>
                                 <label for="inputCustumerNameDetail">客户姓名</label>
                                 <input id="inputCustumerNameDetail" placeholder="客户姓名"
                                        type="text">
-                            <label for="inputCustumerTelephoneDetail">客户电话</label>
-                            <input id="inputCustumerTelephoneDetail"
-                                   placeholder="客户电话"
-                                   type="text">
-                            <label for="inputCustumerEmailDetail">客户邮箱</label>
-                            <input id="inputCustumerEmailDetail" placeholder="客户邮箱"
-                                   type="text">
-                        <label for="inputCustumerRemarkDetail">备注</label>
+                                <label for="inputCustumerTelephoneDetail">客户电话</label>
+                                <input id="inputCustumerTelephoneDetail"
+                                       placeholder="客户电话"
+                                       type="text">
+                                <label for="inputCustumerEmailDetail">客户邮箱</label>
+                                <input id="inputCustumerEmailDetail" placeholder="客户邮箱"
+                                       type="text">
+                                <label for="inputCustumerRemarkDetail">备注</label>
                         <textarea id="inputCustumerRemarkDetail" placeholder="备注"
-                             ></textarea>
+                        ></textarea>
 
-                            <div id="message_modal_custumer_detail"></div>
-                            <table class="table table-hover table-condensed table-layout:fixed" id="custumer_table_detail">
-                    <thead>
-                    <tr>
-                        <th width="18%">
-                            姓名
-                        </th>
-                        <th width="18%">
-                            口令
-                        </th>
-                        <th width="18%">
-                            家庭电话
-                        </th>
-                        <th width="18%">
-                            工作电话
-                        </th>
-                        <th width="18%">
-                            手机
-                        </th>
-                        <th width="10%">
+                                <div id="message_modal_custumer_detail"></div>
+                                <table class="table table-hover table-condensed table-layout:fixed"
+                                       id="custumer_table_detail">
+                                    <thead>
+                                    <tr>
+                                        <th width="18%">
+                                            姓名
+                                        </th>
+                                        <th width="18%">
+                                            口令
+                                        </th>
+                                        <th width="18%">
+                                            家庭电话
+                                        </th>
+                                        <th width="18%">
+                                            工作电话
+                                        </th>
+                                        <th width="18%">
+                                            手机
+                                        </th>
+                                        <th width="10%">
 
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-                            <a href="#" class="btn btn-success" id="custumer_add_other">增加</a>
-                          </div>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                                <a href="#" class="btn btn-success" id="custumer_add_other">增加</a>
+                            </div>
 
                             <div class="modal-footer">
                                 <a href="#" class="btn btn-success" id="update_custumer_modal">修改</a>
@@ -302,9 +412,10 @@
                             </div>
                         </div>
                         <p><a data-toggle="modal" href="#modal_custumer_detail" class="btn btn-primary"
-                              id="custumer_detail" style="display: none">新增客户</a>
+                              id="custumer_detail" style="display: none"></a>
                         </p>
 
+                        <!-- 新增用户的modal-->
                         <div id="modal_add_custumer" class="modal" style="display: none; ">
                             <div class="modal-header">
                                 <a class="close" data-dismiss="modal">×</a>
@@ -315,61 +426,61 @@
                                 <label for="inputCustumerName">客户姓名</label>
                                 <input id="inputCustumerName" placeholder="客户姓名" class="form-control"
                                        type="text">
-                            <label for="inputCustumerTelephone">客户电话</label>
-                            <input id="inputCustumerTelephone"
-                                   placeholder="客户电话"
-                                   type="text">
-                            <label for="inputCustumerEmail">客户邮箱</label>
-                            <input id="inputCustumerEmail" placeholder="客户邮箱"
-                                   type="text">
-                        <label for="inputCustumerRemark">备注</label>
+                                <label for="inputCustumerTelephone">客户电话</label>
+                                <input id="inputCustumerTelephone"
+                                       placeholder="客户电话"
+                                       type="text">
+                                <label for="inputCustumerEmail">客户邮箱</label>
+                                <input id="inputCustumerEmail" placeholder="客户邮箱"
+                                       type="text">
+                                <label for="inputCustumerRemark">备注</label>
                         <textarea id="inputCustumerRemark" placeholder="备注"
-                             ></textarea>
-                        <div id="message_modal_custumer"></div>
+                        ></textarea>
+                                <div id="message_modal_custumer"></div>
 
+                            </div>
+                            <div class="modal-footer">
+                                <a href="#" class="btn btn-success" id="add_custumer_modal">增加</a>
+                                <a href="#" class="btn" data-dismiss="modal">关闭</a>
+                            </div>
+                        </div>
+                        <p><a data-toggle="modal" href="#modal_add_custumer" class="btn btn-primary"
+                              id="add_custumer">新增客户</a>
+                        </p>
+                        <table class="table table-hover table-condensed table-layout:fixed" id="custumer_table">
+                            <thead>
+                            <tr>
+                                <th width="20%">
+                                    客户id
+                                </th>
+                                <th width="20%">
+                                    客户姓名
+                                </th>
+                                <th width="20%">
+                                    客户电话
+                                </th>
+                                <th>
+                                    备注
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+
+                        <div id="custumer_page" class="pagination" style="display:none">
+                            <ul>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <a href="#" class="btn btn-success" id="add_custumer_modal">增加</a>
-                        <a href="#" class="btn" data-dismiss="modal">关闭</a>
-                    </div>
-                </div>
-                <p><a data-toggle="modal" href="#modal_add_custumer" class="btn btn-primary"
-                      id="add_custumer">新增客户</a>
-                </p>
-                <table class="table table-hover table-condensed table-layout:fixed" id="custumer_table">
-                    <thead>
-                    <tr>
-                        <th width="20%">
-                            客户id
-                        </th>
-                        <th width="20%">
-                            客户姓名
-                        </th>
-                        <th width="20%">
-                            客户电话
-                        </th>
-                        <th >
-                            备注
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-
-
-                <div id="custumer_page" class="pagination" style="display:none">
-                    <ul>
-                    </ul>
                 </div>
             </div>
+
+        </div>
+        <div class="span2">
         </div>
     </div>
-
-</div>
-<div class="span2">
-</div>
-</div>
 </div>
 
 

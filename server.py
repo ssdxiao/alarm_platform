@@ -22,6 +22,7 @@ from app.static import StaticHandler
 from app.login import LoginHandler
 from app.login import LogoutHandler
 from app.alarm import AlarmHandler
+from app.alarm import AlarmAllHandler
 from app.custumer import CustumerHandler
 from app.custumer import CustumerAllHandler
 from utils.log import log
@@ -102,7 +103,8 @@ application = tornado.web.Application([
      ('/record',RealtimeHandler),
     ('/app/login', LoginHandler),
     ('/app/logout', LogoutHandler),
-    ('/app/alarm/(.*)', AlarmHandler),
+    ('/app/alarm', AlarmHandler),
+    ('/app/alarmlist', AlarmAllHandler),
     ('/app/custumer', CustumerHandler),
     ('/app/custumerlist', CustumerAllHandler),
      ('/static/(.*)',StaticHandler),

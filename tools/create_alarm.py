@@ -29,8 +29,6 @@ class DB:
 
         return time
 
-
-
     def insert_alarm(self, level, obj, content, custumer):
         sqlcmd = '''insert into alarm (alarm_level, create_time,alarm_obj, alarm_content,alarm_custumer) values(%s, '%s', '%s', '%s', %s) '''%\
                  (level, self.get_time_now(), obj, content, custumer)
