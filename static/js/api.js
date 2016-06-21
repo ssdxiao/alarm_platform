@@ -156,7 +156,7 @@ function add_custumer(CustumerName, CustumerTelephone, CustumerEmail, CustumerRe
 }
 
 function add_manage(ManageName, ManageTelephone, ManagePassword, callback) {
-    url = new RestServiceJs("/app/custumer");
+    url = new RestServiceJs("/app/manage");
     var data = new Object();
     data.ManageName = ManageName;
     data.ManageTelephone = ManageTelephone;
@@ -164,6 +164,17 @@ function add_manage(ManageName, ManageTelephone, ManagePassword, callback) {
     
     //console.log(JSON.stringify(data))
     url.post(data, callback)
+
+}
+
+function get_manage(ID , callback) {
+    url = new RestServiceJs("/app/manage?id="+ID);
+    url.find(callback)
+}
+
+function get_manage_list(index,callback) {
+    url = new RestServiceJs("/app/managelist?index="+index);
+    url.findAll(callback)
 
 }
 
@@ -178,6 +189,15 @@ function update_custumer(data , callback) {
     url.put(data,callback)
 }
 
+function update_manage(data , callback) {
+    url = new RestServiceJs("/app/manage")
+    url.put(data,callback)
+}
+
+function update_manage_passwd(data , callback) {
+    url = new RestServiceJs("/app/manage/changepasswd")
+    url.put(data,callback)
+}
 
 
 function get_custumer_list(index,callback) {

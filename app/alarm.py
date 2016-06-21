@@ -12,7 +12,6 @@ import tornado.web
 db = DB()
 class AlarmHandler(BaseHandler):
 
-    @authenticated_self
     def get(self):
         log.debug("AlarmHandler get in")
         try:
@@ -42,7 +41,8 @@ class AlarmHandler(BaseHandler):
 
         self.send_data(result)
 
-    @authenticated_self
+
+
     def post(self):
         log.debug("alarmHandler post in")
         data = self.get_data()

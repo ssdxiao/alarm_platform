@@ -7,6 +7,7 @@
     <script src="/static/js/api.js"></script>
     <script src="/static/js/custumer.js"></script>
     <script src="/static/js/alarm.js"></script>
+    <script src="/static/js/manage.js"></script>
 
     <script type="text/javascript">
 
@@ -192,19 +193,77 @@
                             var result = JSON.parse(data);
                             console.log(result);
                             if (result.result == "error") {
-                                $("#message_modal_manage").text("增加用户失败")
+                                $("#message_modal_manage").text("增加管理员失败")
                             }
                             else {
                                 $('#modal_add_manage').modal('hide');
                                 //重新刷新用户列表
                                 var index = window.current_page
-                               // get_manage_list_refresh(index);
+                                get_manage_list_refresh(index);
 
                             }
                         });
                 // Don't let the link do its natural thing
                 e.preventDefault()
             });
+
+            $('#manage_list').click(function (e) {
+                get_manage_list_refresh(1)
+            });
+
+             $("#update_manage_modal").click(function (e) {
+                var data = {}
+                data.ManageId = $("#inputManageIdDetail").val();
+                data.ManageName = $("#inputManageNameDetail").val();
+                data.ManageTelephone = $("#inputManageTelephoneDetail").val();
+
+                console.log(data)
+                //发送信息
+                update_manage(data, function (data) {
+                    var result = JSON.parse(data);
+                    console.log(result);
+                    if (result.result == "error") {
+                        console.log("更新管理员失败")
+                    }
+                    else {
+                        $("#modal_manage_detail").modal('hide')
+                        var index = window.current_page;
+                        get_manage_list_refresh(index);
+                    }
+
+                })
+
+
+            });
+
+            $("#update_change_modal").click(function (e) {
+                var data = {}
+                data.ManageId = $("#inputManageIdDetail").val();
+                data.ManagePassword = $("#inputManagePasswdDetail").val();
+
+                console.log(data)
+                //发送信息
+                update_manage_passwd(data, function (data) {
+                    var result = JSON.parse(data);
+                    console.log(result);
+                    if (result.result == "error") {
+                        console.log("更新管理员密码失败")
+                    }
+                    else {
+                        $("#modal_change_passwd").modal('hide')
+                        var index = window.current_page;
+                        get_manage_list_refresh(index);
+                    }
+
+                })
+
+
+            });
+
+
+
+            //-------------------------------------//
+            //-----------------------------------------//
 
         });
     </script>
@@ -500,7 +559,23 @@
 
                     <div class="tab-pane" id="panel-manage">
 
-                        <!-- 新增用户详细信息的modal-->
+                        <!-- 新增管理员详细信息的modal-->
+                        <div id="modal_change_passwd" class="modal hide fade in" style=" display: none; ">
+                            <div class="modal-header">
+                                <a class="close" data-dismiss="modal">×</a>
+                                <h3>管理员详情</h3>
+                            </div>
+                            <div class="modal-body">
+                                <label for="inputManagePasswdDetail">管理员密码</label>
+                                <input id="inputManagePasswdDetail" type="text" >
+
+                                </div>
+
+                            <div class="modal-footer">
+                                <a href="#" class="btn btn-success" id="update_change_modal">修改</a>
+                                <a href="#" class="btn" data-dismiss="modal">关闭</a>
+                            </div>
+                        </div>
                         <div id="modal_manage_detail" class="modal hide fade in" style=" display: none; ">
                             <div class="modal-header">
                                 <a class="close" data-dismiss="modal">×</a>
@@ -516,22 +591,22 @@
                                 <input id="inputManageTelephoneDetail"
                                        placeholder="管理员电话"
                                        type="text">
-                                <label for="inputManagePasswordDetail">管理员密码</label>
-                                <input id="inputManagePasswordDetail" placeholder="管理员密码"
-                                       type="text">
+                                <br>
+                                <p><a data-toggle="modal" href="#modal_change_passwd" class="btn btn-success"
+                              id="change_passwd" data-dismiss="modal">修改密码</a></p>
+                                </div>
 
-                            </div>
 
                             <div class="modal-footer">
                                 <a href="#" class="btn btn-success" id="update_manage_modal">修改</a>
                                 <a href="#" class="btn" data-dismiss="modal">关闭</a>
                             </div>
                         </div>
-                        <p><a data-toggle="modal" href="#modal_custumer_detail" class="btn btn-primary"
-                              id="magage_detail" style="display: none"></a>
+                        <p><a data-toggle="modal" href="#modal_manage_detail" class="btn btn-primary"
+                              id="manage_detail" style="display: none"></a>
                         </p>
 
-                        <!-- 新增用户的modal-->
+                        <!-- 新增管理员的modal-->
                         <div id="modal_add_manage" class="modal" style="display: none; ">
                             <div class="modal-header">
                                 <a class="close" data-dismiss="modal">×</a>

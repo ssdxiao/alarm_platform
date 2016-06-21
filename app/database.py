@@ -86,14 +86,15 @@ class DB:
         self.conn.commit()
 
     def update_custumer(self,  CustumerId, CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark, other):
-        sqlcmd = '''update custumer set name='%s',telephone='%s',email='%s', remark='%s', other ='%s' where  user_id= %s '''%\
+        sqlcmd = '''update custumer set name='%s',telephone='%s',email='%s', remark='%s', other ='%s' where  id= %s '''%\
                  (CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark, other, CustumerId)
         log.debug(sqlcmd)
 
         self.cur.execute(sqlcmd)
         self.conn.commit()
-    def get_custumer(self, CustumerId):
-        sqlcmd = '''select * from custumer where user_id = %s'''% CustumerId
+
+    def get_custumer(self, custumerId):
+        sqlcmd = '''select * from custumer where id = %s'''% custumerId
         log.debug(sqlcmd)
 
         self.cur.execute(sqlcmd)
@@ -107,32 +108,7 @@ class DB:
             return None
 
     def get_custumer_list(self, index):
-        sqlcmd = '''select max(user_id) from custumer'''
-        self.cur.execute(sqlcmd)
-        maxid = self.cur.fetchone()[0]
-        self.conn.commit()
-        index = int(index)
-        if ((PERPAGENUM * index) > maxid):
-            limit = maxid/PERPAGENUM
-        else:
-            limit = index - 1
-
-        sqlcmd='''select * from custumer limit %d,%d'''%(limit*PERPAGENUM, PERPAGENUM)
-        self.cur.execute(sqlcmd)
-        data = self.cur.fetchall()
-        self.conn.commit()
-        self.log.debug(data)
-        result = {}
-        if maxid == 0:
-            maxid = 1
-        result["maxindex"] = (maxid-1)/PERPAGENUM+1
-        result["data"] = data
-        result["curruntindex"] = limit +1
-
-        if result:
-            return result
-        else:
-            return None
+        return self.get_split_page(index, "custumer")
 
     def get_alarm(self, id):
         sqlcmd = '''select * from alarm where id = %s''' % id
@@ -149,17 +125,30 @@ class DB:
             return None
 
     def get_alarm_list(self, index):
-        sqlcmd = '''select max(id) from alarm'''
+        return self.get_split_page(index,"alarm")
+
+
+    def insert_manage(self, ManageName, ManageTelephone, ManagePassword):
+        sqlcmd = '''insert into user (name, telephone, passwd ) values('%s', '%s', password('%s')) '''%\
+                 (ManageName, ManageTelephone, ManagePassword)
+        log.debug(sqlcmd)
+        self.cur.execute(sqlcmd)
+        self.conn.commit()
+
+    def get_split_page(self, index, table):
+        sqlcmd = '''select max(id) from %s'''% table
         self.cur.execute(sqlcmd)
         maxid = self.cur.fetchone()[0]
         self.conn.commit()
         index = int(index)
+
         if ((PERPAGENUM * index) > maxid):
-            limit = maxid / PERPAGENUM
+            limit = (maxid - 1) / PERPAGENUM
         else:
             limit = index - 1
 
-        sqlcmd = '''select * from alarm limit %d,%d''' % (limit * PERPAGENUM, PERPAGENUM)
+
+        sqlcmd = '''select * from %s limit %d,%d''' % (table, limit * PERPAGENUM, PERPAGENUM)
         self.cur.execute(sqlcmd)
         data = self.cur.fetchall()
         self.conn.commit()
@@ -175,6 +164,40 @@ class DB:
             return result
         else:
             return None
+
+    def get_manage_list(self, index):
+        return self.get_split_page(index, "user")
+
+    def get_manage(self, ManageId):
+        sqlcmd = '''select * from user where id = %s''' % ManageId
+        log.debug(sqlcmd)
+
+        self.cur.execute(sqlcmd)
+        result = self.cur.fetchone()
+        self.conn.commit()
+
+        if result:
+            log.debug(result)
+            return result
+        else:
+            return None
+
+    def update_manage(self, ManageId, ManageName, ManageTelephone):
+        sqlcmd = '''update user set name='%s',telephone='%s' where  id= %s ''' % \
+                 (ManageName, ManageTelephone, ManageId)
+        log.debug(sqlcmd)
+
+        self.cur.execute(sqlcmd)
+        self.conn.commit()
+
+    def update_manage_passwd(self, ManageId, ManagePassword, ):
+        sqlcmd = '''update user set passwd=password('%s') where  id= %s ''' % \
+                 (ManagePassword, ManageId)
+        log.debug(sqlcmd)
+
+        self.cur.execute(sqlcmd)
+        self.conn.commit()
+
     def close(self):
         self.cur.close()
         self.conn.close()

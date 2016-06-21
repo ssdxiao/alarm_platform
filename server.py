@@ -25,6 +25,9 @@ from app.alarm import AlarmHandler
 from app.alarm import AlarmAllHandler
 from app.custumer import CustumerHandler
 from app.custumer import CustumerAllHandler
+from app.manage import ManageHandler
+from app.manage import ManageAllHandler
+from app.manage import ManageChangePasswordHandler
 from utils.log import log
 
 LISTENERS = []
@@ -106,6 +109,9 @@ application = tornado.web.Application([
     ('/app/alarmlist', AlarmAllHandler),
     ('/app/custumer', CustumerHandler),
     ('/app/custumerlist', CustumerAllHandler),
+    ('/app/manage',ManageHandler),
+    ('/app/managelist', ManageAllHandler),
+    ('/app/manage/changepasswd', ManageChangePasswordHandler),
      ('/static/(.*)',StaticHandler),
      ('/.*', RedirectHandler),
 ],**settings)
