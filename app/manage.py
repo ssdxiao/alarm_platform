@@ -1,14 +1,19 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from base import BaseHandler
 from base import BASEDIR
 from utils.log import log
 
-from database import DB
+from database import db
 from utils.mysqlpasswd import mysql_password
 import uuid
 import json
+from utils.record import save_record
 
 from base import authenticated_self
-db = DB()
+
+
 class ManageHandler(BaseHandler):
 
     @authenticated_self
@@ -54,6 +59,8 @@ class ManageHandler(BaseHandler):
                     result ={}
                     result["result"] = "ok"
                     self.send_data(result)
+                    str = "添加管理员 姓名 %s 电话 %s"%(data["ManageName"].encode('utf-8'),data["ManageTelephone"].encode('utf-8') )
+                    save_record(self.login_user, "manage", 0, "add", str)
                     return
 
             else:
@@ -78,6 +85,9 @@ class ManageHandler(BaseHandler):
                 result = {}
                 result["result"] = "ok"
                 self.send_data(result)
+                str = "更新管理员 姓名 %s 电话 %s" % (
+                data["ManageName"].encode('utf-8'), data["ManageTelephone"].encode('utf-8'))
+                save_record(self.login_user, "manage", data["ManageId"], "update", str)
                 return
             else:
                 result = {}
@@ -138,6 +148,8 @@ class ManageChangePasswordHandler(BaseHandler):
                 result = {}
                 result["result"] = "ok"
                 self.send_data(result)
+                save_record(self.login_user, "custumer",data["ManageId"], "change_passwd", "更新管理员密码")
+                return
                 return
             else:
                 result = {}

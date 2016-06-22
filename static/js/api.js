@@ -199,6 +199,11 @@ function update_manage_passwd(data , callback) {
     url.put(data,callback)
 }
 
+function get_record_list(index,callback) {
+    url = new RestServiceJs("/app/recordlist?index="+index);
+    url.findAll(callback)
+
+}
 
 function get_custumer_list(index,callback) {
     url = new RestServiceJs("/app/custumerlist?index="+index);

@@ -22,17 +22,17 @@ class DB:
         self.log = log
 
     def get_user_by_passwd(self, name):
-        self.cur.execute('''select passwd from %s where name = "%s" ''' % (self.user_table, name))
+        self.cur.execute('''select * from %s where name = "%s" ''' % (self.user_table, name))
         result = self.cur.fetchone()
         self.conn.commit()
         self.log.debug(result)
         if result :
-            return result[0]
+            return result
         else:
             return None
 
     def get_user_by_token(self, token):
-        self.cur.execute('''select name from %s where token = "%s" ''' % (self.user_table, token))
+        self.cur.execute('''select id from %s where token = "%s" ''' % (self.user_table, token))
         result = self.cur.fetchone()
         self.conn.commit()
         self.log.debug(result)
@@ -42,19 +42,19 @@ class DB:
             return None
 
     def get_time_now(self):
-        utc = pytz.utc
-        now = datetime.datetime.now(utc)
+        #utc = pytz.utc
+        now = datetime.datetime.now()
         time = now.strftime(TIMEEXAMPLE)
 
         return time
 
     def get_token(self, name):
-        self.cur.execute('''select token from %s where name = "%s" ''' % (self.user_table, name))
+        self.cur.execute('''select * from %s where name = "%s" ''' % (self.user_table, name))
         result = self.cur.fetchone()
         self.conn.commit()
         self.log.debug(result)
         if result:
-            return result[0]
+            return result
         else:
             return None
 
@@ -110,6 +110,26 @@ class DB:
     def get_custumer_list(self, index):
         return self.get_split_page(index, "custumer")
 
+    def insert_alarm(self, level, obj, content, custumer):
+        sqlcmd = '''insert into alarm (alarm_level, create_time,alarm_obj, alarm_content,alarm_custumer) values(%s, '%s', '%s', '%s', %s) ''' % \
+                 (level, self.get_time_now(), obj, content, custumer)
+        self.cur.execute(sqlcmd)
+        self.conn.commit()
+
+    def get_alarm_unallocat(self):
+        sqlcmd = '''select * from alarm where deal_progress = 0 and deal_user is NULL'''
+        log.debug(sqlcmd)
+
+        self.cur.execute(sqlcmd)
+        result = self.cur.fetchall()
+        self.conn.commit()
+
+        if result:
+            log.debug(result)
+            return result
+        else:
+            return None
+
     def get_alarm(self, id):
         sqlcmd = '''select * from alarm where id = %s''' % id
         log.debug(sqlcmd)
@@ -134,6 +154,8 @@ class DB:
         log.debug(sqlcmd)
         self.cur.execute(sqlcmd)
         self.conn.commit()
+
+
 
     def get_split_page(self, index, table):
         sqlcmd = '''select max(id) from %s'''% table
@@ -198,8 +220,21 @@ class DB:
         self.cur.execute(sqlcmd)
         self.conn.commit()
 
+    def save_record(self,user, obj, obj_id, action, context):
+        time = self.get_time_now()
+        sqlcmd = '''insert into record (user_id, object, object_id, action, context, time) values(%d, '%s', %d, '%s', '%s','%s') ''' % \
+                 (user, obj, obj_id, action,context, time)
+
+        log.debug(sqlcmd)
+
+        self.cur.execute(sqlcmd)
+        self.conn.commit()
+
+    def get_record_list(self, index):
+        return self.get_split_page(index, "record")
+
     def close(self):
         self.cur.close()
         self.conn.close()
 
-
+db = DB()

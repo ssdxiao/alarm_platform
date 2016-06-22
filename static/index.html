@@ -8,6 +8,7 @@
     <script src="/static/js/custumer.js"></script>
     <script src="/static/js/alarm.js"></script>
     <script src="/static/js/manage.js"></script>
+    <script src="/static/js/record.js"></script>
 
     <script type="text/javascript">
 
@@ -262,7 +263,11 @@
 
 
 
-            //-------------------------------------//
+            //----------------------日志信息----------//
+
+             $('#record_list').click(function (e) {
+                get_record_list_refresh(1)
+            });
             //-----------------------------------------//
 
         });
@@ -310,7 +315,7 @@
                         <a data-toggle="tab" href="#panel-custumer" id="custumer_list">客户列表</a>
                     </li>
                     <li>
-                        <a data-toggle="tab" href="#panel-log" id="log_list">日志列表</a>
+                        <a data-toggle="tab" href="#panel-record" id="record_list">日志列表</a>
                     </li>
                     <li>
                         <a data-toggle="tab" href="#panel-manage" id="manage_list" style="display:none">管理员列表</a>
@@ -552,6 +557,41 @@
 
 
                         <div id="custumer_page" class="pagination" style="display:none">
+                            <ul>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="panel-record">
+
+                        <!-- 日志信息-->
+
+                        <table class="table table-hover table-condensed table-layout:fixed" id="record_table">
+                            <thead>
+                            <tr>
+                                <th width="10%">
+                                    日志id
+                                </th>
+                                <th width="10%">
+                                    操作人
+                                </th>
+                                <th width="10%">
+                                    操作对象
+                                </th>
+                                <th>
+                                    操作内容
+                                </th>
+                                <th>
+                                    操作时间
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+
+                        <div id="record_page" class="pagination" style="display:none">
                             <ul>
                             </ul>
                         </div>

@@ -1,14 +1,18 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from base import BaseHandler
 from base import BASEDIR
 from utils.log import log
 
-from database import DB
+from database import db
 from utils.mysqlpasswd import mysql_password
 import uuid
 import json
+from utils.record import save_record
 
 from base import authenticated_self
-db = DB()
+
 class CustumerHandler(BaseHandler):
 
     @authenticated_self
@@ -57,6 +61,11 @@ class CustumerHandler(BaseHandler):
                     result ={}
                     result["result"] = "ok"
                     self.send_data(result)
+                    str = "添加用户 姓名 %s 电话 %s 邮箱 %s 备注 %s" % (
+                        data["CustumerName"].encode('utf-8'), data["CustumerTelephone"].encode('utf-8'),\
+                        data["CustumerEmail"].encode('utf-8'),data["CustumerRemark"].encode('utf-8'))
+                    save_record(self.login_user,"custumer", 0, "add", str)
+
                     return
 
             else:
@@ -83,6 +92,10 @@ class CustumerHandler(BaseHandler):
                 result = {}
                 result["result"] = "ok"
                 self.send_data(result)
+                str = "添加用户 姓名 %s 电话 %s 邮箱 %s 备注 %s 其他 %s" % (
+                    data["CustumerName"].encode('utf-8'), data["CustumerTelephone"].encode('utf-8'), \
+                    data["CustumerEmail"].encode('utf-8'), data["CustumerRemark"].encode('utf-8'), json.dumps(data["other"]))
+                save_record(self.login_user, "custumer", data["CustumerId"], "update",str)
                 return
             else:
                 result = {}

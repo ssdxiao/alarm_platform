@@ -1,10 +1,13 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import tornado.web
 from utils.log import log
 BASEDIR = "../static"
 import json
 import functools
-from database import DB
-db=DB()
+from database import db
+
 
 def authenticated_self(method):
     """Decorate methods with this to require that the user be logged in."""
@@ -17,15 +20,16 @@ def authenticated_self(method):
         result["message"] = "token error please login "
 
         if cookie:
-            try:
+            #try:
                 data = json.loads(cookie)
                 print data
                 if data.has_key("token"):
                     self.login_user = db.get_user_by_token(data["token"])
                     if self.login_user:
                         return method(self, *args, **kwargs)
-            except:
-                log.error("get error cookie %s",cookie)
+            #except:
+
+             #   log.error("get error cookie %s",cookie)
 
         else:
             log.error("cookie is None")

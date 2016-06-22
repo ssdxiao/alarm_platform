@@ -28,10 +28,28 @@ from app.custumer import CustumerAllHandler
 from app.manage import ManageHandler
 from app.manage import ManageAllHandler
 from app.manage import ManageChangePasswordHandler
+from app.record import RecordAllHandler
 from utils.log import log
+from functools import partial
+from app.database import db
 
 LISTENERS = []
 AUDIO_PATH = "/tmp/audio"
+
+
+def alarm_allocation():
+    while True:
+        time.sleep(1)
+        data = db.get_alarm_unallocat()
+        for one in data:
+            pass
+
+
+
+
+
+
+
 
 class RealtimeHandler(tornado.websocket.WebSocketHandler):
 
@@ -39,55 +57,23 @@ class RealtimeHandler(tornado.websocket.WebSocketHandler):
         return True
 
     def open(self):
-        print "open"
         LISTENERS.append(self)
+        print "open"
+
+
+    def send_message(self, data):
+        pass
 
     def on_message(self, message):
+
+
+        pass
         
-        if message.startswith("start"):
-            print "now start"
-            self.current = "start"
-            if os.path.exists(AUDIO_PATH):
-                shutil.rmtree(AUDIO_PATH)
-            os.mkdir(AUDIO_PATH) 
-            self.i = 0
-        elif message.startswith("stop"):
-            print "now close"
-            self.current = "stop"
-            self.clips()
-            if os.path.exists(AUDIO_PATH):
-                shutil.rmtree(AUDIO_PATH)
-        elif message.startswith("analyze"):
-            pass
-        else :
-            self.save(message)
 
-    def clips(self):
-        print "clips start"
-        filelist = os.listdir(AUDIO_PATH)
-        audiolist=[]
-        if filelist == []:
-            print "no audio file find"
-            return
-        print filelist
-        for file_temp in filelist:
-             audiolist.append(AudioFileClip("%s/%s"%(AUDIO_PATH,file_temp)))
-       
-        final_clip = concatenate_audioclips(audiolist)
-        final_clip.write_audiofile("../static/audio/abc.wav")
-        print "clips end"
-
-    def save(self, message):
-        try:
-            self.i += 1;
-            self.File = open("%s/temp%d.wav"%(AUDIO_PATH,self.i), "w")
-            self.File.write(message)
-        finally:
-            self.File.close()
 
     def on_close(self):
-        print "close"
         LISTENERS.remove(self)
+        print "close"
 
 class RedirectHandler(tornado.web.RequestHandler):
     def get(self):
@@ -112,6 +98,8 @@ application = tornado.web.Application([
     ('/app/manage',ManageHandler),
     ('/app/managelist', ManageAllHandler),
     ('/app/manage/changepasswd', ManageChangePasswordHandler),
+    ('/app/recordlist', RecordAllHandler),
+    ('/server/realtime', RealtimeHandler),
      ('/static/(.*)',StaticHandler),
      ('/.*', RedirectHandler),
 ],**settings)
@@ -122,6 +110,7 @@ application = tornado.web.Application([
 #openssl req -new -key privatekey.pem -out certrequest.csr
 #openssl x509 -req -in certrequest.csr -signkey privatekey.pem -out certificate.pem
 if __name__ == "__main__":
+    threading.Thread(target=alarm_allocation).start()
     http_server = tornado.httpserver.HTTPServer(
             application,
             ssl_options={

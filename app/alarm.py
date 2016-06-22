@@ -1,15 +1,17 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from base import BaseHandler
 from base import BASEDIR
 from base import authenticated_self
 from utils.log import log
 
-from database import DB
+from database import db
 from utils.mysqlpasswd import mysql_password
 import uuid
 import json
 import tornado.web
 
-db = DB()
 class AlarmHandler(BaseHandler):
 
     def get(self):
@@ -41,38 +43,6 @@ class AlarmHandler(BaseHandler):
 
         self.send_data(result)
 
-
-
-    def post(self):
-        log.debug("alarmHandler post in")
-        data = self.get_data()
-        if data:
-            log.debug(data)
-            if data.has_key("alarmTelephone") and data.has_key("alarmEmail") \
-                    and data.has_key("alarmName") and data.has_key("alarmRemark"):
-
-                if data["alarmName"] == "":
-                    log.error("alarmName is NULL")
-                else:
-                    db.insert_alarm(data["alarmName"], data["alarmTelephone"],
-                                   data["alarmEmail"],data["alarmRemark"])
-
-
-                    result ={}
-                    result["result"] = "ok"
-                    self.send_data(result)
-                    return
-
-            else:
-                log.error("alarm data key is not right")
-        else:
-            log.error("data is none")
-
-        result = {}
-        result["result"] = "error"
-        result["message"] = "alarm info is error"
-        self.send_data(result)
-
     @authenticated_self
     def put(self):
         log.debug("alarmHandler put in")
@@ -87,6 +57,7 @@ class AlarmHandler(BaseHandler):
                 result = {}
                 result["result"] = "ok"
                 self.send_data(result)
+
                 return
             else:
                 result = {}
