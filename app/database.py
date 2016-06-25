@@ -130,6 +130,44 @@ class DB:
         else:
             return None
 
+    def get_alarm_unprogress(self):
+        sqlcmd = '''select * from alarm where deal_progress = 0 and deal_user is not NULL'''
+        log.debug(sqlcmd)
+
+        self.cur.execute(sqlcmd)
+        result = self.cur.fetchall()
+        self.conn.commit()
+
+        if result:
+            log.debug(result)
+            return result
+        else:
+            return None
+
+
+    def get_online_manage(self):
+        
+        sqlcmd = '''select * from user'''
+        log.debug(sqlcmd)
+
+        self.cur.execute(sqlcmd)
+        result = self.cur.fetchall()
+        self.conn.commit()
+
+        if result:
+            log.debug(result)
+            return result
+        else:
+            return None
+
+   def allocat_alarm(self, id, deal_user):
+        sqlcmd = '''update alarm set deal_user='%s where  id= %s ''' % \
+                 (deal_user id)
+        log.debug(sqlcmd)
+
+        self.cur.execute(sqlcmd)
+        self.conn.commit()
+
     def get_alarm(self, id):
         sqlcmd = '''select * from alarm where id = %s''' % id
         log.debug(sqlcmd)

@@ -27,6 +27,19 @@
                     {
                         $("#manage_list").attr("style", "display:''")
                     }
+                    else {
+                      var ws = new WebSocket("wss://server/realtime");
+                      ws.onopen = function () {
+                           console.log("Openened connection to websocket");
+                      };
+                      ws.onclose = function (){
+                           console.log("Close connection to websocket");
+                      }
+                      ws.onmessage = function(e) {
+                          var data JSON.parse(e.data);
+                      }
+
+                    }
                     get_alarm_list_refresh(1)
 
                 }
@@ -306,6 +319,15 @@
                 <a class="btn btn-primary" id="logout_index">登出</a>
                 </div>
             <hr>
+
+
+<div id="alarmAlert" class="alert alert-warning" >
+   <a href="#" class="close" data-dismiss="alert">
+      &times;
+   </a>
+   <strong>提醒！</strong>您有新的告警需要处理。
+</div>
+
             <div class="tabbable" id="tabs-619833">
                 <ul class="nav nav-tabs">
                     <li class="active">

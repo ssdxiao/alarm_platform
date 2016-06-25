@@ -10,6 +10,7 @@ import tornado.web
 import os
 import sys
 import time
+import random
 from datetime import datetime
 from moviepy.editor import AudioFileClip, concatenate_audioclips
 try:
@@ -33,23 +34,27 @@ from utils.log import log
 from functools import partial
 from app.database import db
 
+
 LISTENERS = []
 AUDIO_PATH = "/tmp/audio"
 
 
 def alarm_allocation():
     while True:
-        time.sleep(1)
+        time.sleep(10)
         data = db.get_alarm_unallocat()
+        manage = db.get_online_manage()
+
+        num = len(manage)
+        for one in data: 
+            db.allocat_alarm(one["id"], manage[random.randint(0, num-1)])
+
+        data = db.get_alarm_unprogress()
         for one in data:
-            pass
-
-
-
-
-
-
-
+           for person in LISTENERS:
+               if person.has_key("user_id"):
+                   if person["user_id"] = one["id"]:
+                      person.send_alarm(one)
 
 class RealtimeHandler(tornado.websocket.WebSocketHandler):
 
@@ -57,18 +62,37 @@ class RealtimeHandler(tornado.websocket.WebSocketHandler):
         return True
 
     def open(self):
+        self.name
         LISTENERS.append(self)
         print "open"
 
+    def send_data(self, data):
+        try:
+            data = json.dumps(data)
+            self.write(data)
+            return "ok"
+        except:
+            log.error("send not json (%s)"% data)
 
-    def send_message(self, data):
-        pass
+
+     def send_alarm(self, one):
+         data={"type": "alarm",
+              "id" : one[0]
+         }
+         self.send_data(data)
+      
+        
 
     def on_message(self, message):
+         log.debug(message)
 
-
-        pass
-        
+         try:
+             data = json.loads(message)
+         except:
+             log.error("ws recv not json")
+         
+          if data.has_key("user_id"):
+             self.user_id = data["user_id"]
 
 
     def on_close(self):
