@@ -13,12 +13,13 @@
     <script type="text/javascript">
 
         function load() {
-            console.log("load");
+
             var value = getCookie("user");
+            console.log(value);
             if (value) {
                 var data = JSON.parse(value);
                 console.log(data.user + " is login" + " " + data.token);
-                if (data.user) {
+                if (typeof(data.user) != "undefined") {
                     $('#login_index').attr('style', 'display:none');
                     $("#manage_index").text("欢迎 " + data.user);
                     $("#title").attr("style", "display:''")
@@ -28,30 +29,50 @@
                         $("#manage_list").attr("style", "display:''")
                     }
                     else {
-                      var ws = new WebSocket("wss://server/realtime");
+                      var ws = new WebSocket("wss://"+window.location.host+"/server/realtime");
+                        ws.onerror=function(e){
+                                       console.log(e);
+                          };
+
                       ws.onopen = function () {
                            console.log("Openened connection to websocket");
+                          ws.send(value)
+                          $("#alarm_message").text("未知错误，请刷新页面，重新启动推送服务。")
+
                       };
                       ws.onclose = function (){
                            console.log("Close connection to websocket");
-                      }
+                          $("#alarm_message").text("请刷新页面，重新启动推送服务。")
+                          $("#alarmAlert").attr('style', "display:''");
+                      };
                       ws.onmessage = function(e) {
-                          var data JSON.parse(e.data);
+                          console.log("websocket recv message")
+                          var data = JSON.parse(e.data);
+                          console.log(data)
+                          $("#alarm_message").text("有新的告警需要处理，请点击告警列表标签栏查看。")
+                          $("#alarmAlert").attr('style', "display:''")
                       }
+
 
                     }
                     get_alarm_list_refresh(1)
+                    return
 
                 }
-            }
-            else {
-                console.log("no user login")
-                $('#login_index').trigger("click")
 
             }
+
+            console.log("no user login")
+            $('#login_index').trigger("click")
+
+
         }
 
         $(function () {
+
+            $("#alarm_close").click(function(e){
+                $("#alarmAlert").attr('style', "display:none")
+            })
             $('#login_example').click(function (e) {
                 $("#message_modal_login").text("");
                 login($("#inputUser").val(),
@@ -321,11 +342,11 @@
             <hr>
 
 
-<div id="alarmAlert" class="alert alert-warning" >
-   <a href="#" class="close" data-dismiss="alert">
+<div id="alarmAlert" class="alert alert-warning" style="display: none; " >
+   <a href="#" class="close" id="alarm_close">
       &times;
    </a>
-   <strong>提醒！</strong>您有新的告警需要处理。
+   <strong>提醒！</strong><div id="alarm_message">您有新的告警需要处理。</div>
 </div>
 
             <div class="tabbable" id="tabs-619833">

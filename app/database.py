@@ -62,7 +62,7 @@ class DB:
         time = self.get_time_now()
         sqlcmd = '''update %s set logouttime="%s" where name="%s"''' % (self.user_table, time, name)
         self.cur.execute(sqlcmd)
-        sqlcmd = '''update %s set token="" where name="%s"''' % (self.user_table, name)
+        sqlcmd = '''update %s set token=null where name="%s"''' % (self.user_table, name)
         self.cur.execute(sqlcmd)
         self.conn.commit()
 
@@ -117,7 +117,7 @@ class DB:
         self.conn.commit()
 
     def get_alarm_unallocat(self):
-        sqlcmd = '''select * from alarm where deal_progress = 0 and deal_user is NULL'''
+        sqlcmd = '''select * from alarm where deal_progress = 0 and deal_user is NULL limit 0, 5'''
         log.debug(sqlcmd)
 
         self.cur.execute(sqlcmd)
@@ -147,7 +147,7 @@ class DB:
 
     def get_online_manage(self):
         
-        sqlcmd = '''select * from user'''
+        sqlcmd = '''select * from user where token is not NULL '''
         log.debug(sqlcmd)
 
         self.cur.execute(sqlcmd)
@@ -160,9 +160,9 @@ class DB:
         else:
             return None
 
-   def allocat_alarm(self, id, deal_user):
-        sqlcmd = '''update alarm set deal_user='%s where  id= %s ''' % \
-                 (deal_user id)
+    def allocat_alarm(self, id, deal_user):
+        sqlcmd = '''update alarm set deal_user=%d where  id= %s ''' % \
+                 (deal_user, id)
         log.debug(sqlcmd)
 
         self.cur.execute(sqlcmd)
