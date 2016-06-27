@@ -31,8 +31,11 @@ from app.manage import ManageHandler
 from app.manage import ManageAllHandler
 from app.manage import ManageChangePasswordHandler
 from app.record import RecordAllHandler
+from app.audio import AudioHandler
+from app.audio import AudioAllHandler
+from app.upload import UploadHandler
 from utils.log import log
-from functools import partial
+
 from app.database import db
 
 LISTENERS = []
@@ -55,9 +58,7 @@ def alarm_allocation():
             for one in data:
                 for person in LISTENERS:
                         if person.user_id == one[0]:
-                            print "send"
                             person.send_alarm(one)
-
 
 
 
@@ -83,7 +84,6 @@ class RealtimeHandler(tornado.websocket.WebSocketHandler):
         data = {"type": "alarm",
                 "id": one[0]
                 }
-        print "send_alarm"
         self.send_data(data)
 
     def on_message(self, message):
@@ -126,7 +126,10 @@ application = tornado.web.Application([
     ('/app/managelist', ManageAllHandler),
     ('/app/manage/changepasswd', ManageChangePasswordHandler),
     ('/app/recordlist', RecordAllHandler),
+    ('/app/audio', AudioHandler),
+    ('/app/audiolist', AudioAllHandler),
     ('/server/realtime', RealtimeHandler),
+    ('/app/upload', UploadHandler),
     ('/static/(.*)', StaticHandler),
     ('/.*', RedirectHandler),
 ], **settings)
@@ -136,7 +139,7 @@ application = tornado.web.Application([
 # openssl req -new -key privatekey.pem -out certrequest.csr
 # openssl x509 -req -in certrequest.csr -signkey privatekey.pem -out certificate.pem
 if __name__ == "__main__":
-    threading.Thread(target=alarm_allocation).start()
+    #threading.Thread(target=alarm_allocation).start()
     http_server = tornado.httpserver.HTTPServer(
         application,
         ssl_options={

@@ -9,7 +9,7 @@
     <script src="/static/js/alarm.js"></script>
     <script src="/static/js/manage.js"></script>
     <script src="/static/js/record.js"></script>
-
+    <script src="/static/js/ajaxfileupload.js"></script>
     <script type="text/javascript">
 
         function load() {
@@ -24,34 +24,33 @@
                     $("#manage_index").text("欢迎 " + data.user);
                     $("#title").attr("style", "display:''")
 
-                    if (data.user == "admin")
-                    {
+                    if (data.user == "admin") {
                         $("#manage_list").attr("style", "display:''")
                     }
                     else {
-                      var ws = new WebSocket("wss://"+window.location.host+"/server/realtime");
-                        ws.onerror=function(e){
-                                       console.log(e);
-                          };
+                        var ws = new WebSocket("wss://" + window.location.host + "/server/realtime");
+                        ws.onerror = function (e) {
+                            console.log(e);
+                        };
 
-                      ws.onopen = function () {
-                           console.log("Openened connection to websocket");
-                          ws.send(value)
-                          $("#alarm_message").text("未知错误，请刷新页面，重新启动推送服务。")
+                        ws.onopen = function () {
+                            console.log("Openened connection to websocket");
+                            ws.send(value)
+                            $("#alarm_message").text("未知错误，请刷新页面，重新启动推送服务。")
 
-                      };
-                      ws.onclose = function (){
-                           console.log("Close connection to websocket");
-                          $("#alarm_message").text("请刷新页面，重新启动推送服务。")
-                          $("#alarmAlert").attr('style', "display:''");
-                      };
-                      ws.onmessage = function(e) {
-                          console.log("websocket recv message")
-                          var data = JSON.parse(e.data);
-                          console.log(data)
-                          $("#alarm_message").text("有新的告警需要处理，请点击告警列表标签栏查看。")
-                          $("#alarmAlert").attr('style', "display:''")
-                      }
+                        };
+                        ws.onclose = function () {
+                            console.log("Close connection to websocket");
+                            $("#alarm_message").text("请刷新页面，重新启动推送服务。")
+                            $("#alarmAlert").attr('style', "display:''");
+                        };
+                        ws.onmessage = function (e) {
+                            console.log("websocket recv message")
+                            var data = JSON.parse(e.data);
+                            console.log(data)
+                            $("#alarm_message").text("有新的告警需要处理，请点击告警列表标签栏查看。")
+                            $("#alarmAlert").attr('style', "display:''")
+                        }
 
 
                     }
@@ -70,7 +69,7 @@
 
         $(function () {
 
-            $("#alarm_close").click(function(e){
+            $("#alarm_close").click(function (e) {
                 $("#alarmAlert").attr('style', "display:none")
             })
             $('#login_example').click(function (e) {
@@ -87,14 +86,13 @@
                                 $('#modal_login').modal('hide');
                                 //登陆成功以后 开始获取相关参数并刷新界面
                                 /*
-                                $('#login_index').attr('style', 'display:none');
-                                $("#manage_index").text("欢迎 " + result.user);
-                                $("#title").attr("style", "display:''");
-                                */
+                                 $('#login_index').attr('style', 'display:none');
+                                 $("#manage_index").text("欢迎 " + result.user);
+                                 $("#title").attr("style", "display:''");
+                                 */
                                 delCookie("user");
                                 setCookie("user", data);
                                 location.reload()
-
 
 
                             }
@@ -213,13 +211,65 @@
 
             $('#alarm_list').click(function (e) {
                 get_alarm_list_refresh(1)
-            })
+            });
+            $("#alarm_deal_commit").click(function (e) {
 
+                var alarmid = $("#td_alarm_id").text();
+                var remark = $("#alarmRemark").val();
+                var audio = window.alarm_audio;
+                var telephone = window.alarm_telephone;
+                commit_alarm_record(alarmid, telephone,remark, audio, function (data) {
+                    var result = JSON.parse(data);
+                    console.log(result);
+                    if (result.result == "error") {
+                        console.log("增加处理日志失败")
+                    }
+                    else {
+                        $('#modal_alarm_deal').modal('hide');
+                        //重新刷新用户列表
+                        var index = window.current_page
+                        get_alarm_list_refresh(index);
+                        //上传
+                         ajaxFileUpload()
+
+                    }
+
+                })
+
+
+            });
+
+            $(".call").click(function(e){
+                callup(e)
+            })
+            $("#deal_alarm_ok").click(function (e) {
+                 if ($("#deal_progress").text() == alarm_string[2] )
+                  {
+                        return
+                   }
+                var data = {};
+                data.alarmId = $("#td_alarm_id").text()
+                data.deal_progress =2;
+                update_alarm(data,function (data) {
+                    var result = JSON.parse(data);
+                    console.log(result);
+                    if (result.result == "error") {
+                        console.log("更新进度失败")
+                    }
+                    else {
+                        $("#modal_alarm_detail").modal('hide')
+                        var index = window.current_page;
+                        get_alarm_list_refresh(index);
+                    }
+                })
+
+
+            })
 
 //----------------------------管理员------------------------//
 
 
-              $('#add_manage_modal').click(function (e) {
+            $('#add_manage_modal').click(function (e) {
                 add_manage($("#inputManageName").val(),
                         $("#inputManageTelephone").val(),
                         $("#inputManagePassword").val(),
@@ -246,7 +296,7 @@
                 get_manage_list_refresh(1)
             });
 
-             $("#update_manage_modal").click(function (e) {
+            $("#update_manage_modal").click(function (e) {
                 var data = {}
                 data.ManageId = $("#inputManageIdDetail").val();
                 data.ManageName = $("#inputManageNameDetail").val();
@@ -296,10 +346,9 @@
             });
 
 
-
             //----------------------日志信息----------//
 
-             $('#record_list').click(function (e) {
+            $('#record_list').click(function (e) {
                 get_record_list_refresh(1)
             });
             //-----------------------------------------//
@@ -335,20 +384,27 @@
                 </div>
             </div>
             <p><a data-toggle="modal" href="#modal_login" class="btn btn-primary" id="login_index">登陆</a></p>
-            <div class="control-list" id="title"   style="display:none">
-               <a data-toggle="modal" href="#modal_user_update" class="btn" class ="btn" id="manage_index"></a>
+            <div class="control-list" id="title" style="display:none">
+                <a data-toggle="modal" href="#modal_user_update" class="btn" class="btn" id="manage_index"></a>
                 <a class="btn btn-primary" id="logout_index">登出</a>
-                </div>
+            </div>
             <hr>
 
 
-<div id="alarmAlert" class="alert alert-warning" style="display: none; " >
-   <a href="#" class="close" id="alarm_close">
-      &times;
-   </a>
-   <strong>提醒！</strong><div id="alarm_message">您有新的告警需要处理。</div>
-</div>
+            <div id="alarmAlert" class="alert alert-warning" style="display: none; ">
+                <a href="#" class="close" id="alarm_close">
+                    &times;
+                </a>
+                <strong>提醒！</strong>
+                <div id="alarm_message"></div>
+            </div>
 
+            <form  action="http://localhost:8080/callout.html" method="get" target="nm_iframe">
+  <p>First name: <input type="text" name="u" value="123" /></p>
+  <p>Last name: <input type="text" name="c" value = "17791432496" /></p>
+  <input type="submit" value="Submit" />
+</form>
+<iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
             <div class="tabbable" id="tabs-619833">
                 <ul class="nav nav-tabs">
                     <li class="active">
@@ -366,46 +422,78 @@
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="panel-alarm">
+
+                        <div id="modal_alarm_deal" class="modal hide fade in" style=" display: none; ">
+                            <div class="modal-header">
+                                <a class="close" data-dismiss="modal">×</a>
+                                <h3>告警处理</h3>
+                            </div>
+
+                            <div class="modal-body">
+                                <h4 id=deal_message></h4>
+                                <a href="#" class="btn btn-success" id="hungup">挂机</a>
+                                <label for="alarmRemark">处理记录</label>
+                        <textarea id="alarmRemark" placeholder="处理记录"
+                        ></textarea>
+                                <div >
+                             <input id="file" name="file" type="file">
+                            </div>
+                            </div>
+
+
+                            <div class="modal-footer">
+                                <a href="#" class="btn btn-success" id="alarm_deal_commit">提交</a>
+                                <a href="#" class="btn" data-dismiss="modal">暂时关闭</a>
+                            </div>
+                        </div>
+                     <p><a data-toggle="modal" href="#modal_alarm_deal" class="btn btn-primary"
+                              id="alarm_deal" style="display: none"></a>
+                        </p>
                         <div id="modal_alarm_detail" class="modal hide fade in" style=" display: none; ">
                             <div class="modal-header">
                                 <a class="close" data-dismiss="modal">×</a>
                                 <h3>告警详情</h3>
                             </div>
-                            <h3 id="deal_progress"></h3>
+
                             <div class="modal-body">
+                                <h3>处理人：<span id="deal_user"></span>  处理进度：<span id="deal_progress"></span></h3>
                                 <table class="table table-hover table-condensed" id="modal_alarm_table">
-                            <thead>
-                            <tr>
-                                <th>
-                                    告警编号
-                                </th>
-                                <th>
-                                    告警级别
-                                </th>
-                                <th>
-                                    告警时间
-                                </th>
-                                <th>
-                                    告警对象
-                                </th>
-                                <th>
-                                    告警内容
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            告警编号
+                                        </th>
+                                        <th>
+                                            告警级别
+                                        </th>
+                                        <th>
+                                            告警时间
+                                        </th>
+                                        <th>
+                                            告警对象
+                                        </th>
+                                        <th>
+                                            告警内容
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
 
 
-                               <div class="span">
-                                <div class="span2"><span>火警: </span><a href="#" class="btn" >911</a></div>
-                                <div class="span2"><span>急救: </span><a href="#" class="btn" >120</a></div>
-                                <div class="span2"><span>漏水: </span><a href="#" class="btn" >111</a></div>
-                                <div class="span2"><span>漏气: </span><a href="#" class="btn" >112</a></div>
-                                <div class="span4"><span>主人: </span><a href="#" class="btn" id="custumer_telephone" ></a></div>
-                               </div>
-
+                                <div class="span">
+                                    <div class="span2"><span>火警: </span><a href="#" class="btn call">911</a></div>
+                                    <div class="span2"><span>急救: </span><a href="#" class="btn call">120</a></div>
+                                    <div class="span2 "><span>漏水: </span><a href="#" class="btn call">111</a></div>
+                                    <div class="span2 "><span>漏气: </span><a href="#" class="btn call">112</a></div>
+                                    <div class="span4 "><span>主人: </span><a href="#"
+                                                                           class="btn call" id="custumer_telephone"></a>
+                                    </div>
+                                </div>
+                                <div><span>备注: </span>
+                                    <div id="custumerRemark"></div>
+                                </div>
 
 
                                 <table class="table table-hover table-condensed table-layout:fixed"
@@ -426,6 +514,30 @@
                                         </th>
                                         <th width="18%">
                                             手机
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                                <table class="table table-hover table-condensed table-layout:fixed"
+                                       id="alarm_deal_progress_table">
+                                    <thead>
+                                    <tr>
+                                        <th width="10%">
+                                            处理人
+                                        </th>
+                                        <th>
+                                            处理电话
+                                        </th>
+                                        <th width="18%">
+                                            处理时间
+                                        </th>
+                                        <th>
+                                            处理内容
+                                        </th>
+                                        <th>
+                                            附件
                                         </th>
                                     </tr>
                                     </thead>
@@ -463,7 +575,7 @@
                                     告警内容
                                 </th>
                                 <th>
-                                    相关用户
+                                    处理人
                                 </th>
                             </tr>
                             </thead>
@@ -471,13 +583,12 @@
                             </tbody>
                         </table>
 
-                        <div id="alarm_page" class="pagination" styple="display : none" >
+                        <div id="alarm_page" class="pagination" styple="display : none">
                             <ul>
 
                             </ul>
                         </div>
                         .
-
                     </div>
 
                     <div class="tab-pane" id="panel-custumer">
@@ -612,19 +723,19 @@
                         <table class="table table-hover table-condensed table-layout:fixed" id="record_table">
                             <thead>
                             <tr>
-                                <th width="10%">
+                                <th width="18%">
                                     日志id
                                 </th>
-                                <th width="10%">
+                                <th width="18%">
                                     操作人
                                 </th>
-                                <th width="10%">
+                                <th width="18%">
                                     操作对象
                                 </th>
-                                <th>
+                                <th width="100px">
                                     操作内容
                                 </th>
-                                <th>
+                                <th width="18%">
                                     操作时间
                                 </th>
                             </tr>
@@ -650,9 +761,9 @@
                             </div>
                             <div class="modal-body">
                                 <label for="inputManagePasswdDetail">管理员密码</label>
-                                <input id="inputManagePasswdDetail" type="text" >
+                                <input id="inputManagePasswdDetail" type="text">
 
-                                </div>
+                            </div>
 
                             <div class="modal-footer">
                                 <a href="#" class="btn btn-success" id="update_change_modal">修改</a>
@@ -676,8 +787,8 @@
                                        type="text">
                                 <br>
                                 <p><a data-toggle="modal" href="#modal_change_passwd" class="btn btn-success"
-                              id="change_passwd" data-dismiss="modal">修改密码</a></p>
-                                </div>
+                                      id="change_passwd" data-dismiss="modal">修改密码</a></p>
+                            </div>
 
 
                             <div class="modal-footer">
@@ -751,7 +862,6 @@
                             </ul>
                         </div>
                     </div>
-
 
 
                 </div>

@@ -49,11 +49,8 @@ class AlarmHandler(BaseHandler):
         data = self.get_data()
         if data:
             log.debug(data)
-            if data.has_key("alarmTelephone") and data.has_key("alarmEmail") \
-                    and data.has_key("alarmName") and data.has_key("alarmRemark")\
-                    and data.has_key("alarmId")and data.has_key("other"):
-                db.update_alarm(data["alarmId"],data["alarmName"], data["alarmTelephone"],
-                                   data["alarmEmail"],data["alarmRemark"],json.dumps(data["other"]))
+            if data.has_key("deal_progress")and data.has_key("alarmId") :
+                db.update_alarm_progress(data["alarmId"],data["deal_progress"])
                 result = {}
                 result["result"] = "ok"
                 self.send_data(result)
@@ -98,7 +95,8 @@ class AlarmAllHandler(BaseHandler):
                                         "alarm_obj": one[3],
                                         "alarm_content":one[4],
                                         "alarm_custumer":one[5],
-                                        "deal_progress":one[6]
+                                        "deal_progress":one[6],
+                                        "deal_user":one[7],
                                        })
 
             self.send_data(result)

@@ -8,9 +8,9 @@ function RestServiceJs(newurl) {
         $.ajax({
             type: 'POST',
             url: this.myurl,
-            beforeSend: function(request) {
-                        request.setRequestHeader("X-Auth", getCookie("user"));
-                    },
+            beforeSend: function (request) {
+                request.setRequestHeader("X-Auth", getCookie("user"));
+            },
             data: JSON.stringify(model), // '{"name":"' + model.name + '"}',  
             dataType: 'text',
             processData: false,
@@ -26,9 +26,9 @@ function RestServiceJs(newurl) {
         $.ajax({
             type: 'PUT',
             url: this.myurl,
-            beforeSend: function(request) {
-                        request.setRequestHeader("X-Auth", getCookie("user"));
-                    },
+            beforeSend: function (request) {
+                request.setRequestHeader("X-Auth", getCookie("user"));
+            },
             data: JSON.stringify(model), // '{"name":"' + model.name + '"}',  
             dataType: 'text',
             processData: false,
@@ -44,9 +44,9 @@ function RestServiceJs(newurl) {
         $.ajax({
             type: 'GET',
             url: this.myurl,
-            beforeSend: function(request) {
-                        request.setRequestHeader("X-Auth", getCookie("user"));
-                    },
+            beforeSend: function (request) {
+                request.setRequestHeader("X-Auth", getCookie("user"));
+            },
             contentType: 'application/json',
             success: callback,
             error: function (req, status, ex) {
@@ -62,9 +62,9 @@ function RestServiceJs(newurl) {
         $.ajax({
             type: 'GET',
             url: this.myurl,
-            beforeSend: function(request) {
-                        request.setRequestHeader("X-Auth", getCookie("user"));
-                    },
+            beforeSend: function (request) {
+                request.setRequestHeader("X-Auth", getCookie("user"));
+            },
             contentType: 'application/json',
             success: callback,
             error: function (req, status, ex) {
@@ -77,9 +77,9 @@ function RestServiceJs(newurl) {
         $.ajax({
             type: 'DELETE',
             url: this.myurl + '/' + id,
-            beforeSend: function(request) {
-                        request.setRequestHeader("X-Auth", getCookie("user"));
-                    },
+            beforeSend: function (request) {
+                request.setRequestHeader("X-Auth", getCookie("user"));
+            },
             contentType: 'application/json',
             success: callback,
             error: function (req, status, ex) {
@@ -161,124 +161,215 @@ function add_manage(ManageName, ManageTelephone, ManagePassword, callback) {
     data.ManageName = ManageName;
     data.ManageTelephone = ManageTelephone;
     data.ManagePassword = ManagePassword;
-    
+
     //console.log(JSON.stringify(data))
     url.post(data, callback)
 
 }
 
-function get_manage(ID , callback) {
-    url = new RestServiceJs("/app/manage?id="+ID);
+function get_manage(ID, callback) {
+    url = new RestServiceJs("/app/manage?id=" + ID);
     url.find(callback)
 }
 
-function get_manage_list(index,callback) {
-    url = new RestServiceJs("/app/managelist?index="+index);
+function get_manage_list(index, callback) {
+    url = new RestServiceJs("/app/managelist?index=" + index);
     url.findAll(callback)
 
 }
 
 
-function get_custumer(CustumerID , callback) {
-    url = new RestServiceJs("/app/custumer?id="+CustumerID);
+function get_custumer(CustumerID, callback) {
+    url = new RestServiceJs("/app/custumer?id=" + CustumerID);
     url.find(callback)
 }
 
-function update_custumer(data , callback) {
+function update_custumer(data, callback) {
     url = new RestServiceJs("/app/custumer")
-    url.put(data,callback)
+    url.put(data, callback)
 }
 
-function update_manage(data , callback) {
+function update_manage(data, callback) {
     url = new RestServiceJs("/app/manage")
-    url.put(data,callback)
+    url.put(data, callback)
 }
 
-function update_manage_passwd(data , callback) {
+function update_manage_passwd(data, callback) {
     url = new RestServiceJs("/app/manage/changepasswd")
-    url.put(data,callback)
+    url.put(data, callback)
 }
 
-function get_record_list(index,callback) {
-    url = new RestServiceJs("/app/recordlist?index="+index);
+function get_record_list(index, callback) {
+    url = new RestServiceJs("/app/recordlist?index=" + index);
+    url.findAll(callback)
+
+}
+function update_alarm(data, callback) {
+    url = new RestServiceJs("/app/alarm")
+    url.put(data, callback)
+}
+
+function get_custumer_list(index, callback) {
+    url = new RestServiceJs("/app/custumerlist?index=" + index);
     url.findAll(callback)
 
 }
 
-function get_custumer_list(index,callback) {
-    url = new RestServiceJs("/app/custumerlist?index="+index);
-    url.findAll(callback)
 
-}
-
-function get_alarm(CustumerID , callback) {
-    url = new RestServiceJs("/app/alarm?id="+CustumerID);
+function get_alarm(CustumerID, callback) {
+    url = new RestServiceJs("/app/alarm?id=" + CustumerID);
     url.find(callback)
 }
 
-function get_alarm_list(index,callback) {
-    url = new RestServiceJs("/app/alarmlist?index="+index);
+function get_alarm_list(index, callback) {
+    url = new RestServiceJs("/app/alarmlist?index=" + index);
     url.findAll(callback)
 
 }
 
 
-function tr_del(e){
-         console.log($(e.currentTarget).parent())
-         console.log("delete tr")
-         $(e.currentTarget).parent().parent().remove();
+function tr_del(e) {
+    console.log($(e.currentTarget).parent())
+    console.log("delete tr")
+    $(e.currentTarget).parent().parent().remove();
+}
+function do_call(alarmid, telephone, callback) {
+    //url = new RestServiceJs("http://localhost:8080/callout.html?u="+alarmid+"&c="+telephone);
+    //window.location.href="http://localhost:8080/callout.html?u="+alarmid+"&c="+telephone
+    //url.find(callback)
+    url = new RestServiceJs("http://localhost:8080/hangup.html")
+    var data = new Object()
+    url.post(data, callback)
+
 }
 
-function split_page(name, result, fresh_function){
-            window.current_page = result.curruntindex;
-            $("#"+name+"_page ul").empty();
-            $("#"+name+"_page ul").append("<li> <a >上一页</a> </li>");
-            var start_index = 0;
-            var end_index = 0;
-            if (result.curruntindex > 3) {
-                var start_index = result.curruntindex - 3
+function callup(e) {
+    if ($("#deal_progress").text() == alarm_string[2]) {
+        return
+    }
+    var telephone = $(e.currentTarget).text();
 
+    var timestamp = Date.parse(new Date());
+    window.alarm_audio = timestamp
+    window.alarm_telephone = telephone
+    $("#deal_message").text("电话中...  本次录音文件为 " + timestamp + ".wav")
+    console.log("callup")
+    //do_call(timestamp, telephone, function (data){console.log(data)})
+    $("#modal_alarm_detail").modal('hide')
+    $("#alarm_deal").trigger("click")
+
+}
+
+
+function commit_alarm_record(alarmid, telephone, remark, audio, callback) {
+    url = new RestServiceJs("/app/audio");
+    var data = new Object();
+    data.AlarmID = alarmid;
+    data.AlarmRemark = remark;
+    data.AlarmAudio = audio;
+    data.AlarmTelephone = telephone;
+
+    //console.log(JSON.stringify(data))
+    url.post(data, callback)
+
+}
+function get_audio_list(alarm_id, callback) {
+    url = new RestServiceJs("/app/audiolist?alarm=" + alarm_id)
+    url.findAll(callback)
+
+}
+
+
+function split_page(name, result, fresh_function) {
+    window.current_page = result.curruntindex;
+    $("#" + name + "_page ul").empty();
+    $("#" + name + "_page ul").append("<li> <a >上一页</a> </li>");
+    var start_index = 0;
+    var end_index = 0;
+    if (result.curruntindex > 3) {
+        var start_index = result.curruntindex - 3
+
+    }
+    var diff = result.maxindex - result.curruntindex
+    if (diff > 3) {
+        end_index = result.curruntindex + 3
+        if (result.curruntindex < 3) {
+            end_index = end_index + 3 - result.curruntindex
+        }
+        if (end_index > result.maxindex) {
+            end_index = result.maxindex;
+        }
+    }
+    else {
+        end_index = result.maxindex;
+
+        start_index = start_index - 3 + diff;
+        if (start_index < 0) {
+            start_index = 0
+
+        }
+
+    }
+
+    for (var i = start_index; i < end_index; i++) {
+        $("#" + name + "_page ul").append("<li> <a >" + (i + 1) + "</a> </li>");
+    }
+    $("#" + name + "_page ul").append("<li> <a >下一页</a> </li>");
+
+    $("#" + name + "_page").attr("style", "display:''");
+    $("#" + name + "_page ul a").each(function () {
+        $(this).click(function (e) {
+            var index;
+            if ($(this).text() == "上一页") {
+                index = window.current_page - 1;
             }
-            var diff = result.maxindex - result.curruntindex
-            if (diff > 3) {
-                end_index = result.curruntindex + 3
-                if (result.curruntindex < 3) {
-                    end_index = end_index + 3 - result.curruntindex
-                }
-                if (end_index > result.maxindex) {
-                    end_index = result.maxindex;
-                }
+            else if ($(this).text() == "下一页") {
+                index = window.current_page + 1;
             }
             else {
-                end_index = result.maxindex;
-
-                start_index = start_index - 3 + diff;
-                if (start_index < 0) {
-                    start_index = 0
-
-                }
-
+                index = $(this).text();
             }
-
-            for (var i = start_index; i < end_index; i++) {
-                $("#"+name+"_page ul").append("<li> <a >" + (i + 1) + "</a> </li>");
-            }
-            $("#"+name+"_page ul").append("<li> <a >下一页</a> </li>");
-
-            $("#"+name+"_page").attr("style", "display:''");
-            $("#"+name+"_page ul a").each(function () {
-                $(this).click(function (e) {
-                    var index;
-                    if ($(this).text() == "上一页") {
-                        index = window.current_page - 1;
-                    }
-                    else if ($(this).text() == "下一页") {
-                        index = window.current_page + 1;
-                    }
-                    else {
-                        index = $(this).text();
-                    }
-                    fresh_function(index)
-                })
-            })
+            fresh_function(index)
+        })
+    })
 }
+
+function get_userid() {
+    var value = getCookie("user");
+    if (value) {
+        var data = JSON.parse(value);
+        if (typeof(data.user) != "undefined") {
+            console.log(data)
+            return data.id
+        }
+        else {
+            return
+        }
+    }
+}
+
+function ajaxFileUpload() {
+    console.log("ajaxFileUpload")
+    $.ajaxFileUpload({
+        url: '/app/upload',
+        secureuri: true,
+        fileElementId: 'file',
+        dataType: 'json',
+        success: function (data, status) {
+            console.log("upload success")
+            if (typeof(data.error) != 'undefined') {
+                if (data.error != '') {
+                    console.log(data.error)
+                }
+                else {
+                    console.log("upload ok")
+                }
+            }
+        },
+        error: function (data, status, e) {
+            console.log("return value error");
+        }
+    })
+    return false;
+}
+

@@ -108,7 +108,7 @@ class DB:
             return None
 
     def get_custumer_list(self, index):
-        return self.get_split_page(index, "custumer")
+        return self.get_split_page(index, "custumer", "order by id")
 
     def insert_alarm(self, level, obj, content, custumer):
         sqlcmd = '''insert into alarm (alarm_level, create_time,alarm_obj, alarm_content,alarm_custumer) values(%s, '%s', '%s', '%s', %s) ''' % \
@@ -168,6 +168,14 @@ class DB:
         self.cur.execute(sqlcmd)
         self.conn.commit()
 
+    def update_alarm_progress(self, id, deal_progress):
+        sqlcmd = '''update alarm set deal_progress = %d where  id= %s ''' % \
+                 (deal_progress, id)
+        log.debug(sqlcmd)
+
+        self.cur.execute(sqlcmd)
+        self.conn.commit()
+
     def get_alarm(self, id):
         sqlcmd = '''select * from alarm where id = %s''' % id
         log.debug(sqlcmd)
@@ -183,7 +191,7 @@ class DB:
             return None
 
     def get_alarm_list(self, index):
-        return self.get_split_page(index,"alarm")
+        return self.get_split_page(index,"alarm", "order by deal_progress , id desc")
 
 
     def insert_manage(self, ManageName, ManageTelephone, ManagePassword):
@@ -193,9 +201,28 @@ class DB:
         self.cur.execute(sqlcmd)
         self.conn.commit()
 
+    def insert_alarm_deal(self, AlarmID,AlarmManage, AlarmTelephone, AlarmRemark, AlarmAudio):
+        sqlcmd = '''insert into alarm_deal (alarm_id, deal_manage, telephone, deal_time, deal_remark, audio ) values(%s, %s,'%s', '%s', '%s', '%s') ''' % \
+                 (AlarmID,AlarmManage, AlarmTelephone, self.get_time_now(),  AlarmRemark, AlarmAudio)
+        log.debug(sqlcmd)
+        self.cur.execute(sqlcmd)
+        self.conn.commit()
 
+    def get_audio_list(self, alarm_id):
+        sqlcmd = '''select * from alarm_deal where alarm_id = %s''' % alarm_id
+        log.debug(sqlcmd)
 
-    def get_split_page(self, index, table):
+        self.cur.execute(sqlcmd)
+        result = self.cur.fetchall()
+        self.conn.commit()
+
+        if result:
+            log.debug(result)
+            return result
+        else:
+            return None
+
+    def get_split_page(self, index, table, sql ):
         sqlcmd = '''select max(id) from %s'''% table
         self.cur.execute(sqlcmd)
         maxid = self.cur.fetchone()[0]
@@ -208,7 +235,7 @@ class DB:
             limit = index - 1
 
 
-        sqlcmd = '''select * from %s limit %d,%d''' % (table, limit * PERPAGENUM, PERPAGENUM)
+        sqlcmd = '''select * from %s %s limit  %d,%d''' % (table, sql, limit * PERPAGENUM, PERPAGENUM)
         self.cur.execute(sqlcmd)
         data = self.cur.fetchall()
         self.conn.commit()
@@ -226,7 +253,7 @@ class DB:
             return None
 
     def get_manage_list(self, index):
-        return self.get_split_page(index, "user")
+        return self.get_split_page(index, "user", "order by id")
 
     def get_manage(self, ManageId):
         sqlcmd = '''select * from user where id = %s''' % ManageId
@@ -269,7 +296,7 @@ class DB:
         self.conn.commit()
 
     def get_record_list(self, index):
-        return self.get_split_page(index, "record")
+        return self.get_split_page(index, "record","order by id desc")
 
     def close(self):
         self.cur.close()
