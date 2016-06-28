@@ -48,10 +48,11 @@ def alarm_allocation():
         data = db.get_alarm_unallocat()
         manage = db.get_online_manage()
 
-        num = int(len(manage))
-        if data and manage:
-            for one in data:
-                db.allocat_alarm(one[0], manage[random.randint(0, num - 1)][0])
+        if manage:
+            num = int(len(manage))
+            if data and manage:
+                for one in data:
+                    db.allocat_alarm(one[0], manage[random.randint(0, num - 1)][0])
 
         data = db.get_alarm_unprogress()
         if data:
@@ -104,11 +105,21 @@ class RealtimeHandler(tornado.websocket.WebSocketHandler):
 
 class RedirectHandler(tornado.web.RequestHandler):
     def get(self):
+        log.debug("RedirectHandler")
         self.redirect("/static/index.html")
         pass
 
 
+class PageNotFoundHandler(tornado.web.RequestHandler):
+    def get(self):
+        log.debug("PageNotFoundHandler")
+        self.redirect("/static/index.html")
+
+tornado.web.ErrorHandler = PageNotFoundHandler
+
+
 settings = {
+    "static_path": os.path.join(os.path.dirname(__file__), "static"),
     'auto_reload': True,
     "cookie_secret": "61oETzKXQAGaYdkL5g3mGeJJFuYh7EQnp2XdTP1o/Vo=",
     "login_url": "/static/error.html",
@@ -130,10 +141,11 @@ application = tornado.web.Application([
     ('/app/audiolist', AudioAllHandler),
     ('/server/realtime', RealtimeHandler),
     ('/app/upload', UploadHandler),
-    ('/static/(.*)', StaticHandler),
+    #('/static/(.*)', StaticHandler),
     ('/.*', RedirectHandler),
 ], **settings)
 
+#chrome --allow-running-insecure-content
 # usage from http://stackoverflow.com/questions/8045698/https-python-client
 # openssl genrsa -out privatekey.pem 2048
 # openssl req -new -key privatekey.pem -out certrequest.csr

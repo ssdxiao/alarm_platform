@@ -147,7 +147,7 @@ class DB:
 
     def get_online_manage(self):
         
-        sqlcmd = '''select * from user where token is not NULL '''
+        sqlcmd = '''select * from user where token is not NULL and id != 1 '''
         log.debug(sqlcmd)
 
         self.cur.execute(sqlcmd)

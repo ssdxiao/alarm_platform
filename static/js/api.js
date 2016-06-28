@@ -234,13 +234,17 @@ function tr_del(e) {
     $(e.currentTarget).parent().parent().remove();
 }
 function do_call(alarmid, telephone, callback) {
-    //url = new RestServiceJs("http://localhost:8080/callout.html?u="+alarmid+"&c="+telephone);
+    url = new RestServiceJs("http://localhost:8080/callout.html?u="+alarmid+"&c="+telephone);
     //window.location.href="http://localhost:8080/callout.html?u="+alarmid+"&c="+telephone
-    //url.find(callback)
-    url = new RestServiceJs("http://localhost:8080/hangup.html")
-    var data = new Object()
-    url.post(data, callback)
+    url.find(callback)
 
+
+}
+
+function do_hangup( callback) {
+    $("#deal_message").text("挂机")
+    url = new RestServiceJs("http://localhost:8080/hangup.html")
+    url.find(callback)
 }
 
 function callup(e) {
@@ -252,9 +256,10 @@ function callup(e) {
     var timestamp = Date.parse(new Date());
     window.alarm_audio = timestamp
     window.alarm_telephone = telephone
-    $("#deal_message").text("电话中...  本次录音文件为 " + timestamp + ".wav")
+    $("#deal_message").text("电话中...")
+    $("#audiofile_message").text("本次录音文件为 " + timestamp + ".wav")
     console.log("callup")
-    //do_call(timestamp, telephone, function (data){console.log(data)})
+    do_call(timestamp, telephone, function (data){console.log(data)})
     $("#modal_alarm_detail").modal('hide')
     $("#alarm_deal").trigger("click")
 
@@ -373,3 +378,26 @@ function ajaxFileUpload() {
     return false;
 }
 
+
+  
+//播放暂停切换  
+function playAudio(e) {
+    console.log("play audio")
+    var media = e.currentTarget.parentNode.firstChild
+    if(media.paused) {  
+        play(media);
+    } else {  
+        pause(media);
+    }  
+}  
+  
+//播放  
+function play(media) {
+    media.play();
+}  
+  
+//暂停  
+function pause(media) {
+    media.pause();  
+
+}  
