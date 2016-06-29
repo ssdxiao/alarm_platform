@@ -39,6 +39,9 @@ function get_alarm_list_refresh(index) {
                         deal_progress_css = 3
                     }
                 }
+                else{
+                    deal_progress_css = 2
+                }
 
 
                 $("#alarm_table tbody").append("<tr class='" + alarm_css[deal_progress_css] + "'> <td>" + result.data[i].id +
@@ -101,7 +104,7 @@ function get_alarm_list_refresh(index) {
                                                 }
                                                 else
                                                 {
-                                                    audio_dom = "<a data-toggle='modal' href='#modal_upload' class='btn btn-primary'>"
+                                                    audio_dom = "<a href=javascript:void(0); onclick=upload_model(event);return false; id= '"+result.data[i].audio+"'class='btn'>上传</a>"
                                                 }
 
 

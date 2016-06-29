@@ -231,7 +231,7 @@
                         var index = window.current_page
                         get_alarm_list_refresh(index);
                         //上传
-                        ajaxFileUpload()
+                        ajaxFileUpload('file')
 
                     }
 
@@ -240,12 +240,31 @@
 
             });
 
+            $("#upload_commit").click(function (e) {
+
+                        $('#modal_upload').modal('hide');
+                        //重新刷新用户列表
+                        var index = window.current_page
+                        get_alarm_list_refresh(index);
+                        //上传
+                        ajaxFileUpload('file1')
+
+
+                })
+
+
+
+
             $(".call").click(function (e) {
                 callup(e)
             })
             $("#hungup").click(function (e) {
                 do_hangup(function (data) {
+                    console.log("call do_hangup")
                     console.log(data)
+                    if(data.msg !="OK"){
+                        alert(data.msg)
+                    }
 
                 })
             })
@@ -425,6 +444,29 @@
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="panel-alarm">
+
+                        <div id="modal_upload" class="modal hide fade in" style=" display: none; ">
+                            <div class="modal-header">
+                                <a class="close" data-dismiss="modal">×</a>
+                                <h3>上传</h3>
+                            </div>
+
+                            <div class="modal-body">
+                                <h4 id=upload_message></h4>
+                                <div>
+                                    <input id="file1" name="file" type="file">
+                                </div>
+                            </div>
+
+
+                            <div class="modal-footer">
+                                <a href="#" class="btn btn-success" id="upload_commit">提交</a>
+                                <a href="#" class="btn" data-dismiss="modal">暂时关闭</a>
+                            </div>
+                        </div>
+                         <p><a data-toggle="modal" href="#modal_upload" class="btn btn-primary"
+                              id="upload" style="display: none"></a>
+                        </p>
 
                         <div id="modal_alarm_deal" class="modal hide fade in" style=" display: none; ">
                             <div class="modal-header">

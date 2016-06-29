@@ -17,6 +17,7 @@ function RestServiceJs(newurl) {
             contentType: 'application/json',
             success: callback,
             error: function (req, status, ex) {
+
             },
             timeout: 60000
         });
@@ -50,6 +51,31 @@ function RestServiceJs(newurl) {
             contentType: 'application/json',
             success: callback,
             error: function (req, status, ex) {
+
+            },
+            timeout: 60000
+        });
+    };
+    this.telephone_use = function (callback,server) {
+        $.ajax({
+            type: 'GET',
+            url: this.myurl,
+            dataType: 'JSONP',
+            success: callback,
+            error: function (req, status, ex) {
+                console.log(req.getAllResponseHeaders())
+                console.log(status)
+                console.log(ex)
+                if (status == "timeout"){
+                    alert("请检查电话服务是否启动")
+                }
+                if (status == "error"){
+                    if("undefined" == typeof server)
+                    {
+                        server=""
+                    }
+                    alert("请检查"+server+"服务是否正常")
+                }
             },
             timeout: 60000
         });
@@ -236,7 +262,7 @@ function tr_del(e) {
 function do_call(alarmid, telephone, callback) {
     url = new RestServiceJs("http://localhost:8080/callout.html?u="+alarmid+"&c="+telephone);
     //window.location.href="http://localhost:8080/callout.html?u="+alarmid+"&c="+telephone
-    url.find(callback)
+    url.telephone_use(callback, "电话")
 
 
 }
@@ -244,7 +270,7 @@ function do_call(alarmid, telephone, callback) {
 function do_hangup( callback) {
     $("#deal_message").text("挂机")
     url = new RestServiceJs("http://localhost:8080/hangup.html")
-    url.find(callback)
+    url.telephone_use(callback, "电话")
 }
 
 function callup(e) {
@@ -259,7 +285,16 @@ function callup(e) {
     $("#deal_message").text("电话中...")
     $("#audiofile_message").text("本次录音文件为 " + timestamp + ".wav")
     console.log("callup")
-    do_call(timestamp, telephone, function (data){console.log(data)})
+    do_call(timestamp, telephone, function (data){
+        //data = JSON.parse(data)
+        if(data.msg != "OK"){
+                        alert(data.msg)
+        }
+        console.log("call callon api return")
+        console.log(data)
+
+
+    })
     $("#modal_alarm_detail").modal('hide')
     $("#alarm_deal").trigger("click")
 
@@ -353,12 +388,12 @@ function get_userid() {
     }
 }
 
-function ajaxFileUpload() {
+function ajaxFileUpload( id) {
     console.log("ajaxFileUpload")
     $.ajaxFileUpload({
         url: '/app/upload',
         secureuri: true,
-        fileElementId: 'file',
+        fileElementId: id,
         dataType: 'json',
         success: function (data, status) {
             console.log("upload success")
@@ -378,7 +413,13 @@ function ajaxFileUpload() {
     return false;
 }
 
-
+function upload_model(e){
+    var id = e.currentTarget.id
+    $("#upload_message").text("请选择："+id)
+    //$("#modal_alarm_detail").attr("style", "display:none")
+     $("#modal_alarm_detail").modal('hide')
+    $("#upload").trigger("click")
+}
   
 //播放暂停切换  
 function playAudio(e) {

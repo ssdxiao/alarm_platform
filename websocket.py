@@ -1,46 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from functools import partial
 import threading
-import tornado.httpserver
-import tornado.websocket
-import tornado.ioloop
+
 import tornado.web
 import os
-import sys
+
 import time
 import random
-from datetime import datetime
-from moviepy.editor import AudioFileClip, concatenate_audioclips
+import tornado.websocket
+import tornado.httpserver
 
 try:
     import simplejson as json
 except ImportError:
     import json
-import shutil
 
-from app.static import StaticHandler
-from app.login import LoginHandler
-from app.login import LogoutHandler
-from app.alarm import AlarmHandler
-from app.alarm import AlarmAllHandler
-from app.custumer import CustumerHandler
-from app.custumer import CustumerAllHandler
-from app.manage import ManageHandler
-from app.manage import ManageAllHandler
-from app.manage import ManageChangePasswordHandler
-from app.record import RecordAllHandler
-from app.audio import AudioHandler
-from app.audio import AudioAllHandler
-from app.upload import UploadHandler
 from utils.log import log
 
 from app.database import db
 
 LISTENERS = []
-AUDIO_PATH = "/tmp/audio"
-
 
 def alarm_allocation():
     while True:
@@ -103,46 +83,14 @@ class RealtimeHandler(tornado.websocket.WebSocketHandler):
         print "close"
 
 
-class RedirectHandler(tornado.web.RequestHandler):
-    def get(self):
-        log.debug("RedirectHandler")
-        self.redirect("/static/index.html")
-        pass
-
-
-class PageNotFoundHandler(tornado.web.RequestHandler):
-    def get(self):
-        log.debug("PageNotFoundHandler")
-        self.redirect("/static/index.html")
-
-tornado.web.ErrorHandler = PageNotFoundHandler
-
-
 settings = {
-    "static_path": os.path.join(os.path.dirname(__file__), "static"),
     'auto_reload': True,
     "cookie_secret": "61oETzKXQAGaYdkL5g3mGeJJFuYh7EQnp2XdTP1o/Vo=",
-    "login_url": "/static/error.html",
     'debug': True,
 }
 
 application = tornado.web.Application([
-    ('/app/login', LoginHandler),
-    ('/app/logout', LogoutHandler),
-    ('/app/alarm', AlarmHandler),
-    ('/app/alarmlist', AlarmAllHandler),
-    ('/app/custumer', CustumerHandler),
-    ('/app/custumerlist', CustumerAllHandler),
-    ('/app/manage', ManageHandler),
-    ('/app/managelist', ManageAllHandler),
-    ('/app/manage/changepasswd', ManageChangePasswordHandler),
-    ('/app/recordlist', RecordAllHandler),
-    ('/app/audio', AudioHandler),
-    ('/app/audiolist', AudioAllHandler),
     ('/server/realtime', RealtimeHandler),
-    ('/app/upload', UploadHandler),
-    #('/static/(.*)', StaticHandler),
-    ('/.*', RedirectHandler),
 ], **settings)
 
 #chrome --allow-running-insecure-content
@@ -154,12 +102,12 @@ if __name__ == "__main__":
     #threading.Thread(target=alarm_allocation).start()
     http_server = tornado.httpserver.HTTPServer(
         application,
-        #ssl_options={
-        #    "certfile": os.path.join("./", "certificate.pem"),
-        #    "keyfile": os.path.join("./", "privatekey.pem"),
-        #}
+        ssl_options={
+            "certfile": os.path.join("./", "certificate.pem"),
+            "keyfile": os.path.join("./", "privatekey.pem"),
+        }
     )
 
-    http_server.listen(80)
-    log.info("server start")
+    http_server.listen(443)
+    log.info("websocket server start")
     tornado.ioloop.IOLoop.instance().start()
