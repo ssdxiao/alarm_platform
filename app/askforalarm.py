@@ -1,7 +1,8 @@
 import httplib
 
-URL="www.baidu.com"
-
+URL="https://test.isurpass.com.cn/iremote"
+user="thirdparter_tecus"
+password="2c9c8047fbef41b3b496b8553eb1e1fa897314"
 
 
 class HttpClient:
