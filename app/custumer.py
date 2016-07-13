@@ -18,12 +18,10 @@ class CustumerHandler(BaseHandler):
     @authenticated_self
     def get(self):
         log.debug("CustumerHandler get in")
-        try:
-            id = int(self.get_argument("id"))
-        except:
-            log.debug("param id is not int")
-            return
-        data = db.get_custumer(id)
+
+        deviceid = self.get_argument("id")
+
+        data = db.get_custumer(deviceid)
         result = {}
         if data:
 
@@ -33,7 +31,8 @@ class CustumerHandler(BaseHandler):
                                         "custumertelephone" : data[2],
                                         "custumeremail" : data[3],
                                         "custumerremark": data[4],
-                                        "other":json.loads(data[5])
+                                        "other":json.loads(data[5]),
+                                        "deviceid":data[6]
                                        }
 
         else:
@@ -49,21 +48,23 @@ class CustumerHandler(BaseHandler):
         if data:
             log.debug(data)
             if data.has_key("CustumerTelephone") and data.has_key("CustumerEmail") \
-                    and data.has_key("CustumerName") and data.has_key("CustumerRemark"):
+                    and data.has_key("CustumerName") and data.has_key("CustumerRemark")\
+                    and data.has_key("CustumerDeviceid"):
 
                 if data["CustumerName"] == "":
                     log.error("CustumerName is NULL")
                 else:
                     db.insert_custumer(data["CustumerName"], data["CustumerTelephone"],
-                                   data["CustumerEmail"],data["CustumerRemark"])
+                                   data["CustumerEmail"],data["CustumerRemark"], data["CustumerDeviceid"])
 
 
                     result ={}
                     result["result"] = "ok"
                     self.send_data(result)
-                    str = "添加用户 姓名 %s 电话 %s 邮箱 %s 备注 %s" % (
+                    str = "添加用户 姓名 %s 电话 %s 邮箱 %s 备注 %s 设备id %s" % (
                         data["CustumerName"].encode('utf-8'), data["CustumerTelephone"].encode('utf-8'),\
-                        data["CustumerEmail"].encode('utf-8'),data["CustumerRemark"].encode('utf-8'))
+                        data["CustumerEmail"].encode('utf-8'),data["CustumerRemark"].encode('utf-8'),\
+                        data["CustumerDeviceid"].encode('utf-8'))
                     save_record(self.login_user,"custumer", 0, "add", str)
 
                     return
@@ -88,11 +89,12 @@ class CustumerHandler(BaseHandler):
                     and data.has_key("CustumerName") and data.has_key("CustumerRemark")\
                     and data.has_key("CustumerId")and data.has_key("other"):
                 db.update_custumer(data["CustumerId"],data["CustumerName"], data["CustumerTelephone"],
-                                   data["CustumerEmail"],data["CustumerRemark"],json.dumps(data["other"]))
+                                   data["CustumerEmail"],data["CustumerRemark"],json.dumps(data["other"]),
+                                   data["CustumerDeviceid"])
                 result = {}
                 result["result"] = "ok"
                 self.send_data(result)
-                str = "添加用户 姓名 %s 电话 %s 邮箱 %s 备注 %s 其他 %s" % (
+                str = "修改用户 姓名 %s 电话 %s 邮箱 %s 备注 %s 其他 %s" % (
                     data["CustumerName"].encode('utf-8'), data["CustumerTelephone"].encode('utf-8'), \
                     data["CustumerEmail"].encode('utf-8'), data["CustumerRemark"].encode('utf-8'), json.dumps(data["other"]))
                 save_record(self.login_user, "custumer", data["CustumerId"], "update",str)
@@ -131,7 +133,7 @@ class CustumerAllHandler(BaseHandler):
                 result["data"].append({"custumerid" : one[0],
                                         "custumername" : one[1],
                                         "custumertelephone" : one[2],
-                                        "custumerremark": one[4]
+                                        "custumerdeviceid":one[6],
                                        })
 
             self.send_data(result)

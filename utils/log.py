@@ -22,6 +22,7 @@ class Log:
             self.logger.setLevel(logging.ERROR)
 
 log = Log("Server").get(level)
+websocketlog=Log("Websocket").get(level)
 
 if __name__ == '__main__':
     log = Log("root").get("DEBUG")

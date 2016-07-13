@@ -78,23 +78,23 @@ class DB:
         self.cur.execute(sqlcmd)
         self.conn.commit()
 
-    def insert_custumer(self, CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark):
-        sqlcmd = '''insert into custumer (name, telephone, email, remark, other) values('%s', '%s', '%s', '%s', '{}') '''%\
-                 (CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark)
+    def insert_custumer(self, CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark, CustumerDeviceid):
+        sqlcmd = '''insert into custumer (name, telephone, email, remark, other, deviceid) values('%s', '%s', '%s', '%s', '{}', '%s') '''%\
+                 (CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark,CustumerDeviceid)
         log.debug(sqlcmd)
         self.cur.execute(sqlcmd)
         self.conn.commit()
 
-    def update_custumer(self,  CustumerId, CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark, other):
-        sqlcmd = '''update custumer set name='%s',telephone='%s',email='%s', remark='%s', other ='%s' where  id= %s '''%\
-                 (CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark, other, CustumerId)
+    def update_custumer(self,  CustumerId, CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark, other, CustumerDeviceid):
+        sqlcmd = '''update custumer set name='%s',telephone='%s',email='%s', remark='%s', other ='%s', deviceid = '%s' where  id= %s '''%\
+                 (CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark, other, CustumerDeviceid, CustumerId)
         log.debug(sqlcmd)
 
         self.cur.execute(sqlcmd)
         self.conn.commit()
 
-    def get_custumer(self, custumerId):
-        sqlcmd = '''select * from custumer where id = %s'''% custumerId
+    def get_custumer(self, deviceid):
+        sqlcmd = '''select * from custumer where deviceid =  "%s" '''% deviceid
         log.debug(sqlcmd)
 
         self.cur.execute(sqlcmd)
@@ -110,9 +110,9 @@ class DB:
     def get_custumer_list(self, index):
         return self.get_split_page(index, "custumer", "order by id")
 
-    def insert_alarm(self, level, obj, content, custumer):
-        sqlcmd = '''insert into alarm (alarm_level, create_time,alarm_obj, alarm_content,alarm_custumer) values(%s, '%s', '%s', '%s', %s) ''' % \
-                 (level, self.get_time_now(), obj, content, custumer)
+    def insert_alarm(self, zwaveid, deviceid):
+        sqlcmd = '''insert into alarm ( create_time,zwaveid, deviceid) values( '%s', %s, '%s') ''' % \
+                 (self.get_time_now(), zwaveid, deviceid)
         self.cur.execute(sqlcmd)
         self.conn.commit()
 
@@ -223,11 +223,13 @@ class DB:
             return None
 
     def get_split_page(self, index, table, sql ):
-        sqlcmd = '''select max(id) from %s'''% table
+        sqlcmd = '''select count(*) from %s'''% table
         self.cur.execute(sqlcmd)
         maxid = self.cur.fetchone()[0]
         self.conn.commit()
         index = int(index)
+        if maxid == 0:
+            return None
 
         if ((PERPAGENUM * index) > maxid):
             limit = (maxid - 1) / PERPAGENUM
@@ -295,8 +297,71 @@ class DB:
         self.cur.execute(sqlcmd)
         self.conn.commit()
 
+    def get_alarmid_from_zaveid(self, zwaveid):
+        sqlcmd = '''select id from alarm where zwaveid =%d ''' % zwaveid
+        self.cur.execute(sqlcmd)
+        result = self.cur.fetchone()
+        self.conn.commit()
+        log.debug(result)
+        if result:
+            return result[0]
+        else:
+            return None
+
+    def save_event(self, id, type, deviceid, zwaveid, eventtime, context ):
+
+        if type.startswith("unalarm"):
+            pass
+        alarmid = self.get_alarmid_from_zaveid(zwaveid)
+        if alarmid:
+            self.update_alarm_progress(alarmid,0)
+        else:
+            self.insert_alarm(zwaveid, deviceid)
+            alarmid = self.get_alarmid_from_zaveid(zwaveid)
+
+
+        sqlcmd = '''insert into sync_event (id, type, deviceid, zwaveid, eventtime, context, alarmid) values( %d, '%s', '%s', %d, '%s', '%s','%s') ''' % \
+                 (id, type, deviceid, zwaveid, eventtime, context, alarmid)
+
+        log.debug(sqlcmd)
+
+        self.cur.execute(sqlcmd)
+        self.conn.commit()
+
+    def get_sync_id(self):
+        sqlcmd = '''select value from config where name = "sync_id" '''
+
+        self.cur.execute(sqlcmd)
+        result = self.cur.fetchone()
+        self.conn.commit()
+
+        log.debug(result)
+        if result:
+            return result[0]
+        else:
+            return None
+
+    def save_sync_id(self, id):
+        sqlcmd = '''update config set value= %d where   name = "sync_id" ''' % id
+
+        log.debug(sqlcmd)
+
+        self.cur.execute(sqlcmd)
+        self.conn.commit()
+
     def get_record_list(self, index):
         return self.get_split_page(index, "record","order by id desc")
+
+    def get_events(self, alarmid):
+        sqlcmd = '''select * from sync_event where alarmid =%d ''' % alarmid
+        self.cur.execute(sqlcmd)
+        result = self.cur.fetchall()
+        self.conn.commit()
+        log.debug(result)
+        if result:
+            return result
+        else:
+            return None
 
     def close(self):
         self.cur.close()

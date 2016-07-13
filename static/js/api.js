@@ -169,13 +169,14 @@ function logout(user, token) {
 
 }
 
-function add_custumer(CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark, callback) {
+function add_custumer(CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark, CustumserDeviceid,callback) {
     url = new RestServiceJs("/app/custumer");
     var data = new Object();
     data.CustumerName = CustumerName;
     data.CustumerTelephone = CustumerTelephone;
     data.CustumerEmail = CustumerEmail;
     data.CustumerRemark = CustumerRemark;
+    data.CustumerDeviceid = CustumserDeviceid;
     //console.log(JSON.stringify(data))
     url.post(data, callback)
 
@@ -207,6 +208,10 @@ function get_manage_list(index, callback) {
 
 function get_custumer(CustumerID, callback) {
     url = new RestServiceJs("/app/custumer?id=" + CustumerID);
+    url.find(callback)
+}
+function get_event_list(alarmid, callback){
+    url = new RestServiceJs("/app/events?alarmid=" + alarmid);
     url.find(callback)
 }
 

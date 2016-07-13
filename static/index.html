@@ -120,6 +120,7 @@
                         $("#inputCustumerTelephone").val(),
                         $("#inputCustumerEmail").val(),
                         $("#inputCustumerRemark").val(),
+                        $("#inputCustumerDeviceid").val(),
                         function (data) {
                             var result = JSON.parse(data);
                             console.log(result);
@@ -158,6 +159,7 @@
                 data.CustumerEmail = $("#inputCustumerEmailDetail").val();
                 data.CustumerRemark = $("#inputCustumerRemarkDetail").val();
                 data.other = new Array()
+                data.CustumerDeviceid = $("#inputCustumerDeviceidDetail").val();
                 //获取other元素
                 $("#custumer_table_detail tbody tr").each(function () {
                     var other = {}
@@ -502,6 +504,7 @@
                             </div>
 
                             <div class="modal-body">
+                                <h3>告警id：<span id="td_alarm_id"></span> </h3>
                                 <h3>处理人：<span id="deal_user"></span> 处理进度：<span id="deal_progress"></span></h3>
                                 <table class="table table-hover table-condensed" id="modal_alarm_table">
                                     <thead>
@@ -510,13 +513,10 @@
                                             告警编号
                                         </th>
                                         <th>
-                                            告警级别
+                                            告警类型
                                         </th>
                                         <th>
                                             告警时间
-                                        </th>
-                                        <th>
-                                            告警对象
                                         </th>
                                         <th>
                                             告警内容
@@ -610,16 +610,10 @@
                                     告警编号
                                 </th>
                                 <th>
-                                    告警级别
-                                </th>
-                                <th>
                                     告警时间
                                 </th>
                                 <th>
-                                    告警对象
-                                </th>
-                                <th>
-                                    告警内容
+                                    zwaveid
                                 </th>
                                 <th>
                                     处理人
@@ -658,6 +652,9 @@
                                        type="text">
                                 <label for="inputCustumerEmailDetail">客户邮箱</label>
                                 <input id="inputCustumerEmailDetail" placeholder="客户邮箱"
+                                       type="text">
+                                <label for="inputCustumerDeviceidDetail">设备id</label>
+                                <input id="inputCustumerDeviceidDetail" placeholder="设备id"
                                        type="text">
                                 <label for="inputCustumerRemarkDetail">备注</label>
                         <textarea id="inputCustumerRemarkDetail" placeholder="备注"
@@ -721,6 +718,9 @@
                                 <label for="inputCustumerEmail">客户邮箱</label>
                                 <input id="inputCustumerEmail" placeholder="客户邮箱"
                                        type="text">
+                                <label for="inputCustumerDeviceid">设备id</label>
+                                <input id="inputCustumerDeviceid" placeholder="设备id"
+                                       type="text">
                                 <label for="inputCustumerRemark">备注</label>
                         <textarea id="inputCustumerRemark" placeholder="备注"
                         ></textarea>
@@ -748,7 +748,7 @@
                                     客户电话
                                 </th>
                                 <th>
-                                    备注
+                                    设备id
                                 </th>
                             </tr>
                             </thead>

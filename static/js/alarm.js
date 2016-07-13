@@ -45,9 +45,9 @@ function get_alarm_list_refresh(index) {
 
 
                 $("#alarm_table tbody").append("<tr class='" + alarm_css[deal_progress_css] + "'> <td>" + result.data[i].id +
-                    "</td> <td>" + result.data[i].alarm_level + "</td> <td>" + result.data[i].create_time +
-                    "</td> <td>" + result.data[i].alarm_obj + "</td> <td>" + result.data[i].alarm_content +
-                    "</td> <td>" + result.data[i].deal_user + "</td colspan='6'> </tr>")
+                    "</td> <td>" + result.data[i].create_time +
+                    "</td> <td>" + result.data[i].zwaveid +
+                    "</td> <td>" + result.data[i].deal_user + "</td colspan='4'> </tr>")
             }
 
 
@@ -64,14 +64,24 @@ function get_alarm_list_refresh(index) {
                         else {
                             $("#deal_progress").text(alarm_string[result.data.deal_progress]);
                             $("#deal_user").text(result.data.deal_user)
+                            $("#td_alarm_id").text(result.data.id)
 
                             $("#modal_alarm_table tbody").empty();
-                            $("#modal_alarm_table tbody").append("<tr class='default'> <td id='td_alarm_id'>" + result.data.id +
-                                "</td> <td>" + result.data.alarm_level + "</td> <td>" + result.data.create_time +
-                                "</td> <td>" + result.data.alarm_obj + "</td> <td>" + result.data.alarm_content +
-                                "</td></tr>");
+                            get_event_list(result.data.id, function(data) {
+                                var result = JSON.parse(data);
+                                console.log(result);
+                                if (result.result == "error") {
+                                    console.log("获取告警失败")
+                                } else {
 
-                            get_custumer(result.data.alarm_custumer, function (data) {
+                                for (var i = 0; i < result.data.length; i++) {
+                                $("#modal_alarm_table tbody").append("<tr class='default'> <td >" + result.data[i].id +
+                                    "</td> <td>" + result.data[i].type + "</td> <td>" + result.data[i].eventtime +
+                                    "</td> <td>" + result.data[i].context +
+                                    "</td></tr>");
+                                }
+                            }})
+                            get_custumer(result.data.deviceid, function (data) {
                                 var result = JSON.parse(data);
                                 console.log(result);
                                 if (result.result == "error") {

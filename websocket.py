@@ -16,12 +16,14 @@ try:
 except ImportError:
     import json
 
-from utils.log import log
+from utils.log import websocketlog as log
 
 from app.database import db
 
 LISTENERS = []
-
+"""
+该服务负责推送消息，并从数据库检查没有分配的告警进行分配，同时周期性将未处理的任务推送给前端
+"""
 def alarm_allocation():
     while True:
         time.sleep(10)
@@ -49,6 +51,7 @@ class RealtimeHandler(tornado.websocket.WebSocketHandler):
 
     def open(self):
         LISTENERS.append(self)
+        log.debug("open")
         self.user_id = 0
 
     def send_data(self, data):
@@ -99,7 +102,7 @@ application = tornado.web.Application([
 # openssl req -new -key privatekey.pem -out certrequest.csr
 # openssl x509 -req -in certrequest.csr -signkey privatekey.pem -out certificate.pem
 if __name__ == "__main__":
-    #threading.Thread(target=alarm_allocation).start()
+    threading.Thread(target=alarm_allocation).start()
     http_server = tornado.httpserver.HTTPServer(
         application,
         ssl_options={

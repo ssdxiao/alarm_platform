@@ -27,13 +27,11 @@ class AlarmHandler(BaseHandler):
 
             result["result"] = "ok"
             result["data"] = {"id" : data[0],
-                                        "alarm_level" : data[1],
-                                        "create_time" : data[2],
-                                        "alarm_obj": data[3],
-                                        "alarm_content":data[4],
-                                        "alarm_custumer":data[5],
-                                        "deal_progress":data[6],
-                                        "deal_user":data[7],
+                                        "create_time" : data[1],
+                                        "zwaveid" : data[2],
+                                        "deviceid": data[3],
+                                        "deal_progress":data[4],
+                                        "deal_user":data[5],
 
                                        }
 
@@ -90,13 +88,11 @@ class AlarmAllHandler(BaseHandler):
             result["data"] =[]
             for one in data["data"]:
                 result["data"].append({"id" : one[0],
-                                        "alarm_level" : one[1],
-                                        "create_time" : one[2],
-                                        "alarm_obj": one[3],
-                                        "alarm_content":one[4],
-                                        "alarm_custumer":one[5],
-                                        "deal_progress":one[6],
-                                        "deal_user":one[7],
+                                        "create_time" : one[1],
+                                        "zwaveid": one[2],
+                                        "deviceid":one[3],
+                                        "deal_progress":one[4],
+                                        "deal_user":one[5],
                                        })
 
             self.send_data(result)
@@ -107,3 +103,30 @@ class AlarmAllHandler(BaseHandler):
             self.send_data(result)
 
 
+class EventsHandler(BaseHandler):
+
+    def get(self):
+        log.debug("EventsHandler get in")
+        try:
+            alarmid = int(self.get_argument("alarmid"))
+        except:
+            log.debug("param alarmid is not int")
+            return
+        data = db.get_events(alarmid)
+        result = {}
+        if data:
+
+            result["result"] = "ok"
+            result["data"] = []
+            for one in data:
+                result["data"].append({"id": one[0],
+                                        "type":one[1],
+                                       "eventtime": one[4],
+                                       "context": one[5]
+                                       })
+
+        else:
+            result["result"] = "error"
+            result["message"] = "can not find this user"
+
+        self.send_data(result)

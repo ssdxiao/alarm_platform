@@ -15,7 +15,7 @@ function get_custumer_list_refresh(index) {
             for (var i = 0; i < result.data.length; i++) {
                 $("#custumer_table tbody").append("<tr class='default'> <td>" + result.data[i].custumerid +
                     "</td> <td>" + result.data[i].custumername + "</td> <td>" + result.data[i].custumertelephone +
-                    "</td> <td>" + result.data[i].custumerremark + "</td> </tr>")
+                    "</td> <td>" + result.data[i].custumerdeviceid + "</td> </tr>")
             }
 
             $('#custumer_table tbody tr').each(function () {
@@ -34,6 +34,7 @@ function get_custumer_list_refresh(index) {
                             $("#inputCustumerTelephoneDetail").val(result.data.custumertelephone);
                             $("#inputCustumerEmailDetail").val(result.data.custumeremail);
                             $("#inputCustumerRemarkDetail").val(result.data.custumerremark);
+                            $("#inputCustumerDeviceidDetail").val(result.data.deviceid);
 
                             //处理other信息
                             $("#custumer_table_detail tbody").empty();
