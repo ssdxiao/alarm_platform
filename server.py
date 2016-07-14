@@ -34,6 +34,9 @@ from utils.log import log
 from utils.config import SERVERPORT
 from app.database import db
 
+from app.base import BaseHandler
+from app.base import authenticated_self
+
 LISTENERS = []
 AUDIO_PATH = "/tmp/audio"
 
@@ -44,6 +47,7 @@ password="2c9c8047fbef41b3b496b8553eb1e1fa897314"
 class HttpClient:
     def __init__(self, url, timeout=10):
         self.url = URL
+        self.token = ""
 
     def post(self, url, values):
 
@@ -66,14 +70,15 @@ class HttpClient:
         data = self.post("/thirdpart/login", values)
         if data :
             if data["resultCode"] == 0:
-                return data["token"]
+                self.token = data["token"]
+                return self.token
             else:
-                print "get token error"
+                log.error("get token error")
 
         return None
 
-    def get_alarm(self,id, token):
-        values = {'lastid': id, 'token': token}
+    def get_alarm(self,id):
+        values = {'lastid': id, 'token': self.token}
         data = self.post("/thirdpart/event/queryevent", values)
         if data:
             if data["resultCode"] == 0:
@@ -82,22 +87,32 @@ class HttpClient:
                 else:
                     return []
             else:
-                print "get token error"
+                log.error( "get event error")
 
         return None
+
+    def releasealarm(self, zwaveid):
+        values = {'zwavedeviceid': zwaveid, 'token': self.token}
+        data = self.post("/thirdpart/zufang/unalarmdevicewarning", values)
+        if data:
+            if data["resultCode"] == 0:
+                log.debug("release alarm ok")
+            else:
+                log.debug("release alarm error")
+
+
 
 
 client = HttpClient(URL)
 
 def alarm_sync():
-    token = client.get_token()
+    client.get_token()
     while True:
         time.sleep(1)
         lastid = db.get_sync_id()
-        print"*"*20
-        events = client.get_alarm(lastid,token)
+        events = client.get_alarm(lastid)
         if events == None:
-            token = client.get_token()
+            client.get_token()
             continue
         else:
             if events == []:
@@ -107,11 +122,9 @@ def alarm_sync():
                 try:
                     print one
                     if one["objparam"] == {}:
-                        print "#"*20
                         content=""
                     else:
                         content = one["objparam"]["content"]
-                    print content
                     db.save_event(one["id"], one["type"],one["deviceid"],one["zwavedeviceid"],one["eventtime"],content)
                 except:
                     break
@@ -128,12 +141,27 @@ class RedirectHandler(tornado.web.RequestHandler):
         pass
 
 
-class PageNotFoundHandler(tornado.web.RequestHandler):
-    def get(self):
-        log.debug("PageNotFoundHandler")
-        self.redirect("/static/index.html")
+class ReleaseAlarmHandler(BaseHandler):
+    @authenticated_self
+    def post(self):
+        log.debug("ReleaseAlarmHandler post in")
+        data = self.get_data()
+        if data:
+            log.debug(data)
+            if data.has_key("alarmId"):
+                db.get_zwaveid_from_alarm(data["alarmId"])
+                client.releasealarm()
+                result = {}
+                result["result"] = "ok"
+                self.send_data(result)
 
-tornado.web.ErrorHandler = PageNotFoundHandler
+                return
+            else:
+                result = {}
+                result["result"] = "error"
+                result["message"] = "data is error"
+                self.send_data(result)
+
 
 
 settings = {
@@ -159,6 +187,7 @@ application = tornado.web.Application([
     ('/app/audiolist', AudioAllHandler),
     ('/app/upload', UploadHandler),
     ('/app/events', EventsHandler),
+    ('/server/releasealarm', ReleaseAlarmHandler),
     #('/static/(.*)', StaticHandler),
     ('/.*', RedirectHandler),
 ], **settings)

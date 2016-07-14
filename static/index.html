@@ -277,12 +277,11 @@
                 }
                 var data = {};
                 data.alarmId = $("#td_alarm_id").text()
-                data.deal_progress = 2;
-                update_alarm(data, function (data) {
+                release_alarm(data, function (data) {
                     var result = JSON.parse(data);
                     console.log(result);
                     if (result.result == "error") {
-                        console.log("更新进度失败")
+                        console.log("解除告警失败")
                     }
                     else {
                         $("#modal_alarm_detail").modal('hide')

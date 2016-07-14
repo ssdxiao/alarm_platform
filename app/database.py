@@ -379,6 +379,16 @@ class DB:
         else:
             return None
 
+    def get_zwaveid_from_alarm(self, alarmid):
+        sqlcmd = '''select zwaveid from alarm where alarmid =%d ''' % alarmid
+        self.cur.execute(sqlcmd)
+        result = self.cur.fetchone()
+        self.conn.commit()
+        log.debug(result)
+        if result:
+            return result[0]
+        else:
+            return None
     def close(self):
         self.cur.close()
         self.conn.close()

@@ -240,6 +240,11 @@ function update_alarm(data, callback) {
     url.put(data, callback)
 }
 
+function release_alarm(data, callback) {
+    url = new RestServiceJs("/server/releasealarm")
+    url.put(data, callback)
+}
+
 function get_custumer_list(index, callback) {
     url = new RestServiceJs("/app/custumerlist?index=" + index);
     url.findAll(callback)
