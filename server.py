@@ -32,6 +32,9 @@ from app.upload import UploadHandler
 from app.alarm import EventsHandler
 from utils.log import log
 from utils.config import SERVERPORT
+from utils.config import MAIN_URL
+from utils.config import MAIN_USER
+from utils.config import MAIN_PASSWD
 from app.database import db
 
 from app.base import BaseHandler
@@ -40,13 +43,10 @@ from app.base import authenticated_self
 LISTENERS = []
 AUDIO_PATH = "/tmp/audio"
 
-URL="https://test.isurpass.com.cn/iremote"
-user="thirdparter_tecus"
-password="2c9c8047fbef41b3b496b8553eb1e1fa897314"
 
 class HttpClient:
     def __init__(self, url, timeout=10):
-        self.url = URL
+        self.url = url
         self.token = ""
 
     def post(self, url, values):
@@ -66,7 +66,7 @@ class HttpClient:
 
 
     def get_token(self):
-        values = {'code': user, 'password': password}
+        values = {'code': MAIN_USER, 'password': MAIN_PASSWD}
         data = self.post("/thirdpart/login", values)
         if data :
             if data["resultCode"] == 0:
@@ -103,7 +103,7 @@ class HttpClient:
 
 
 
-client = HttpClient(URL)
+client = HttpClient(MAIN_URL)
 
 def alarm_sync():
     client.get_token()
