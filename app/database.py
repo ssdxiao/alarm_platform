@@ -1,13 +1,11 @@
 import MySQLdb
 from utils.log import log
 import datetime
-import pytz
 
-USER = "root"
-PASSWORD = "root"
-DBNAME= "alarm_platform"
-USERTABLE = "user"
-EVENTTABLE = "td_eventforthirdpart"
+from utils.config import DB_USER
+from utils.config import DB_PASSWORD
+from utils.config import DB_NAME
+
 MAXSIZE = 3
 TIMEEXAMPLE = "%Y-%m-%d %H:%M:%S"
 PERPAGENUM = 3
@@ -15,14 +13,13 @@ PERPAGENUM = 3
 
 class DB:
     def __init__(self):
-        self.conn = MySQLdb.connect(host='localhost',user=USER,passwd=PASSWORD,db=DBNAME,port=3306,charset="utf8")
+        self.conn = MySQLdb.connect(host='localhost',user=DB_USER,passwd=DB_PASSWORD,db=DB_NAME,port=3306,charset="utf8")
         self.cur = self.conn.cursor()
-        self.user_table = USERTABLE
-        self.event_table = EVENTTABLE
         self.log = log
 
     def get_user_by_passwd(self, name):
-        self.cur.execute('''select * from %s where name = "%s" ''' % (self.user_table, name))
+        sqlcmd = '''select * from user where name = "%s" ''' % name
+        self.cur.execute(sqlcmd)
         result = self.cur.fetchone()
         self.conn.commit()
         self.log.debug(result)
@@ -32,7 +29,8 @@ class DB:
             return None
 
     def get_user_by_token(self, token):
-        self.cur.execute('''select id from %s where token = "%s" ''' % (self.user_table, token))
+        sqlcmd = '''select id from user where token = "%s" ''' % token
+        self.cur.execute(sqlcmd)
         result = self.cur.fetchone()
         self.conn.commit()
         self.log.debug(result)
@@ -49,7 +47,8 @@ class DB:
         return time
 
     def get_token(self, name):
-        self.cur.execute('''select * from %s where name = "%s" ''' % (self.user_table, name))
+        sqlcmd = '''select * from user where name = "%s" ''' %  name
+        self.cur.execute(sqlcmd)
         result = self.cur.fetchone()
         self.conn.commit()
         self.log.debug(result)
@@ -60,9 +59,9 @@ class DB:
 
     def del_token(self, name):
         time = self.get_time_now()
-        sqlcmd = '''update %s set logouttime="%s" where name="%s"''' % (self.user_table, time, name)
+        sqlcmd = '''update user set logouttime="%s" where name="%s"''' % ( time, name)
         self.cur.execute(sqlcmd)
-        sqlcmd = '''update %s set token=null where name="%s"''' % (self.user_table, name)
+        sqlcmd = '''update user set token=null where name="%s"''' %  name
         self.cur.execute(sqlcmd)
         self.conn.commit()
 
@@ -70,10 +69,10 @@ class DB:
         time = self.get_time_now()
         log.debug("name %s token %s time %s"%(name,token,time))
 
-        sqlcmd = '''update %s set token="%s" where name="%s"'''%(self.user_table,token, name )
+        sqlcmd = '''update user set token="%s" where name="%s"'''%(token, name )
         log.debug(sqlcmd)
         self.cur.execute(sqlcmd)
-        sqlcmd = '''update %s set logintime="%s" where name="%s"'''%(self.user_table,time, name )
+        sqlcmd = '''update user set logintime="%s" where name="%s"'''%(time, name )
         log.debug(sqlcmd)
         self.cur.execute(sqlcmd)
         self.conn.commit()
