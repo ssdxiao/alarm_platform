@@ -94,8 +94,9 @@ class HttpClient:
         return None
 
 
+client = HttpClient(URL)
+
 def alarm_sync():
-    client = HttpClient(URL)
     token = client.get_token()
     while True:
         time.sleep(1)
@@ -217,7 +218,7 @@ application = tornado.web.Application([
 # openssl req -new -key privatekey.pem -out certrequest.csr
 # openssl x509 -req -in certrequest.csr -signkey privatekey.pem -out certificate.pem
 if __name__ == "__main__":
-    #threading.Thread(target=alarm_sync).start()
+    threading.Thread(target=alarm_sync).start()
     http_server = tornado.httpserver.HTTPServer(
         application,
         #ssl_options={

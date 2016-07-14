@@ -297,8 +297,19 @@ class DB:
         self.cur.execute(sqlcmd)
         self.conn.commit()
 
-    def get_alarmid_from_zaveid(self, zwaveid):
-        sqlcmd = '''select id from alarm where zwaveid =%d ''' % zwaveid
+    def get_progress_alarmid_from_zaveid(self, zwaveid):
+        sqlcmd = '''select id from alarm where zwaveid =%d and deal_progress != 2 ''' % zwaveid
+        self.cur.execute(sqlcmd)
+        result = self.cur.fetchone()
+        self.conn.commit()
+        log.debug(result)
+        if result:
+            return result[0]
+        else:
+            return None
+
+    def get_last_alarmid_from_zaveid(self, zwaveid):
+        sqlcmd = '''select id from alarm where zwaveid =%d  order by id desc''' % zwaveid
         self.cur.execute(sqlcmd)
         result = self.cur.fetchone()
         self.conn.commit()
@@ -311,13 +322,19 @@ class DB:
     def save_event(self, id, type, deviceid, zwaveid, eventtime, context ):
 
         if type.startswith("unalarm"):
-            pass
-        alarmid = self.get_alarmid_from_zaveid(zwaveid)
-        if alarmid:
-            self.update_alarm_progress(alarmid,0)
+            alarmid = self.get_last_alarmid_from_zaveid(zwaveid)
+            if alarmid :
+                self.update_alarm_progress(alarmid, 2)
+            else:
+                return
+
         else:
-            self.insert_alarm(zwaveid, deviceid)
-            alarmid = self.get_alarmid_from_zaveid(zwaveid)
+            alarmid = self.get_progress_alarmid_from_zaveid(zwaveid)
+            if alarmid:
+                self.update_alarm_progress(alarmid,0)
+            else:
+                self.insert_alarm(zwaveid, deviceid)
+                alarmid = self.get_progress_alarmid_from_zaveid(zwaveid)
 
 
         sqlcmd = '''insert into sync_event (id, type, deviceid, zwaveid, eventtime, context, alarmid) values( %d, '%s', '%s', %d, '%s', '%s','%s') ''' % \
