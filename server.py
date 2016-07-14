@@ -1,28 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from functools import partial
+import os
 import threading
+import time
 import tornado.httpserver
 import tornado.websocket
 import tornado.ioloop
 import tornado.web
-import os
-import sys
-import time
-import random
-from datetime import datetime
-
 
 try:
     import simplejson as json
 except ImportError:
     import json
-import shutil
 import urllib2
 import urllib
 
-from app.static import StaticHandler
 from app.login import LoginHandler
 from app.login import LogoutHandler
 from app.alarm import AlarmHandler
@@ -38,7 +31,7 @@ from app.audio import AudioAllHandler
 from app.upload import UploadHandler
 from app.alarm import EventsHandler
 from utils.log import log
-
+from utils.config import SERVERPORT
 from app.database import db
 
 LISTENERS = []
@@ -128,47 +121,6 @@ def alarm_sync():
 
             db.save_sync_id(lastid)
 
-
-class RealtimeHandler(tornado.websocket.WebSocketHandler):
-    def check_origin(self, origin):
-        return True
-
-    def open(self):
-        LISTENERS.append(self)
-        self.user_id = 0
-
-    def send_data(self, data):
-        log.debug( "send data")
-        #try:
-        data = json.dumps(data)
-
-        self.write_message(data)
-        return "ok"
-        #except:
-         #   log.error("send not json (%s)" % data)
-
-    def send_alarm(self, one):
-        data = {"type": "alarm",
-                "id": one[0]
-                }
-        self.send_data(data)
-
-    def on_message(self, message):
-        log.debug(message)
-        try:
-            data = json.loads(message)
-        except:
-            log.error("ws recv not json")
-
-        if data.has_key("id"):
-            log.debug("websocket user %s has login"%data["id"])
-            self.user_id = data["id"]
-
-    def on_close(self):
-        LISTENERS.remove(self)
-        print "close"
-
-
 class RedirectHandler(tornado.web.RequestHandler):
     def get(self):
         log.debug("RedirectHandler")
@@ -205,7 +157,6 @@ application = tornado.web.Application([
     ('/app/recordlist', RecordAllHandler),
     ('/app/audio', AudioHandler),
     ('/app/audiolist', AudioAllHandler),
-    ('/server/realtime', RealtimeHandler),
     ('/app/upload', UploadHandler),
     ('/app/events', EventsHandler),
     #('/static/(.*)', StaticHandler),
@@ -227,6 +178,6 @@ if __name__ == "__main__":
         #}
     )
 
-    http_server.listen(80)
+    http_server.listen(SERVERPORT)
     log.info("server start")
     tornado.ioloop.IOLoop.instance().start()

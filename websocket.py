@@ -19,6 +19,8 @@ except ImportError:
 from utils.log import websocketlog as log
 
 from app.database import db
+from utils.config import WEBSOCKET
+
 
 LISTENERS = []
 """
@@ -111,6 +113,6 @@ if __name__ == "__main__":
         }
     )
 
-    http_server.listen(443)
+    http_server.listen(WEBSOCKET)
     log.info("websocket server start")
     tornado.ioloop.IOLoop.instance().start()
