@@ -242,7 +242,7 @@ function update_alarm(data, callback) {
 
 function release_alarm(data, callback) {
     url = new RestServiceJs("/server/releasealarm")
-    url.put(data, callback)
+    url.post(data, callback)
 }
 
 function get_custumer_list(index, callback) {
