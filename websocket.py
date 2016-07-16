@@ -89,6 +89,13 @@ class RealtimeHandler(tornado.websocket.WebSocketHandler):
         print "close"
 
 
+class Https_verify(tornado.web.RequestHandler):
+    def get(self):
+        log.debug("Https_verify")
+        self.write("看见这个证明https认证已经加入浏览器，可以关闭该页面，重新返回上一个界面")
+        pass
+
+
 settings = {
     'auto_reload': True,
     "cookie_secret": "61oETzKXQAGaYdkL5g3mGeJJFuYh7EQnp2XdTP1o/Vo=",
@@ -97,6 +104,7 @@ settings = {
 
 application = tornado.web.Application([
     ('/server/realtime', RealtimeHandler),
+    ('/https_verify',Https_verify)
 ], **settings)
 
 #chrome --allow-running-insecure-content
