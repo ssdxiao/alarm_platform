@@ -42,7 +42,8 @@ def alarm_allocation():
         if data:
             for one in data:
                 for person in LISTENERS:
-                        if person.user_id == one[0]:
+                        log.debug(" person id is %d , alarm is %d"%(person.user_id, one[5]))
+                        if person.user_id == one[5]:
                             person.send_alarm(one)
 
 
