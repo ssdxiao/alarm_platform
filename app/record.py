@@ -34,8 +34,8 @@ class RecordAllHandler(BaseHandler):
             result["data"] =[]
             for one in data["data"]:
                 result["data"].append({"id" : one[0],
-                                        "user_id" : one[1],
-                                        "object_id" : one[3],
+                                        "user" : one[1],
+                                        "object" : one[2],
                                         "context": one[5],
                                         "time":one[6]
                                        })

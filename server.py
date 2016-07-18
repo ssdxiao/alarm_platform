@@ -49,7 +49,7 @@ client = HttpClient(MAIN_URL)
 def alarm_sync():
     client.get_token()
     while True:
-        time.sleep(1)
+        time.sleep(10)
         lastid = db.get_sync_id()
         events = client.get_alarm(lastid)
         if events == None:

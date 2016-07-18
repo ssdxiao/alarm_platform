@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import MySQLdb
 from utils.log import log
 import datetime
@@ -6,9 +9,9 @@ from utils.config import DB_USER
 from utils.config import DB_PASSWORD
 from utils.config import DB_NAME
 
-MAXSIZE = 3
+
 TIMEEXAMPLE = "%Y-%m-%d %H:%M:%S"
-PERPAGENUM = 3
+PERPAGENUM = 5
 
 
 class DB:
@@ -30,6 +33,17 @@ class DB:
 
     def get_user_by_token(self, token):
         sqlcmd = '''select id from user where token = "%s" ''' % token
+        self.cur.execute(sqlcmd)
+        result = self.cur.fetchone()
+        self.conn.commit()
+        self.log.debug(result)
+        if result:
+            return result[0]
+        else:
+            return None
+
+    def get_username_by_id(self, id):
+        sqlcmd = '''select name from user where id = "%s" ''' % id
         self.cur.execute(sqlcmd)
         result = self.cur.fetchone()
         self.conn.commit()
@@ -286,9 +300,10 @@ class DB:
         self.cur.execute(sqlcmd)
         self.conn.commit()
 
-    def save_record(self,user, obj, obj_id, action, context):
+    def save_record(self, user, obj, obj_id, action, context):
         time = self.get_time_now()
-        sqlcmd = '''insert into record (user_id, object, object_id, action, context, time) values(%d, '%s', %d, '%s', '%s','%s') ''' % \
+        print  (user, obj, obj_id, action,context, time)
+        sqlcmd = '''insert into record (user_name, object, object_id, action, context, time) values('%s', '%s', %d, '%s', '%s','%s') ''' % \
                  (user, obj, obj_id, action,context, time)
 
         log.debug(sqlcmd)

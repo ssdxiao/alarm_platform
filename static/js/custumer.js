@@ -22,7 +22,7 @@ function get_custumer_list_refresh(index) {
                 $(this).click(function (e) {
                     console.log("click custmer tr " + ($(this).text()).split(" ")[1]);
                     //用户详情信息写入
-                    get_custumer($(this).text().split(" ")[1], function (data) {
+                    get_custumer($(this).text().split(" ")[4], function (data) {
                         var result = JSON.parse(data);
                         console.log(result);
                         if (result.result == "error") {

@@ -93,6 +93,7 @@ class AlarmAllHandler(BaseHandler):
                                         "deviceid":one[3],
                                         "deal_progress":one[4],
                                         "deal_user":one[5],
+                                        "deal_user_name": db.get_username_by_id(one[5])
                                        })
 
             self.send_data(result)

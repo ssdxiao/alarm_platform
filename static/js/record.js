@@ -14,7 +14,7 @@ function get_record_list_refresh(index) {
             $("#record_table tbody").empty();
             for (var i = 0; i < result.data.length; i++) {
                 $("#record_table tbody").append("<tr class='default'> <td>" + result.data[i].id +
-                    "</td> <td>" + result.data[i].user_id + "</td> <td>" + result.data[i].object_id +
+                    "</td> <td>" + result.data[i].user + "</td> <td>" + result.data[i].object +
                      "</td> <td>" + result.data[i].context+"</td> <td>" + result.data[i].time + "</td> </tr>")
             }
 

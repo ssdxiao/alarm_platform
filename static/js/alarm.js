@@ -14,6 +14,7 @@ alarm_string = new Array();
 alarm_string[0] = "未处理";
 alarm_string[1] = "处理中";
 alarm_string[2] = "处理完成";
+alarm_string[3] = "他人处理"
 
 
 function get_alarm_list_refresh(index) {
@@ -46,8 +47,8 @@ function get_alarm_list_refresh(index) {
 
                 $("#alarm_table tbody").append("<tr class='" + alarm_css[deal_progress_css] + "'> <td>" + result.data[i].id +
                     "</td> <td>" + result.data[i].create_time +
-                    "</td> <td>" + result.data[i].zwaveid +
-                    "</td> <td>" + result.data[i].deal_user + "</td colspan='4'> </tr>")
+                    "</td> <td>" + alarm_string[deal_progress_css] +
+                    "</td> <td>" + result.data[i].deal_user_name + "</td colspan='4'> </tr>")
             }
 
 

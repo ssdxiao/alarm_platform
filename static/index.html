@@ -40,7 +40,7 @@
                         ws.onopen = function () {
                             console.log("Openened connection to websocket");
                             ws.send(value)
-                            $("#alarm_message").text("未知错误，请刷新页面，重新启动推送服务。")
+                           // $("#alarm_message").text("请访问https://"+window.location.hostname + ":9001/https_verify")
 
                         };
                         ws.onclose = function () {
@@ -52,8 +52,10 @@
                             console.log("websocket recv message")
                             var data = JSON.parse(e.data);
                             console.log(data)
-                            $("#alarm_message").text("有新的告警需要处理，请点击告警列表标签栏查看。")
+                            $("#alarm_message").text("有新的告警需要处理，请尽快查看。")
                             $("#alarmAlert").attr('style', "display:''")
+                            get_alarm_list_refresh(1)
+
                         }
 
 
@@ -237,6 +239,7 @@
                         get_alarm_list_refresh(index);
                         //上传
                         ajaxFileUpload('file')
+                        $("#alarmAlert").attr('style', "display:None");
 
                     }
 
@@ -290,6 +293,8 @@
                         $("#modal_alarm_detail").modal('hide')
                         var index = window.current_page;
                         get_alarm_list_refresh(index);
+                        $("#alarmAlert").attr('style', "display:none")
+
                     }
                 })
 
@@ -389,9 +394,9 @@
 <body onload="load()">
 <div class="container">
     <div class="row">
-        <div class="span2">
+        <div class="span1">
         </div>
-        <div class="span8">
+        <div class="span10">
             <h3>
                 监控告警后台管理系统
             </h3>
@@ -499,7 +504,7 @@
                         <p><a data-toggle="modal" href="#modal_alarm_deal" class="btn btn-primary"
                               id="alarm_deal" style="display: none"></a>
                         </p>
-                        <div id="modal_alarm_detail" class="modal hide fade in" style=" display: none; ">
+                        <div id="modal_alarm_detail" class="modal hide fade in" style=" display: none; width :800px">
                             <div class="modal-header">
                                 <a class="close" data-dismiss="modal">×</a>
                                 <h3>告警详情</h3>
@@ -540,9 +545,11 @@
                                                                             id="custumer_telephone"></a>
                                     </div>
                                 </div>
+                                <br/>
                                 <div><span>备注: </span>
                                     <div id="custumerRemark"></div>
                                 </div>
+                                <br/>
 
 
                                 <table class="table table-hover table-condensed table-layout:fixed"
@@ -615,10 +622,10 @@
                                     告警时间
                                 </th>
                                 <th>
-                                    zwaveid
+                                    处理阶段
                                 </th>
                                 <th>
-                                    处理人
+                                    责任人
                                 </th>
                             </tr>
                             </thead>
@@ -917,7 +924,7 @@
             </div>
 
         </div>
-        <div class="span2">
+        <div class="span1">
         </div>
     </div>
 </div>
