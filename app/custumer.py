@@ -65,7 +65,7 @@ class CustumerHandler(BaseHandler):
                         data["CustumerName"].encode('utf-8'), data["CustumerTelephone"].encode('utf-8'),\
                         data["CustumerEmail"].encode('utf-8'),data["CustumerRemark"].encode('utf-8'),\
                         data["CustumerDeviceid"].encode('utf-8'))
-                    save_record(self.login_user,"custumer", 0, "add", str)
+                    save_record(self.login_user,"用户", 0, "add", str)
 
                     return
 
@@ -97,7 +97,7 @@ class CustumerHandler(BaseHandler):
                 str = "修改用户 姓名 %s 电话 %s 邮箱 %s 备注 %s 其他 %s" % (
                     data["CustumerName"].encode('utf-8'), data["CustumerTelephone"].encode('utf-8'), \
                     data["CustumerEmail"].encode('utf-8'), data["CustumerRemark"].encode('utf-8'), json.dumps(data["other"]))
-                save_record(self.login_user, "custumer", data["CustumerId"], "update",str)
+                save_record(self.login_user, "用户", data["CustumerId"], "update",str)
                 return
             else:
                 result = {}

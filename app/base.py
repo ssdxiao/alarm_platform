@@ -24,7 +24,7 @@ def authenticated_self(method):
                 data = json.loads(cookie)
                 print data
                 if data.has_key("token"):
-                    self.login_user = db.get_user_by_token(data["token"])
+                    self.login_user = db.get_user_by_token(data["token"]).encode("utf-8")
                     if self.login_user:
                         return method(self, *args, **kwargs)
             #except:

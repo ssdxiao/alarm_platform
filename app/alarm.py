@@ -87,13 +87,18 @@ class AlarmAllHandler(BaseHandler):
             result["curruntindex"] = data["curruntindex"]
             result["data"] =[]
             for one in data["data"]:
+                context = ""
+                eventlist = db.get_events(one[0])
+                for event in eventlist:
+                    context = context + event[5] + " "
                 result["data"].append({"id" : one[0],
                                         "create_time" : one[1],
                                         "zwaveid": one[2],
                                         "deviceid":one[3],
                                         "deal_progress":one[4],
                                         "deal_user":one[5],
-                                        "deal_user_name": db.get_username_by_id(one[5])
+                                        "deal_user_name": db.get_username_by_id(one[5]),
+                                        "deal_context": context
                                        })
 
             self.send_data(result)

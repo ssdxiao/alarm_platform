@@ -47,6 +47,7 @@ function get_alarm_list_refresh(index) {
 
                 $("#alarm_table tbody").append("<tr class='" + alarm_css[deal_progress_css] + "'> <td>" + result.data[i].id +
                     "</td> <td>" + result.data[i].create_time +
+                        "</td> <td>" + result.data[i].deal_context +
                     "</td> <td>" + alarm_string[deal_progress_css] +
                     "</td> <td>" + result.data[i].deal_user_name + "</td colspan='4'> </tr>")
             }

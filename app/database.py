@@ -32,7 +32,7 @@ class DB:
             return None
 
     def get_user_by_token(self, token):
-        sqlcmd = '''select id from user where token = "%s" ''' % token
+        sqlcmd = '''select name from user where token = "%s" ''' % token
         self.cur.execute(sqlcmd)
         result = self.cur.fetchone()
         self.conn.commit()
