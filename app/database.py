@@ -98,9 +98,18 @@ class DB:
         self.cur.execute(sqlcmd)
         self.conn.commit()
 
-    def update_custumer(self,  CustumerId, CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark, other, CustumerDeviceid):
-        sqlcmd = '''update custumer set name='%s',telephone='%s',email='%s', remark='%s', other ='%s', deviceid = '%s' where  id= %s '''%\
-                 (CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark, other, CustumerDeviceid, CustumerId)
+    def update_custumer(self,  CustumerId, CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark, other, CustumerDeviceid, \
+                        CustumerPhone,CustumerState,CustumerCity,CustumerStreet,CustumerPostelCode,Monleave,Monreturn,Tueleave, \
+                        Tuereturn,Wedleave,Wedreturn,Thuleave,Thureturn,Frileave,Frireturn,Satleave,Satreturn,Sunleave,Sunreturn,\
+                        Holleave,Holreturn):
+        sqlcmd = '''update custumer set name='%s',telephone='%s',email='%s', remark='%s', other ='%s', deviceid = '%s', \
+phone = '%s',state = '%s',city = '%s',street = '%s',postelcode = '%s',monleave = '%s',monreturn = '%s',
+tueleave = '%s',tuereturn = '%s',wedleave = '%s',wedreturn = '%s',thuleave = '%s',thureturn = '%s',frileave = '%s',
+frireturn = '%s',satleave = '%s',satreturn = '%s',sunleave = '%s',sunreturn = '%s',holleave = '%s',holreturn = '%s'
+where  id= %s '''%\
+                 (CustumerName, CustumerTelephone, CustumerEmail, CustumerRemark, other, CustumerDeviceid, CustumerPhone,CustumerState,CustumerCity,CustumerStreet,CustumerPostelCode,Monleave,Monreturn,Tueleave, \
+                        Tuereturn,Wedleave,Wedreturn,Thuleave,Thureturn,Frileave,Frireturn,Satleave,Satreturn,Sunleave,Sunreturn,\
+                        Holleave,Holreturn,CustumerId)
         log.debug(sqlcmd)
 
         self.cur.execute(sqlcmd)

@@ -13,8 +13,8 @@ from utils.record import save_record
 
 from base import authenticated_self
 
-class CustumerHandler(BaseHandler):
 
+class CustumerHandler(BaseHandler):
     @authenticated_self
     def get(self):
         log.debug("CustumerHandler get in")
@@ -26,14 +26,35 @@ class CustumerHandler(BaseHandler):
         if data:
 
             result["result"] = "ok"
-            result["data"] = {"custumerid" : data[0],
-                                        "custumername" : data[1],
-                                        "custumertelephone" : data[2],
-                                        "custumeremail" : data[3],
-                                        "custumerremark": data[4],
-                                        "other":json.loads(data[5]),
-                                        "deviceid":data[6]
-                                       }
+            result["data"] = {"custumerid": data[0],
+                              "custumername": data[1],
+                              "custumertelephone": data[2],
+                              "custumeremail": data[3],
+                              "custumerremark": data[4],
+                              "other": json.loads(data[5]),
+                              "deviceid":data[6],
+                              "phone": data[7],
+                              "state": data[8],
+                              "city": data[9],
+                              "street": data[10],
+                              "postelcode": data[11],
+                              "monleave": data[12],
+                              "monreturn": data[13],
+                              "tueleave": data[14],
+                              "tuereturn": data[15],
+                              "wedleave": data[16],
+                              "wedreturn": data[17],
+                              "thuleave": data[18],
+                              "thureturn": data[19],
+                              "frileave": data[20],
+                              "frireturn": data[21],
+                              "satleave": data[22],
+                              "satreturn": data[23],
+                              "sunleave": data[24],
+                              "sunreturn": data[25],
+                              "holleave": data[26],
+                              "holreturn": data[27],
+                              }
 
         else:
             result["result"] = "error"
@@ -48,24 +69,23 @@ class CustumerHandler(BaseHandler):
         if data:
             log.debug(data)
             if data.has_key("CustumerTelephone") and data.has_key("CustumerEmail") \
-                    and data.has_key("CustumerName") and data.has_key("CustumerRemark")\
+                    and data.has_key("CustumerName") and data.has_key("CustumerRemark") \
                     and data.has_key("CustumerDeviceid"):
 
                 if data["CustumerName"] == "":
                     log.error("CustumerName is NULL")
                 else:
                     db.insert_custumer(data["CustumerName"], data["CustumerTelephone"],
-                                   data["CustumerEmail"],data["CustumerRemark"], data["CustumerDeviceid"])
+                                       data["CustumerEmail"], data["CustumerRemark"], data["CustumerDeviceid"])
 
-
-                    result ={}
+                    result = {}
                     result["result"] = "ok"
                     self.send_data(result)
                     str = "添加用户 姓名 %s 电话 %s 邮箱 %s 备注 %s 设备id %s" % (
-                        data["CustumerName"].encode('utf-8'), data["CustumerTelephone"].encode('utf-8'),\
-                        data["CustumerEmail"].encode('utf-8'),data["CustumerRemark"].encode('utf-8'),\
+                        data["CustumerName"].encode('utf-8'), data["CustumerTelephone"].encode('utf-8'), \
+                        data["CustumerEmail"].encode('utf-8'), data["CustumerRemark"].encode('utf-8'), \
                         data["CustumerDeviceid"].encode('utf-8'))
-                    save_record(self.login_user,"用户", 0, "add", str)
+                    save_record(self.login_user, "用户", 0, "add", str)
 
                     return
 
@@ -86,27 +106,33 @@ class CustumerHandler(BaseHandler):
         if data:
             log.debug(data)
             if data.has_key("CustumerTelephone") and data.has_key("CustumerEmail") \
-                    and data.has_key("CustumerName") and data.has_key("CustumerRemark")\
-                    and data.has_key("CustumerId")and data.has_key("other"):
-                db.update_custumer(data["CustumerId"],data["CustumerName"], data["CustumerTelephone"],
-                                   data["CustumerEmail"],data["CustumerRemark"],json.dumps(data["other"]),
-                                   data["CustumerDeviceid"])
+                    and data.has_key("CustumerName") and data.has_key("CustumerRemark") \
+                    and data.has_key("CustumerId") and data.has_key("other"):
+                db.update_custumer(data["CustumerId"], data["CustumerName"], data["CustumerTelephone"],
+                                   data["CustumerEmail"], data["CustumerRemark"], json.dumps(data["other"]),
+                                   data["CustumerDeviceid"],data["CustumerPhone"],data["CustumerState"],
+                                   data["CustumerCity"], data["CustumerStreet"], data["CustumerPostelCode"],
+                                   data["Monleave"], data["Monreturn"], data["Tueleave"],
+                                   data["Tuereturn"], data["Wedleave"], data["Wedreturn"],
+                                   data["Thuleave"], data["Thureturn"], data["Frileave"],
+                                   data["Frireturn"], data["Satleave"], data["Satreturn"],
+                                   data["Sunleave"], data["Sunreturn"], data["Holleave"],
+                                   data["Holreturn"]
+                                   )
                 result = {}
                 result["result"] = "ok"
                 self.send_data(result)
                 str = "修改用户 姓名 %s 电话 %s 邮箱 %s 备注 %s 其他 %s" % (
                     data["CustumerName"].encode('utf-8'), data["CustumerTelephone"].encode('utf-8'), \
-                    data["CustumerEmail"].encode('utf-8'), data["CustumerRemark"].encode('utf-8'), json.dumps(data["other"]))
-                save_record(self.login_user, "用户", data["CustumerId"], "update",str)
+                    data["CustumerEmail"].encode('utf-8'), data["CustumerRemark"].encode('utf-8'),
+                    json.dumps(data["other"]))
+                save_record(self.login_user, "用户", data["CustumerId"], "update", str)
                 return
             else:
                 result = {}
                 result["result"] = "error"
                 result["message"] = "data is error"
                 self.send_data(result)
-
-
-
 
 
 class CustumerAllHandler(BaseHandler):
@@ -128,12 +154,12 @@ class CustumerAllHandler(BaseHandler):
             result["result"] = "ok"
             result["maxindex"] = data["maxindex"]
             result["curruntindex"] = data["curruntindex"]
-            result["data"] =[]
+            result["data"] = []
             for one in data["data"]:
-                result["data"].append({"custumerid" : one[0],
-                                        "custumername" : one[1],
-                                        "custumertelephone" : one[2],
-                                        "custumerdeviceid":one[6],
+                result["data"].append({"custumerid": one[0],
+                                       "custumername": one[1],
+                                       "custumertelephone": one[2],
+                                       "custumerdeviceid": one[6],
                                        })
 
             self.send_data(result)
@@ -143,5 +169,3 @@ class CustumerAllHandler(BaseHandler):
             result["result"] = "error"
             result["message"] = "get custumer list failed"
             self.send_data(result)
-
-

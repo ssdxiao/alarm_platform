@@ -3,6 +3,7 @@
     <title>监控告警后台管理系统</title>
     <meta charset="UTF-8">
     <link href="/static/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="/static/css/all.css" rel="stylesheet">
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/api.js"></script>
@@ -165,6 +166,29 @@
                 data.CustumerRemark = $("#inputCustumerRemarkDetail").val();
                 data.other = new Array()
                 data.CustumerDeviceid = $("#inputCustumerDeviceidDetail").val();
+                data.CustumerPhone = $("#inputCustumerPhoneDetail").val();
+                data.CustumerState = $("#inputCustumerStateDetail").val();
+                data.CustumerCity= $("#inputCustumerCityDetail").val();
+                data.CustumerStreet = $("#inputCustumerStreetDetail").val();
+                data.CustumerPostelCode = $("#inputCustumerPostelCodeDetail").val();
+                data.Monleave = $("#Monleave").val();
+                data.Monreturn = $("#Monreturn").val();
+                data.Tueleave = $("#Tueleave").val();
+                data.Tuereturn = $("#Tuereturn").val();
+                data.Wedleave = $("#Wedleave").val();
+                data.Wedreturn = $("#Wedreturn").val();
+                data.Thuleave = $("#Thuleave").val();
+                data.Thureturn = $("#Thureturn").val();
+                data.Frileave = $("#Frileave").val();
+                data.Frireturn = $("#Frireturn").val();
+                data.Satleave = $("#Satleave").val();
+                data.Satreturn = $("#Satreturn").val();
+                data.Sunleave = $("#Sunleave").val();
+                data.Sunreturn = $("#Sunreturn").val();
+                data.Holleave = $("#Holleave").val();
+                data.Holreturn = $("#Holreturn").val();
+
+
                 //获取other元素
                 $("#custumer_table_detail tbody tr").each(function () {
                     var other = {}
@@ -668,9 +692,51 @@
                                 <label for="inputCustumerDeviceidDetail">设备id</label>
                                 <input id="inputCustumerDeviceidDetail" placeholder="设备id"
                                        type="text">
+                                  <label for="inputCustumerPhoneDetail">固定电话</label>
+                                <input id="inputCustumerPhoneDetail" placeholder="固定电话"
+                                       type="text">
+                                  <label for="inputCustumerStateDetail">省/州</label>
+                                <input id="inputCustumerStateDetail" placeholder="省/州"
+                                       type="text">
+                                   <label for="inputCustumerCityDetail">城市</label>
+                                <input id="inputCustumerCityDetail" placeholder="城市"
+                                       type="text">
+                                <label for="inputCustumerStreetDetail">地址</label>
+                                <input id="inputCustumerStreetDetail" placeholder="地址"
+                                       type="text">
+                                 <label for="inputCustumerPostelCodeDetail">邮编</label>
+                                <input id="inputCustumerPostelCodeDetail" placeholder="邮编"
+                                       type="text">
                                 <label for="inputCustumerRemarkDetail">备注</label>
                         <textarea id="inputCustumerRemarkDetail" placeholder="备注"
                         ></textarea>
+                                <p>安防设置计划: （温馨提示：离开时间和到达时间请按照24小时格式！（如：08:00 18:00））</p>
+                                <div><span>&emsp;&emsp;&emsp;&emsp;</span><input value="离开时间" type="text" disabled/>
+                                    <input value="到达时间" type="text" disabled/></div>
+                                <div><span>星期一：</span><input  id="Monleave" type="text">
+                                    <input  id="Monreturn" type="text">
+                                    </div>
+                                <div><span>星期二：</span><input id="Tueleave" type="text">
+                                    <input id="Tuereturn" type="text">
+                                    </div>
+                                <div><span>星期三：</span><input id="Wedleave" type="text">
+                                    <input id="Wedreturn" type="text">
+                                    </div>
+                                <div><span>星期四：</span><input id="Thuleave" type="text">
+                                    <input id="Thureturn" type="text">
+                                    </div>
+                                <div>星期五：<input id="Frileave" type="text">
+                                    <input id="Frireturn" type="text">
+                                    </div>
+                                <div>星期六：<input id="Satleave" type="text">
+                                    <input id="Satreturn" type="text">
+                                    </div>
+                                <div>星期天：<input id="Sunleave" type="text">
+                                    <input id="Sunreturn" type="text">
+                                    </div>
+                                <div>节假日：<input id="Holleave" type="text">
+                                    <input id="Holreturn" type="text">
+                                    </div>
 
                                 <div id="message_modal_custumer_detail"></div>
                                 <table class="table table-hover table-condensed table-layout:fixed"

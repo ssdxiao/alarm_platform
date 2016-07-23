@@ -35,6 +35,28 @@ function get_custumer_list_refresh(index) {
                             $("#inputCustumerEmailDetail").val(result.data.custumeremail);
                             $("#inputCustumerRemarkDetail").val(result.data.custumerremark);
                             $("#inputCustumerDeviceidDetail").val(result.data.deviceid);
+                            $("#inputCustumerPhoneDetail").val(result.data.phone);
+                            $("#inputCustumerStateDetail").val(result.data.state);
+                            $("#inputCustumerCityDetail").val(result.data.city);
+                            $("#inputCustumerStreetDetail").val(result.data.street);
+                            $("#inputCustumerPostelCodeDetail").val(result.data.postelcode);
+                            $("#Monleave").val(result.data.monleave);
+                            $("#Monreturn").val(result.data.monreturn);
+                            $("#Tueleave").val(result.data.tueleave);
+                            $("#Tuereturn").val(result.data.tuereturn);
+                             $("#Wedleave").val(result.data.wedleave);
+                            $("#Wedreturn").val(result.data.wedreturn);
+                            $("#Thuleave").val(result.data.thuleave);
+                            $("#Thureturn").val(result.data.thureturn);
+                            $("#Frileave").val(result.data.frileave);
+                            $("#Frireturn").val(result.data.frireturn);
+                            $("#Satleave").val(result.data.satleave);
+                            $("#Satreturn").val(result.data.satreturn);
+                            $("#Sunleave").val(result.data.sunleave);
+                            $("#Sunreturn").val(result.data.sunreturn);
+                            $("#Holleave").val(result.data.holleave);
+                            $("#Holreturn").val(result.data.holreturn);
+
 
                             //处理other信息
                             $("#custumer_table_detail tbody").empty();
