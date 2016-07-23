@@ -33,7 +33,7 @@
                         var ws = new WebSocket("wss://" + window.location.hostname + ":9001/server/realtime");
                         ws.onerror = function (e) {
                             console.log(e);
-                             $("#alarm_message").text("请访问https://"+window.location.hostname + ":9001/https_verify")
+                             $("#alarm_message").text("未知错误")
                             $("#alarmAlert").attr('style', "display:''");
 
                         };
@@ -46,7 +46,8 @@
                         };
                         ws.onclose = function () {
                             console.log("Close connection to websocket");
-                            $("#alarm_message").text("请刷新页面，重新启动推送服务。")
+                            $("#alarm_message").text("请添加https证书，点击" )
+                            $("#alarm_message").append("<a href=https://"+window.location.hostname + ":9001/https_verify>这里</a>")
                             $("#alarmAlert").attr('style', "display:''");
                         };
                         ws.onmessage = function (e) {
