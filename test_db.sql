@@ -32,7 +32,7 @@ CREATE TABLE `alarm` (
   `deal_last_time` char(64) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,6 @@ CREATE TABLE `alarm` (
 
 LOCK TABLES `alarm` WRITE;
 /*!40000 ALTER TABLE `alarm` DISABLE KEYS */;
-INSERT INTO `alarm` VALUES (1,'2016-07-13 07:40:28',868,'iRemote2005000000720',0,2,NULL);
 /*!40000 ALTER TABLE `alarm` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -61,7 +60,7 @@ CREATE TABLE `alarm_deal` (
   `deal_remark` text,
   `audio` char(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +69,6 @@ CREATE TABLE `alarm_deal` (
 
 LOCK TABLES `alarm_deal` WRITE;
 /*!40000 ALTER TABLE `alarm_deal` DISABLE KEYS */;
-INSERT INTO `alarm_deal` VALUES (1,1,2,'17791432496','2016-07-13 08:47:25','啥都没做','1468413992000.wav');
 /*!40000 ALTER TABLE `alarm_deal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,8 +110,29 @@ CREATE TABLE `custumer` (
   `remark` text,
   `other` text,
   `deviceid` char(30) DEFAULT NULL,
+  `phone` char(20) DEFAULT NULL,
+  `state` char(20) DEFAULT NULL,
+  `city` char(20) DEFAULT NULL,
+  `street` char(20) DEFAULT NULL,
+  `postelcode` char(20) DEFAULT NULL,
+  `monleave` char(20) DEFAULT NULL,
+  `monreturn` char(20) DEFAULT NULL,
+  `tueleave` char(20) DEFAULT NULL,
+  `tuereturn` char(20) DEFAULT NULL,
+  `wedleave` char(20) DEFAULT NULL,
+  `wedreturn` char(20) DEFAULT NULL,
+  `thuleave` char(20) DEFAULT NULL,
+  `thureturn` char(20) DEFAULT NULL,
+  `frileave` char(20) DEFAULT NULL,
+  `frireturn` char(20) DEFAULT NULL,
+  `satleave` char(20) DEFAULT NULL,
+  `satreturn` char(20) DEFAULT NULL,
+  `sunleave` char(20) DEFAULT NULL,
+  `sunreturn` char(20) DEFAULT NULL,
+  `holleave` char(20) DEFAULT NULL,
+  `holreturn` char(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 PACK_KEYS=0;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 PACK_KEYS=0;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +141,7 @@ CREATE TABLE `custumer` (
 
 LOCK TABLES `custumer` WRITE;
 /*!40000 ALTER TABLE `custumer` DISABLE KEYS */;
-INSERT INTO `custumer` VALUES (24,'123','17791432496','123','范德萨发斯蒂芬','[{\"famliyphone\": \"32132\", \"token\": \"323\", \"workphone\": \"\", \"name\": \"312\", \"telphone\": \"\"}]','iRemote2005000000720');
+INSERT INTO `custumer` VALUES (24,'123','17791432496','123','范德萨发斯蒂芬','[{\"famliyphone\": \"32132\", \"token\": \"323\", \"workphone\": \"\", \"name\": \"312\", \"telphone\": \"\"}]','iRemote2005000000720','1','2','3','4','5','6','7','8','9','0','10','11','12','13','14','15','16','17','18','19','20'),(36,'abc','sbb','','','{}','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `custumer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -135,7 +154,7 @@ DROP TABLE IF EXISTS `record`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `record` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
+  `user_name` char(20) DEFAULT NULL,
   `object` char(20) DEFAULT NULL,
   `object_id` int(11) DEFAULT NULL,
   `action` char(20) DEFAULT NULL,
@@ -143,7 +162,7 @@ CREATE TABLE `record` (
   `time` char(64) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,7 +225,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `token_2` (`token`),
   UNIQUE KEY `token_3` (`token`),
   UNIQUE KEY `token_4` (`token`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 PACK_KEYS=0;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 PACK_KEYS=0;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -215,7 +234,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin',NULL,'*4ACFE3202A5FF5CF467898FC58AAB1D615029441',NULL,'2016-06-28 08:51:30','2016-06-28 09:02:46'),(2,'123','22','*23AE809DDACAF96AF0FD78ED04B6A265E05AA257','6ccab4e6-48f2-11e6-875b-000c299eb467','2016-07-13 08:07:52','2016-06-28 08:51:21');
+INSERT INTO `user` VALUES (1,'admin',NULL,'*4ACFE3202A5FF5CF467898FC58AAB1D615029441',NULL,'2016-07-19 07:17:39','2016-07-19 07:20:14'),(2,'123','22','*23AE809DDACAF96AF0FD78ED04B6A265E05AA257','bef9de08-50aa-11e6-9460-000c299eb467','2016-07-23 03:54:56','2016-07-23 03:54:54'),(3,'abc','abc','*0D3CED9BEC10A777AEC23CCC353A8C08A633045E',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -228,4 +247,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-13 19:48:34
+-- Dump completed on 2016-07-23  4:46:04
