@@ -23,8 +23,8 @@
                 console.log(data.user + " is login" + " " + data.token);
                 if (typeof(data.user) != "undefined") {
                     $('#login_index').attr('style', 'display:none');
-                    $("#manage_index").text("欢迎 " + data.user);
-                    $("#title").attr("style", "display:''")
+                    $("#manage_index").text(data.user);
+
 
                     if (data.user == "admin") {
                         $("#manage_list").attr("style", "display:''")
@@ -70,7 +70,8 @@
             }
 
             console.log("no user login")
-            $('#login_index').trigger("click")
+            document.location = "/static/login.html"
+            //$('#login_index').trigger("click")
 
 
         }
@@ -416,47 +417,41 @@
         });
     </script>
 </head>
-<body onload="load()">
-<div class="container">
+<body  onload="load()">
+
+
+
+
+
+    <div class = "self_title" >
+        <div class="row">
+        <div class="span4"></div>
+        <div class="span4">
+            <h2>
+                监控告警后台管理系统
+            </h2>
+            </div>
+        <div class="span4">
+                <h4>欢迎您！<span id="manage_index"></span>
+                <a class="logout" id="logout_index">退出</a>
+                    </h4>
+            </div>
+        </div>
+        </div>
+
+
+
     <div class="row">
         <div class="span1">
         </div>
-        <div class="span10">
-            <h3>
-                监控告警后台管理系统
-            </h3>
+        <div class="span12">
 
-            <div id="modal_login" class="modal hide fade in" style="display: none; ">
-                <div class="modal-header">
-                    <a class="close" data-dismiss="modal">×</a>
-                    <h3>请登录</h3>
-                </div>
-
-
-                <div class="controls" align="center"><input id="inputUser" placeholder="用户名" type="text"/></div>
-
-                <div class="controls" align="center"><input id="inputPassword" placeholder="密码" type="password"/></div>
-                <div id="message_modal_login"></div>
-
-                <div class="modal-footer">
-                    <a href="#" class="btn btn-success" id="login_example">登陆</a>
-                    <a href="#" class="btn" data-dismiss="modal">关闭</a>
-                </div>
-            </div>
-            <p><a data-toggle="modal" href="#modal_login" class="btn btn-primary" id="login_index">登陆</a></p>
-            <div class="control-list" id="title" style="display:none">
-                <a data-toggle="modal" href="#modal_user_update" class="btn" class="btn" id="manage_index"></a>
-                <a class="btn btn-primary" id="logout_index">登出</a>
-            </div>
-            <hr>
-
-
-            <div id="alarmAlert" class="alert alert-warning" style="display: none; ">
+            <div id="alarmAlert" class="self_alert alert alert-block" style="display: none; ">
                 <a href="#" class="close" id="alarm_close">
                     &times;
                 </a>
-                <strong>提醒！</strong>
-                <div id="alarm_message"></div>
+                <strong>提醒: </strong>
+                <span id="alarm_message"></span>
             </div>
 
 
@@ -678,39 +673,63 @@
                                 <h3>客户详情</h3>
                             </div>
                             <div class="modal-body">
+                                <div>
                                 <label for="inputCustumerIdDetail">客户id</label>
                                 <input id="inputCustumerIdDetail" type="text" disabled>
+                                    </div>
+                                <div>
                                 <label for="inputCustumerNameDetail">客户姓名</label>
                                 <input id="inputCustumerNameDetail" placeholder="客户姓名"
                                        type="text">
+                                    </div>
+                                <div>
                                 <label for="inputCustumerTelephoneDetail">客户电话</label>
                                 <input id="inputCustumerTelephoneDetail"
                                        placeholder="客户电话"
                                        type="text">
+                                    </div>
+                                <div>
                                 <label for="inputCustumerEmailDetail">客户邮箱</label>
                                 <input id="inputCustumerEmailDetail" placeholder="客户邮箱"
                                        type="text">
+                                </div>
+                                <div>
                                 <label for="inputCustumerDeviceidDetail">设备id</label>
                                 <input id="inputCustumerDeviceidDetail" placeholder="设备id"
                                        type="text">
+
+                                </div>
+                                <div>
                                   <label for="inputCustumerPhoneDetail">固定电话</label>
                                 <input id="inputCustumerPhoneDetail" placeholder="固定电话"
                                        type="text">
+                                 </div>
+                                <div>
                                   <label for="inputCustumerStateDetail">省/州</label>
                                 <input id="inputCustumerStateDetail" placeholder="省/州"
                                        type="text">
+                                     </div>
+                                <div>
                                    <label for="inputCustumerCityDetail">城市</label>
                                 <input id="inputCustumerCityDetail" placeholder="城市"
                                        type="text">
+                                     </div>
+                                <div>
                                 <label for="inputCustumerStreetDetail">地址</label>
                                 <input id="inputCustumerStreetDetail" placeholder="地址"
                                        type="text">
+                                     </div>
+                                <div>
                                  <label for="inputCustumerPostelCodeDetail">邮编</label>
                                 <input id="inputCustumerPostelCodeDetail" placeholder="邮编"
                                        type="text">
+                                     </div>
+                                <div>
                                 <label for="inputCustumerRemarkDetail">备注</label>
                         <textarea id="inputCustumerRemarkDetail" placeholder="备注"
                         ></textarea>
+                                     </div>
+
                                 <p>安防设置计划: （温馨提示：离开时间和到达时间请按照24小时格式！（如：08:00 18:00））</p>
                                 <div><span>&emsp;&emsp;&emsp;&emsp;</span><input value="离开时间" type="text" disabled/>
                                     <input value="到达时间" type="text" disabled/></div>
@@ -787,22 +806,32 @@
                             </div>
 
                             <div class="modal-body">
+                                 <div>
                                 <label for="inputCustumerName">客户姓名</label>
                                 <input id="inputCustumerName" placeholder="客户姓名" class="form-control"
                                        type="text">
+                                     </div>
+                                <div>
                                 <label for="inputCustumerTelephone">客户电话</label>
                                 <input id="inputCustumerTelephone"
                                        placeholder="客户电话"
-                                       type="text">
+                                       type="text" >
+                                    </div>
+                                 <div>
                                 <label for="inputCustumerEmail">客户邮箱</label>
                                 <input id="inputCustumerEmail" placeholder="客户邮箱"
                                        type="text">
+                                 </div>
+                                <div>
                                 <label for="inputCustumerDeviceid">设备id</label>
                                 <input id="inputCustumerDeviceid" placeholder="设备id"
                                        type="text">
+                                </div>
+                                <div>
                                 <label for="inputCustumerRemark">备注</label>
                         <textarea id="inputCustumerRemark" placeholder="备注"
                         ></textarea>
+                                    </div>
                                 <div id="message_modal_custumer"></div>
 
                             </div>
@@ -811,7 +840,7 @@
                                 <a href="#" class="btn" data-dismiss="modal">关闭</a>
                             </div>
                         </div>
-                        <p><a data-toggle="modal" href="#modal_add_custumer" class="btn btn-primary"
+                        <p><a data-toggle="modal" href="#modal_add_custumer" class="btn btn-success"
                               id="add_custumer">新增客户</a>
                         </p>
                         <table class="table table-hover table-condensed table-layout:fixed" id="custumer_table">
@@ -883,11 +912,13 @@
                         <div id="modal_change_passwd" class="modal hide fade in" style=" display: none; ">
                             <div class="modal-header">
                                 <a class="close" data-dismiss="modal">×</a>
-                                <h3>管理员详情</h3>
+                                <h3>修改密码</h3>
                             </div>
                             <div class="modal-body">
+                                <div>
                                 <label for="inputManagePasswdDetail">管理员密码</label>
                                 <input id="inputManagePasswdDetail" type="text">
+                                    </div>
 
                             </div>
 
@@ -902,16 +933,20 @@
                                 <h3>管理员详情</h3>
                             </div>
                             <div class="modal-body">
+                                <div>
                                 <label for="inputManageIdDetail">管理员id</label>
                                 <input id="inputManageIdDetail" type="text" disabled>
+                                    </div><div>
                                 <label for="inputManageNameDetail">管理员姓名</label>
                                 <input id="inputManageNameDetail" placeholder="管理员姓名"
                                        type="text">
+                                </div><div>
                                 <label for="inputManageTelephoneDetail">管理员电话</label>
                                 <input id="inputManageTelephoneDetail"
                                        placeholder="管理员电话"
                                        type="text">
-                                <br>
+                                </div>
+
                                 <p><a data-toggle="modal" href="#modal_change_passwd" class="btn btn-success"
                                       id="change_passwd" data-dismiss="modal">修改密码</a></p>
                             </div>
@@ -922,7 +957,7 @@
                                 <a href="#" class="btn" data-dismiss="modal">关闭</a>
                             </div>
                         </div>
-                        <p><a data-toggle="modal" href="#modal_manage_detail" class="btn btn-primary"
+                        <p><a data-toggle="modal" href="#modal_manage_detail" class="btn btn-success"
                               id="manage_detail" style="display: none"></a>
                         </p>
 
@@ -934,16 +969,20 @@
                             </div>
 
                             <div class="modal-body">
+                                <div>
                                 <label for="inputManageName">管理员姓名</label>
                                 <input id="inputManageName" placeholder="管理员姓名" class="form-control"
                                        type="text">
+                                    </div><div>
                                 <label for="inputManageTelephone">管理员电话</label>
                                 <input id="inputManageTelephone"
                                        placeholder="管理员电话"
                                        type="text">
+                                </div><div>
                                 <label for="inputManagePassword">管理员密码</label>
                                 <input id="inputManagePassword" placeholder="管理员密码"
                                        type="text">
+                                </div>
 
                                 <div id="message_modal_manage"></div>
 
@@ -953,7 +992,7 @@
                                 <a href="#" class="btn" data-dismiss="modal">关闭</a>
                             </div>
                         </div>
-                        <p><a data-toggle="modal" href="#modal_add_manage" class="btn btn-primary"
+                        <p><a data-toggle="modal" href="#modal_add_manage" class="btn btn-success"
                               id="add_manage">新增管理员</a>
                         </p>
                         <table class="table table-hover table-condensed table-layout:fixed" id="manage_table">
@@ -997,7 +1036,11 @@
         <div class="span1">
         </div>
     </div>
-</div>
+
+    <div class = "self_foot">
+        <div class="row">
+            <span>技术支持：深圳经纬纵横科技有限公司</span></div></div>
+
 
 
 </body>

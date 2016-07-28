@@ -1,2 +1,68 @@
 .self_lable{width: 60px;}
 .self_input{width: 206px;}
+.self_title{background-color:dodgerblue;  height: 60px;margin-bottom:30px; margin-top: 0px; padding:0px;}
+.self_title h2 {color:white; text-align:center;}
+.self_title h4 {color:white; text-align:center; margin-top:20px}
+.logout{color:white;}
+
+.self_foot{ text-align:center;  border-top:1px solid #bfbfbf;}
+.self_foot div {margin-top: 20px; }
+.self_foot  span{padding-top:4px;padding-bottom:4px;line-height:20px; padding-right: 10px;padding-left:10px;
+    border-left:1px; border-right: 1px solid transparent;}
+
+.self_alert{ border-width:1px;border-color:black;border-style:solid; background-color:white}
+.self_alert strong {color: red; font-size: 20px  }
+
+.nav-tabs>li>a{padding-top:8px;padding-bottom:8px;line-height:20px;border-left:1px; border-right: 1px solid #bfbfbf;
+    -webkit-border-radius:4px 4px 0 0;-moz-border-radius:4px 4px 0 0;border-radius:4px 4px 0 0;}
+.nav-tabs{border-bottom:1px solid dodgerblue;}
+.nav-tabs>.active>a,.nav-tabs>.active>a:hover,.nav-tabs>.active>a:focus{color:white;background-color:dodgerblue;
+    border:1px solid #ddd;border-bottom-color:transparent;cursor:default;}
+
+.modal-header h3 {color: red}
+.modal-body label{height: 20px;
+    width: 80px;
+    text-align: left;
+    clear: both;
+    float:left;
+    margin-right:15px;
+    margin-top: 5px;
+    margin-bottom: 5px;}
+.modal-body input {height: 30px;}
+
+.btn {width: 100px;height: 25px; text-align:center;}
+.btn-success {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, .2);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075);
+	background: dodgerblue;
+  background-repeat: repeat-x;
+  border-color: #0099FF;
+  color: #fff;
+}
+.btn-success:hover,
+.btn-success:focus {
+  background-color: dodgerblue;
+  background-position: 0 -15px;
+	-webkit-box-shadow: 0 0 20px rgba(153, 51, 204, .3);
+				  box-shadow: 0 0 20px rgba(153, 51, 204, .3);
+	color:#fff;
+}
+.btn-success:active,
+.btn-success.active {
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+}
+
+.modal-footer{text-align:center;}
+
+
+.backgroud{
+    background-color: dodgerblue;
+}
+.login-box{margin-right: auto;margin-left:auto}
+.login-box h2 {color: white}
+.login-box div {text-align: center;}
+.login-box div span {width: 80px; padding-right: 20px;}
+.login-box div input{height:30px;  border: 0px solid transparent;}
+.self_input{}

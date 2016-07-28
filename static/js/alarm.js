@@ -4,9 +4,9 @@
 
 alarm_css = new Array();
 
-alarm_css[3] = "success"; //他人未处理
+alarm_css[3] = "warning"; //他人未处理
 alarm_css[0] = "error"; //未处理
-alarm_css[1] = "warning";//已处理，未完成
+alarm_css[1] = "success";//已处理，未完成
 alarm_css[2] = "default"; //已完成
 
 alarm_string = new Array();
