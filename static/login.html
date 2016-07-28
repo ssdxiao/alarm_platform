@@ -1,0 +1,71 @@
+<html>
+<head>
+    <title>监控告警后台管理系统</title>
+    <meta charset="UTF-8">
+    <link href="/static/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="/static/css/all.css" rel="stylesheet">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/custumer.js"></script>
+    <script src="/static/js/alarm.js"></script>
+    <script src="/static/js/manage.js"></script>
+    <script src="/static/js/record.js"></script>
+    <script src="/static/js/ajaxfileupload.js"></script>
+    <script type="text/javascript">
+
+function load() {
+      $(function () {
+
+          $('#login_example').click(function (e) {
+              $("#message_modal_login").text("");
+              login($("#inputUser").val(),
+                      $("#inputPassword").val(),
+                      function (data) {
+                          var result = JSON.parse(data);
+                          console.log(result);
+                          if (result.result == "error") {
+                              $("#message_modal_login").text("用户名或者密码错误！")
+                          }
+                          else {
+                              $('#modal_login').modal('hide');
+                              //登陆成功以后 开始获取相关参数并刷新界面
+                              /*
+                                 $('#login_index').attr('style', 'display:none');
+                                 $("#manage_index").text("欢迎 " + result.user);
+                                 $("#title").attr("style", "display:''");
+                                 */
+                                delCookie("user");
+                                setCookie("user", data);
+                                document.location = "/static/index.html"
+
+                            }
+                        });
+                // Don't let the link do its natural thing
+                e.preventDefault()
+            })
+          })
+}
+</script>
+</head>
+<body class="backgroud"onload="load()">
+
+
+
+
+
+
+<div class="login-box">
+    <div>
+	<h2>监控告警后台管理系统</h2>
+        </div>
+    <div class=""><span>用户名</span><input id="inputUser" placeholder="用户名" type="text"/></div>
+    <div class=""><span>密码&emsp;</span><input id="inputPassword" placeholder="密码" type="password"/></div>
+    <div>
+    <a href="#" class="btn btn-success" id="login_example">登陆</a>
+        </div>
+</div>
+
+</body>
+</html>
+
