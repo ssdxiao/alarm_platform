@@ -31,6 +31,7 @@
     margin-top: 5px;
     margin-bottom: 5px;}
 .modal-body input {height: 30px;}
+.modal-body div {margin: 10px;}
 
 .btn {width: 100px;height: 25px; text-align:center;}
 .btn-success {
