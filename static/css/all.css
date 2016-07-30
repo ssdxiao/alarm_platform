@@ -124,4 +124,10 @@ margin-right: auto;}
 }
 .login-btn.active {
     -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);}
+
+
+.btn-remind{width: 348px;height:30px; border-top:1px solid #dcdcdc; margin: 0;padding-top: 15px;
+    padding-left: 0;padding-right: 0;padding-bottom: 0;
+    box-shadow: none; border-radius: 0 0 5% 5%;color:blue;font-size: large;
+vertical-align: bottom;}

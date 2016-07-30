@@ -19,21 +19,26 @@ class LoginHandler(BaseHandler):
             log.debug(data)
             if data.has_key("user") and data.has_key("passwd"):
                 db_reulst = db.get_user_by_passwd(data["user"]);
-                print db_reulst
-                log.debug(" mysql passwd %s  passwd %s"%(mysql_password(data["passwd"]),db_reulst[3]))
-                if mysql_password(data["passwd"]) == db_reulst[3]:
-                    token = uuid.uuid1()
-                    db.set_token(data["user"], token)
-                    result ={}
-                    result["result"] = "ok"
-                    result["user"] = data["user"]
-                    result["token"] = str(token)
-                    result["id"] = db_reulst[0]
-                    self.send_data(result)
-                    save_record("无".decode("utf-8"), data["user"],db_reulst[0],"login", "登录".decode("utf-8"))
-                    return
+                log.debug(db_reulst)
+                if db_reulst :
+
+                    log.debug(" mysql passwd %s  passwd %s"%(mysql_password(data["passwd"]),db_reulst[3]))
+
+                    if mysql_password(data["passwd"]) == db_reulst[3]:
+                        token = uuid.uuid1()
+                        db.set_token(data["user"], token)
+                        result ={}
+                        result["result"] = "ok"
+                        result["user"] = data["user"]
+                        result["token"] = str(token)
+                        result["id"] = db_reulst[0]
+                        self.send_data(result)
+                        save_record("无".decode("utf-8"), data["user"],db_reulst[0],"login", "登录".decode("utf-8"))
+                        return
+                    else:
+                        log.error("password  %s is not correct"%data["passwd"])
                 else:
-                    log.error("password  %s is not correct"%data["passwd"])
+                    log.error("username is not correct")
             else:
                 log.error("not has user or passwd ")
         else:
