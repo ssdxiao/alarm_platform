@@ -11,7 +11,7 @@ from utils.config import DB_NAME
 
 
 TIMEEXAMPLE = "%Y-%m-%d %H:%M:%S"
-PERPAGENUM = 5
+PERPAGENUM = 10
 
 
 class DB:
@@ -194,9 +194,9 @@ where  id= %s '''%\
 
         self.execute(sqlcmd, None)
 
-    def insert_alarm_deal(self, AlarmID,AlarmManage, AlarmTelephone, AlarmRemark, AlarmAudio):
-        sqlcmd = '''insert into alarm_deal (alarm_id, deal_manage, telephone, deal_time, deal_remark, audio ) values(%s, %s,'%s', '%s', '%s', '%s') ''' % \
-                 (AlarmID,AlarmManage, AlarmTelephone, self.get_time_now(),  AlarmRemark, AlarmAudio)
+    def insert_alarm_deal(self, AlarmID, AlarmManage, AlarmTelephone, AlarmRemark, AlarmAudio):
+        sqlcmd = '''insert into alarm_deal (alarm_id, deal_manage, telephone, deal_time, deal_remark, audio ) values(%s, '%s','%s', '%s', '%s', '%s') ''' % \
+                 (AlarmID, AlarmManage, AlarmTelephone, self.get_time_now(),  AlarmRemark, AlarmAudio)
         self.execute(sqlcmd, None)
 
     def get_audio_list(self, alarm_id):

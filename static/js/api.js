@@ -319,7 +319,7 @@ function commit_alarm_record(alarmid, telephone, remark, audio, callback) {
     data.AlarmAudio = audio;
     data.AlarmTelephone = telephone;
 
-    //console.log(JSON.stringify(data))
+    console.log(JSON.stringify(data))
     url.post(data, callback)
 
 }

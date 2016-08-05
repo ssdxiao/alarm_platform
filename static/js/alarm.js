@@ -149,8 +149,8 @@ function get_alarm_list_refresh(index) {
 }
 
 function insert_to_alarm_other_table(data) {
-    $("#alarm_table_other tbody").last().append("< class='default'><tr><td><input type='text'class='input-mini' disabled value='" + data.name +
-        "'/></td> <td> <input type='text'class='input-mini' disabled value='" + data.token + "'/></td> <td><a href=javascript:void(0); onclick=callup(event);return false; class='btn btn-mini'>" + data.famliyphone +
+    $("#alarm_table_other tbody").last().append("< class='default'><tr><td><input type='text'class='btn' disabled value='" + data.name +
+        "'/></td> <td> <input type='text'class='btn' disabled value='" + data.token + "'/></td> <td><a href=javascript:void(0); onclick=callup(event);return false; class='btn btn-mini'>" + data.famliyphone +
         "</a></td> <td><a href=avascript:void(0); onclick=callup(event);return false; class='btn btn-mini'>" + data.workphone + "</a></td> <td><a href=avascript:void(0); onclick=callup(event);return false; class='btn btn-mini'>" + data.telphone +
         "</a></td>/tr>")
 }
