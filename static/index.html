@@ -8,6 +8,7 @@
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/api.js"></script>
     <script src="/static/js/custumer.js"></script>
+    <script src="/static/js/canada.js"></script>
     <script src="/static/js/alarm.js"></script>
     <script src="/static/js/manage.js"></script>
     <script src="/static/js/record.js"></script>
@@ -189,6 +190,15 @@
                 data.Sunreturn = $("#Sunreturn").val();
                 data.Holleave = $("#Holleave").val();
                 data.Holreturn = $("#Holreturn").val();
+
+                if (typeof(data.CustumerCity) == "undefined"){
+                     data.CustumerCity = 0
+
+                }
+                 if (typeof(data.CustumerState) == "undefined"){
+                     data.CustumerState = 0
+
+                }
 
 
                 //获取other元素
@@ -714,13 +724,11 @@
                                  </div>
                                 <div>
                                   <label for="inputCustumerStateDetail">省/州</label>
-                                <input id="inputCustumerStateDetail" placeholder="省/州"
-                                       type="text">
+                                <select id="inputCustumerStateDetail" > </select>
                                      </div>
                                 <div>
                                    <label for="inputCustumerCityDetail">城市</label>
-                                <input id="inputCustumerCityDetail" placeholder="城市"
-                                       type="text">
+                                    <select id="inputCustumerCityDetail" > </select>
                                      </div>
                                 <div>
                                 <label for="inputCustumerStreetDetail">地址</label>

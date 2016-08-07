@@ -29,6 +29,34 @@ function get_custumer_list_refresh(index) {
                             console.log("获取用户失败")
                         }
                         else {
+                            // init canada state
+
+                            $("#inputCustumerStateDetail").empty(); 
+                            $("#inputCustumerCityDetail").empty();
+                            for(var i=1; i<StateList.length; i++)
+                            {
+                                   $("#inputCustumerStateDetail").append("<option value="+i+">"+StateList[i]+"</option>"); 
+                            }
+                            $("#inputCustumerStateDetail").change(function(){
+                                   var checkValue=$("#inputCustumerStateDetail").val();
+                                   $("#inputCustumerCityDetail").empty();
+                                   for(var i=1; i<State[checkValue].length; i++)
+                                   {
+                                           $("#inputCustumerCityDetail").append("<option value="+i+">"+State[checkValue][i]+"</option>");
+                                   }
+                            })
+                            $("#inputCustumerStateDetail").val(result.data.state);
+                            if (result.data.state != 0)
+                            {
+                                 var checkValue=$("#inputCustumerStateDetail").val();
+                                 for(var i=1; i<State[checkValue].length; i++)
+                                   {
+                                           $("#inputCustumerCityDetail").append("<option value="+i+">"+State[checkValue][i]+"</option>");
+                                   }
+
+                            }
+
+                            $("#inputCustumerCityDetail").val(result.data.city);
                             $("#inputCustumerIdDetail").val(result.data.custumerid);
                             $("#inputCustumerNameDetail").val(result.data.custumername);
                             $("#inputCustumerTelephoneDetail").val(result.data.custumertelephone);
@@ -36,8 +64,6 @@ function get_custumer_list_refresh(index) {
                             $("#inputCustumerRemarkDetail").val(result.data.custumerremark);
                             $("#inputCustumerDeviceidDetail").val(result.data.deviceid);
                             $("#inputCustumerPhoneDetail").val(result.data.phone);
-                            $("#inputCustumerStateDetail").val(result.data.state);
-                            $("#inputCustumerCityDetail").val(result.data.city);
                             $("#inputCustumerStreetDetail").val(result.data.street);
                             $("#inputCustumerPostelCodeDetail").val(result.data.postelcode);
                             $("#Monleave").val(result.data.monleave);
