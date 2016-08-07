@@ -81,9 +81,9 @@ function get_custumer_list_refresh(index) {
 }
 
 function insert_to_custumer_detail_table(data) {
-    $("#custumer_table_detail tbody").last().append("< class='default'><tr><td><input  name = 'name' type='text'class='input-mini' value='" + data.name +
-        "'/></td> <td> <input name='token' type='text'class='input-mini' value='" + data.token + "'/></td> <td><input name='famliyphone' type='text'class='input-mini' value='" + data.famliyphone +
-        "'/></td> <td><input name='workphone' type='text'class='input-mini' value='" + data.workphone + "'/></td> <td><input name='telphone' type='text'class='input-mini' value='" + data.telphone +
+    $("#custumer_table_detail tbody").last().append("< class='default'><tr><td><input  name = 'name' type='text'class='input-medium' value='" + data.name +
+        "'/></td> <td> <input name='token' type='text'class='input-medium' value='" + data.token + "'/></td> <td><input name='famliyphone' type='text'class='input-medium' value='" + data.famliyphone +
+        "'/></td> <td><input name='workphone' type='text'class='input-medium' value='" + data.workphone + "'/></td> <td><input name='telphone' type='text'class='input-medium' value='" + data.telphone +
         "'/></td><td><a href=javascript:void(0); onclick=tr_del(event);return false;>删除</a></td>/tr>")
 }
 

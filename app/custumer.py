@@ -109,7 +109,7 @@ class CustumerHandler(BaseHandler):
                     and data.has_key("CustumerName") and data.has_key("CustumerRemark") \
                     and data.has_key("CustumerId") and data.has_key("other"):
                 db.update_custumer(data["CustumerId"], data["CustumerName"], data["CustumerTelephone"],
-                                   data["CustumerEmail"], data["CustumerRemark"], json.dumps(data["other"]),
+                                   data["CustumerEmail"], data["CustumerRemark"], json.dumps(data["other"],ensure_ascii=False),
                                    data["CustumerDeviceid"],data["CustumerPhone"],data["CustumerState"],
                                    data["CustumerCity"], data["CustumerStreet"], data["CustumerPostelCode"],
                                    data["Monleave"], data["Monreturn"], data["Tueleave"],
