@@ -57,7 +57,7 @@ def alarm_sync():
             continue
         else:
             if events == []:
-                log.debug("not has any event")
+                #log.debug("not has any event")
                 continue
             for one in events:
                 try:

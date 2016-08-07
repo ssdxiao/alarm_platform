@@ -38,13 +38,12 @@ def alarm_allocation():
                 for one in data:
                     db.allocat_alarm(one[0], manage[random.randint(0, num - 1)][0])
 
-        data = db.get_alarm_unprogress()
-        if data:
-            for one in data:
-                for person in LISTENERS:
-                        log.debug(" person id is %d , alarm is %d"%(person.user_id, one[5]))
-                        if person.user_id == one[5]:
-                            person.send_alarm(one)
+        for person in LISTENERS:
+            data = db.get_alarm_unprogress(person.user_id)
+            
+            if data:
+                log.debug(" person id is %d , alarm num is %d"%(person.user_id, data[0]))
+                person.send_alarm(data)
 
 
 
@@ -69,7 +68,7 @@ class RealtimeHandler(tornado.websocket.WebSocketHandler):
 
     def send_alarm(self, one):
         data = {"type": "alarm",
-                "id": one[0]
+                "num": one[0]
                 }
         self.send_data(data)
 

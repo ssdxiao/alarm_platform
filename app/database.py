@@ -17,14 +17,16 @@ PERPAGENUM = 10
 class DB:
     def __init__(self):
         self.log = log
-        self.connect()
+#        self.connect()
 
     def connect(self):
         self.conn = MySQLdb.connect(host='localhost',user=DB_USER,passwd=DB_PASSWORD,db=DB_NAME,port=3306,charset="utf8")
         self.cur = self.conn.cursor()
 
     def execute(self, sqlcmd, ret):
+        result = None
         try:
+            self.connect()
             self.log.debug(sqlcmd)
             self.cur.execute(sqlcmd)
             self.conn.commit()
@@ -35,9 +37,12 @@ class DB:
             raise
 
         if ret == "one":
-            return self.cur.fetchone()
+            result = self.cur.fetchone()
         elif ret == "all":
-            return self.cur.fetchall()
+            result =  self.cur.fetchall()
+
+        self.close()
+        return result
 
     def get_user_by_passwd(self, name):
         sqlcmd = '''select * from user where name = "%s" ''' % name
@@ -141,9 +146,9 @@ where  id= %s '''%\
         else:
             return None
 
-    def get_alarm_unprogress(self):
-        sqlcmd = '''select * from alarm where deal_progress = 0 and deal_user is not NULL'''
-        result = self.execute(sqlcmd, "all")
+    def get_alarm_unprogress(self, id):
+        sqlcmd = '''select count(id) from alarm where deal_progress = 0 and deal_user = %d'''%id
+        result = self.execute(sqlcmd, "one")
 
         if result:
             log.debug(result)

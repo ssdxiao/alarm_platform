@@ -54,7 +54,7 @@
                             console.log("websocket recv message")
                             var data = JSON.parse(e.data);
                             console.log(data)
-                            $("#alarm_message").text("有新的告警需要处理，请尽快查看。")
+                            $("#alarm_message").text("您有新的告警 "+data.num+" 条需要处理，请尽快查看。")
                             $("#alarmAlert").attr('style', "display:''")
                             get_alarm_list_refresh(1)
 
