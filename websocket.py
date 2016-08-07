@@ -43,7 +43,8 @@ def alarm_allocation():
             
             if data:
                 log.debug(" person id is %d , alarm num is %d"%(person.user_id, data[0]))
-                person.send_alarm(data)
+                if data[0] !=0:
+                    person.send_alarm(data)
 
 
 

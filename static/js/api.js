@@ -36,6 +36,8 @@ function RestServiceJs(newurl) {
             contentType: 'application/json',
             success: callback,
             error: function (req, status, ex) {
+                 alert("请检查输入内容是否正确")
+
             },
             timeout: 60000
         });
@@ -362,7 +364,13 @@ function split_page(name, result, fresh_function) {
     }
 
     for (var i = start_index; i < end_index; i++) {
+        if (i+1 == result.curruntindex)
+        {
+        $("#" + name + "_page ul").append("<li class='disabled'> <a>" + (i + 1) + "</a> </li>");
+        }
+        else{
         $("#" + name + "_page ul").append("<li> <a >" + (i + 1) + "</a> </li>");
+        }
     }
     $("#" + name + "_page ul").append("<li> <a >下一页</a> </li>");
 

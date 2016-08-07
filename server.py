@@ -70,10 +70,6 @@ def alarm_sync():
                 except:
                     break
 
-                if lastid < one["id"]:
-                        lastid = one["id"]
-
-            db.save_sync_id(lastid)
 
 class RedirectHandler(tornado.web.RequestHandler):
     def get(self):

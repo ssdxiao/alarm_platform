@@ -314,20 +314,15 @@ where  id= %s '''%\
         self.execute(sqlcmd, None)
 
     def get_sync_id(self):
-        sqlcmd = '''select value from config where name = "sync_id" '''
+        sqlcmd = '''select max(id) from sync_event '''
 
         result = self.execute(sqlcmd, "one")
 
-        log.debug(result)
         if result:
             return result[0]
         else:
             return None
 
-    def save_sync_id(self, id):
-        sqlcmd = '''update config set value= %d where   name = "sync_id" ''' % id
-
-        self.execute(sqlcmd, None)
 
     def get_record_list(self, index):
         return self.get_split_page(index, "record","order by id desc")
