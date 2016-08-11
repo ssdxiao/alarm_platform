@@ -186,7 +186,7 @@ where  id= %s '''%\
         self.execute(sqlcmd, None)
 
     def update_alarm_progress(self, id, deal_progress):
-        sqlcmd = '''update alarm set deal_progress = %d where  id= %s ''' % \
+        sqlcmd = '''update alarm set deal_progress = %d where  id= %s and deal_progress != 2 ''' % \
                  (deal_progress, id)
 
         self.execute(sqlcmd, None)

@@ -80,7 +80,7 @@ class HttpsClient:
 
     def sync_alarm(self, user):
         if user:
-            self.get("/fresh_alarm?id=%s"%id)        
+            self.get("/fresh_alarm?id=%s"%user)        
 
 
  

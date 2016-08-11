@@ -146,6 +146,12 @@
                             else {
                                 $('#modal_add_custumer').modal('hide');
                                 //重新刷新用户列表
+                                $("#inputCustumerName").val("")
+                        $("#inputCustumerTelephone").val("")
+                        $("#inputCustumerEmail").val("")
+                        $("#inputCustumerRemark").val("")
+                        $("#inputCustumerDeviceid").val("")
+
                                 var index = window.current_page
                                 get_custumer_list_refresh(index);
 
