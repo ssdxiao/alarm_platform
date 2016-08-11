@@ -1,13 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 import MySQLdb
 from utils.log import log
 import datetime
+from httpclient import HttpsClient
 
 from utils.config import DB_USER
 from utils.config import DB_PASSWORD
 from utils.config import DB_NAME
+from utils.config import WEBSOCKET
 
 
 TIMEEXAMPLE = "%Y-%m-%d %H:%M:%S"
@@ -173,6 +179,12 @@ where  id= %s '''%\
                  (deal_user, id)
         self.execute(sqlcmd, None)
 
+    def update_alarm_deal_user(self, id, deal_user):
+        sqlcmd = '''update alarm set deal_user = %d where  id= %s ''' % \
+                 (deal_user, id)
+
+        self.execute(sqlcmd, None)
+
     def update_alarm_progress(self, id, deal_progress):
         sqlcmd = '''update alarm set deal_progress = %d where  id= %s ''' % \
                  (deal_progress, id)
@@ -283,19 +295,23 @@ where  id= %s '''%\
             return None
 
     def get_last_alarmid_from_zaveid(self, zwaveid):
-        sqlcmd = '''select id from alarm where zwaveid =%d  order by id desc''' % zwaveid
+        sqlcmd = '''select * from alarm where zwaveid =%d  order by id desc''' % zwaveid
         result = self.execute(sqlcmd, "one")
         if result:
-            return result[0]
+            return result
         else:
             return None
 
-    def save_event(self, id, type, deviceid, zwaveid, eventtime, context ):
+    def save_event(self, id, type, deviceid, zwaveid, eventtime, objparam ):
 
         if type.startswith("unalarm"):
-            alarmid = self.get_last_alarmid_from_zaveid(zwaveid)
-            if alarmid :
+            alarm = self.get_last_alarmid_from_zaveid(zwaveid)
+            alarmid = alarm[0]
+            if alarm[0] :
                 self.update_alarm_progress(alarmid, 2)
+                if objparam.has_key("phonenumber"):
+                    self.update_alarm_deal_user(alarmid, 0)
+                HttpsClient("https://127.0.0.1:%d"%WEBSOCKET).sync_alarm(alarm[5])
             else:
                 return
 
@@ -306,8 +322,16 @@ where  id= %s '''%\
             else:
                 self.insert_alarm(zwaveid, deviceid)
                 alarmid = self.get_progress_alarmid_from_zaveid(zwaveid)
-
-
+             
+        if objparam.has_key("content"):
+            context = objparam["content"]
+        elif objparam.has_key("phonenumber"):
+            context = "关闭人电话 ".encode('utf-8')+objparam["phonenumber"]
+        elif objparam.has_key("employeename"):
+            context = "关闭人 ".encode('utf-8')+objparam["employeename"]
+        else:
+            context = ""
+            
         sqlcmd = '''insert into sync_event (id, type, deviceid, zwaveid, eventtime, context, alarmid) values( %d, '%s', '%s', %d, '%s', '%s','%s') ''' % \
                  (id, type, deviceid, zwaveid, eventtime, context, alarmid)
 

@@ -91,13 +91,17 @@ class AlarmAllHandler(BaseHandler):
                 eventlist = db.get_events(one[0])
                 for event in eventlist:
                     context = context + event[5] + " "
+                if one[5] == 0:
+                   user = "客户关闭"
+                else:
+                   user = db.get_username_by_id(one[5])
                 result["data"].append({"id" : one[0],
                                         "create_time" : one[1],
                                         "zwaveid": one[2],
                                         "deviceid":one[3],
                                         "deal_progress":one[4],
                                         "deal_user":one[5],
-                                        "deal_user_name": db.get_username_by_id(one[5]),
+                                        "deal_user_name": user,
                                         "deal_context": context
                                        })
 

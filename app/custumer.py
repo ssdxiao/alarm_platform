@@ -72,7 +72,7 @@ class CustumerHandler(BaseHandler):
                     and data.has_key("CustumerName") and data.has_key("CustumerRemark") \
                     and data.has_key("CustumerDeviceid"):
 
-                if data["CustumerName"] == "":
+                if data["CustumerName"] == "" or data["CustumerDeviceid"]=="":
                     log.error("CustumerName is NULL")
                 else:
                     db.insert_custumer(data["CustumerName"], data["CustumerTelephone"],

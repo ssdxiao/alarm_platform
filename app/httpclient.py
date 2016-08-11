@@ -53,8 +53,8 @@ class HttpClient:
 
         return None
 
-    def releasealarm(self, zwaveid):
-        values = {'zwavedeviceid': zwaveid, 'token': self.token}
+    def releasealarm(self, zwaveid, user):
+        values = {'zwavedeviceid': zwaveid, 'token': self.token, "employeename" : user}
         print values
         data = self.post("/thirdpart/zufang/unalarmdevicewarning", values)
         if data:
@@ -64,3 +64,23 @@ class HttpClient:
                 log.debug("release alarm error")
 
 
+class HttpsClient:
+    def __init__(self, url, timeout=10):
+        self.url = url
+        self.token = ""
+
+    def get(self, url):
+
+        try:
+            url = self.url + url
+            print url
+            urllib2.urlopen(url)
+        except:
+            print "get request error"
+
+    def sync_alarm(self, user):
+        if user:
+            self.get("/fresh_alarm?id=%s"%id)        
+
+
+ 

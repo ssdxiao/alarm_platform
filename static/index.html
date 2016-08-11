@@ -55,9 +55,16 @@
                             console.log("websocket recv message")
                             var data = JSON.parse(e.data);
                             console.log(data)
+                            if (data.type == "alarm" ){
                             $("#alarm_message").text("您有新的告警 "+data.num+" 条需要处理，请尽快查看。")
                             $("#alarmAlert").attr('style', "display:''")
                             get_alarm_list_refresh(1)
+                            }
+                            else if (data.type == "fresh_alarm")
+                            {
+                                     get_alarm_list_refresh(1)
+                             }
+       
 
                         }
 

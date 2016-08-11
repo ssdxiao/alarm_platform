@@ -73,6 +73,12 @@ class RealtimeHandler(tornado.websocket.WebSocketHandler):
                 }
         self.send_data(data)
 
+    def fresh_alarm(self, id):
+        data = {"type": "fresh_alarm",
+                "id": id
+                }
+        self.send_data(data)
+
     def on_message(self, message):
         log.debug(message)
         try:
@@ -96,6 +102,17 @@ class Https_verify(tornado.web.RequestHandler):
         pass
 
 
+class FreshAlarmHandler(tornado.web.RequestHandler):
+    def get(self):
+        log.debug("FreshAlarmHandler")
+        id = int(self.get_argument("id"))
+        for person in LISTENERS:
+            print person.user_id
+ 
+            if int(person.user_id) == id:
+                person.fresh_alarm(id)
+        
+
 settings = {
     'auto_reload': True,
     "cookie_secret": "61oETzKXQAGaYdkL5g3mGeJJFuYh7EQnp2XdTP1o/Vo=",
@@ -104,7 +121,8 @@ settings = {
 
 application = tornado.web.Application([
     ('/server/realtime', RealtimeHandler),
-    ('/https_verify',Https_verify)
+    ('/https_verify',Https_verify),
+    ('/fresh_alarm',FreshAlarmHandler)
 ], **settings)
 
 #chrome --allow-running-insecure-content

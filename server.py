@@ -62,12 +62,10 @@ def alarm_sync():
             for one in events:
                 try:
                     print one
-                    if one["objparam"] == {}:
-                        content=""
-                    else:
-                        content = one["objparam"]["content"]
-                    db.save_event(one["id"], one["type"],one["deviceid"],one["zwavedeviceid"],one["eventtime"],content)
+                    db.save_event(one["id"], one["type"],one["deviceid"],one["zwavedeviceid"],one["eventtime"],one["objparam"])
                 except:
+                    import traceback
+                    traceback.print_exc()
                     break
 
 
@@ -87,7 +85,7 @@ class ReleaseAlarmHandler(BaseHandler):
             log.debug(data)
             if data.has_key("alarmId"):
                 zwaveid = db.get_zwaveid_from_alarm(data["alarmId"])
-                client.releasealarm(zwaveid)
+                client.releasealarm(zwaveid, self.login_user)
                 result = {}
                 result["result"] = "ok"
                 self.send_data(result)
