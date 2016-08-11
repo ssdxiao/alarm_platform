@@ -289,6 +289,8 @@
                         //上传
                         ajaxFileUpload('file')
                         $("#alarmAlert").attr('style', "display:None");
+                        var alarmid = $("#td_alarm_id").text();
+                        $("#alarm_detail").trigger("click")
 
                     }
 
@@ -597,7 +599,14 @@
                                     </div>
                                 </div>
                                 <br/>
-                                <div><span>备注: </span>
+                                
+                                <div><span class="mylabel">用户: </span>
+                                    <div id="custumerName"></div>
+                                </div>
+                                <div><span class="mylabel">地址: </span>
+                                    <div id="custumerAddress"></div>
+                                </div>
+                                <div><span class="mylabel">备注: </span>
                                     <div id="custumerRemark"></div>
                                 </div>
                                 <br/>

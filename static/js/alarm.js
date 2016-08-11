@@ -92,7 +92,11 @@ function get_alarm_list_refresh(index) {
                                 else {
                                     //设置主人电话
                                     $("#custumer_telephone").text(result.data.custumertelephone)
+                                    $("#custumerName").text(result.data.custumername)
+                                    $("#custumerAddress").text(StateList[result.data.state] + "省" + State[result.data.state][result.data.city]+ "市"+ result.data.street)
                                     $("#custumerRemark").text(result.data.custumerremark)
+
+
                                     //设置其他相关成员电话
                                     //处理other信息
                                     $("#alarm_table_other tbody").empty();
