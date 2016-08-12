@@ -132,11 +132,18 @@
 
 //-----------------------custumer function -------------------------------//
             $('#add_custumer_modal').click(function (e) {
+                var deviceid = $("#inputCustumerDeviceid").val()
+                if (deviceid.length !=20)
+{
+   alert("请检查绑定设备id")
+return
+}
                 add_custumer($("#inputCustumerName").val(),
                         $("#inputCustumerTelephone").val(),
                         $("#inputCustumerEmail").val(),
                         $("#inputCustumerRemark").val(),
                         $("#inputCustumerDeviceid").val(),
+                        
                         function (data) {
                             var result = JSON.parse(data);
                             console.log(result);
@@ -275,6 +282,17 @@
                 var remark = $("#alarmRemark").val();
                 var audio = window.alarm_audio;
                 var telephone = window.alarm_telephone;
+                
+                var filename = getFileName($("#file1").val());
+                if (filename != "" )
+                {
+                 if( filename != audio)
+                {
+                               console.log(filename + "!= " + audio)
+                               alert("上传文件不一致")
+                               return
+                }
+                }
                 commit_alarm_record(alarmid, telephone, remark, audio, function (data) {
                     var result = JSON.parse(data);
                     console.log(result);
@@ -300,6 +318,14 @@
             });
 
             $("#upload_commit").click(function (e) {
+                        var filename = getFileName($("#file1").val());
+                           
+                        if (filename != $("#upload_message").text())
+                        {
+                               console.log(filename + "!= " + $("#upload_message").text())
+                               alert("上传文件不一致")
+                               return
+                        }
 
                         $('#modal_upload').modal('hide');
                         //重新刷新用户列表
@@ -508,7 +534,7 @@
                             </div>
 
                             <div class="modal-body">
-                                <h4 id=upload_message></h4>
+                                <h4>请选择：<span id=upload_message></span></h4>
                                 <div>
                                     <input id="file1" name="file" type="file">
                                 </div>
@@ -675,19 +701,19 @@
                         <table class="table table-hover table-condensed" id="alarm_table">
                             <thead>
                             <tr>
-                                <th>
+                                <th width="10%">
                                     告警编号
                                 </th>
-                                <th>
+                                <th width="18%">
                                     告警时间
                                 </th>
                                 <th>
                                     告警内容
                                 </th>
-                                <th>
+                                <th width="10%">
                                     处理阶段
                                 </th>
-                                <th>
+                                <th width="10%">
                                     责任人
                                 </th>
                             </tr>

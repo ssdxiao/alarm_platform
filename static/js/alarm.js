@@ -65,6 +65,16 @@ function get_alarm_list_refresh(index) {
                         }
                         else {
                             $("#deal_progress").text(alarm_string[result.data.deal_progress]);
+                            if(result.data.deal_progress == 2)
+                            {
+                    $("#deal_alarm_ok").attr("class","btn");
+                    $("#deal_alarm_ok").attr("disabled", "true");
+                            }
+                            else
+                            {
+                    $("#deal_alarm_ok").removeAttr("disabled");
+                    $("#deal_alarm_ok").attr("class","btn btn-success");
+                            }
                             $("#deal_user").text(result.data.deal_user)
                             $("#td_alarm_id").text(result.data.id)
 

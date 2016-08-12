@@ -291,13 +291,17 @@ function callup(e) {
     }
     var telephone = $(e.currentTarget).text();
 
+    if (telephone == "")
+    {
+        return
+    }
     var timestamp = Date.parse(new Date());
-    window.alarm_audio = timestamp
+    window.alarm_audio = $("#td_alarm_id").text()+"+"+timestamp;
     window.alarm_telephone = telephone
     $("#deal_message").text("电话中...")
-    $("#audiofile_message").text("本次录音文件为 " + timestamp + ".wav")
+    $("#audiofile_message").text("本次录音文件为 " + window.alarm_audio + ".wav")
     console.log("callup")
-    do_call(timestamp, telephone, function (data){
+    do_call(window.alarm_audio, telephone, function (data){
         //data = JSON.parse(data)
         if(data.msg != "OK"){
                         alert(data.msg)
@@ -308,7 +312,8 @@ function callup(e) {
 
     })
     $("#modal_alarm_detail").modal('hide')
-    $("#alarm_deal").trigger("click")
+    $('#modal_alarm_deal').modal({backdrop: 'static'})
+    //$("#alarm_deal").trigger("click")
 
 }
 
@@ -433,7 +438,7 @@ function ajaxFileUpload( id) {
 
 function upload_model(e){
     var id = e.currentTarget.id
-    $("#upload_message").text("请选择："+id)
+    $("#upload_message").text(id)
     //$("#modal_alarm_detail").attr("style", "display:none")
      $("#modal_alarm_detail").modal('hide')
     $("#upload").trigger("click")
@@ -460,3 +465,9 @@ function pause(media) {
     media.pause();  
 
 }  
+
+
+function getFileName(o){
+    var pos=o.lastIndexOf("\\");
+    return o.substring(pos+1);  
+}

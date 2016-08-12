@@ -73,7 +73,7 @@ class HttpsClient:
 
         try:
             url = self.url + url
-            print url
+            log.debug( url)
             urllib2.urlopen(url)
         except:
             print "get request error"
