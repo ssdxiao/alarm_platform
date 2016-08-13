@@ -57,7 +57,26 @@ function get_alarm_list_refresh(index) {
                 $(this).click(function (e) {
                     console.log("click alarm tr " + ($(this).text()).split(" ")[1]);
                     //用户详情信息写入
-                    get_alarm($(this).text().split(" ")[1], function (data) {
+
+                            fresh_alarm_modal($(this).text().split(" ")[1])
+                            $("#alarm_detail").trigger("click")
+
+                });
+
+
+            })
+
+            //显示分页条
+            split_page("alarm", result, get_alarm_list_refresh);
+
+        }
+
+    })
+
+}
+
+function fresh_alarm_modal(alarmid){
+                    get_alarm(alarmid, function (data) {
                         var result = JSON.parse(data);
                         console.log(result);
                         if (result.result == "error") {
@@ -143,22 +162,8 @@ function get_alarm_list_refresh(index) {
                                 }
                             })
 
-
-                            $("#alarm_detail").trigger("click")
                         }
-
                     });
-                });
-
-
-            })
-
-            //显示分页条
-            split_page("alarm", result, get_alarm_list_refresh);
-
-        }
-
-    })
 
 }
 

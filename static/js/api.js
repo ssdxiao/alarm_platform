@@ -36,7 +36,10 @@ function RestServiceJs(newurl) {
             contentType: 'application/json',
             success: callback,
             error: function (req, status, ex) {
-                 alert("请检查输入内容是否正确")
+                 console.log(req.responseText)
+                 console.log(status)
+                 console.log(ex)
+                 alert(req.responseText)
 
             },
             timeout: 60000

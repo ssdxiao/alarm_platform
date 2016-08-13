@@ -85,7 +85,18 @@
         }
 
         $(function () {
-
+ $('#modal_alarm_deal').on('hide.bs.modal', function () {
+            var ret = confirm("暂时退出不会保存任何信息，确认退出吗?")
+             if (ret==true)
+    {
+           return true
+    }
+  else
+    {
+           return false
+    }
+            })
+   
             $("#alarm_close").click(function (e) {
                 $("#alarmAlert").attr('style', "display:none")
             })
@@ -309,6 +320,7 @@ return
                         ajaxFileUpload('file')
                         $("#alarmAlert").attr('style', "display:None");
                         var alarmid = $("#td_alarm_id").text();
+                        fresh_alarm_modal(alarmid);
                         $("#alarm_detail").trigger("click")
 
                     }
