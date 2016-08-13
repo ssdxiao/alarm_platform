@@ -23,7 +23,7 @@ class AudioHandler(BaseHandler):
             log.debug(data)
             if data.has_key("AlarmID") and data.has_key("AlarmRemark") \
                     and data.has_key("AlarmAudio")and data.has_key("AlarmTelephone"):
-                db.insert_alarm_deal(data["AlarmID"], self.login_user, data["AlarmTelephone"],data["AlarmRemark"], "%d.wav"%data["AlarmAudio"])
+                db.insert_alarm_deal(data["AlarmID"], self.login_user, data["AlarmTelephone"],data["AlarmRemark"], "%s.wav"%data["AlarmAudio"])
                 db.update_alarm_progress(data["AlarmID"],1)
                 result = {}
                 result["result"] = "ok"

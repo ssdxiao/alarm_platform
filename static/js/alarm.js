@@ -126,11 +126,11 @@ function get_alarm_list_refresh(index) {
                                             for (var i = 0; i < result.data.length; i++) {
                                                 if (result.data[i].has_audio == 1){
                                                     audio_dom ="<div><audio type='audio/wav' src='/static/audio/"+result.data[i].audio+"'>您的浏览器不支持</audio>"+
-                                                        "<a href=javascript:void(0); onclick=playAudio(event);return false; class='btn'>Play</a></div>"
+                                                        "<a href=javascript:void(0); onclick=playAudio(event);return false; class='btn'>Play</a>"+result.data[i].audio+"</div>"
                                                 }
                                                 else
                                                 {
-                                                    audio_dom = "<a href=javascript:void(0); onclick=upload_model(event);return false; id= '"+result.data[i].audio+"'class='btn'>上传</a>"
+                                                    audio_dom = "<a href=javascript:void(0); onclick=upload_model(event);return false; id= '"+result.data[i].audio+"'class='btn'>上传</a>" + result.data[i].audio
                                                 }
 
 

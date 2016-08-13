@@ -305,6 +305,7 @@ return
                         var index = window.current_page
                         get_alarm_list_refresh(index);
                         //上传
+                        
                         ajaxFileUpload('file')
                         $("#alarmAlert").attr('style', "display:None");
                         var alarmid = $("#td_alarm_id").text();
@@ -356,6 +357,11 @@ return
 
             $("#deal_alarm_ok").click(function (e) {
                 if ($("#deal_progress").text() == alarm_string[2]) {
+                    return
+                }
+                if ($("#deal_progress").text() == alarm_string [0])
+                {
+                    alert("没有处理的告警不能关闭")
                     return
                 }
                 var data = {};
