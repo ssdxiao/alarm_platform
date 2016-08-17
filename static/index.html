@@ -85,7 +85,23 @@
         }
 
         $(function () {
- $('#modal_alarm_deal').on('hide.bs.modal', function () {
+
+$('#modal_alarm_deal').on('hidden.bs.modal', function () {
+  do_hangup(function (data) {
+                    console.log("call do_hangup")
+                    console.log(data)
+                    if(data.msg !="OK"){
+                        alert(data.msg)
+                    }
+
+                })
+
+    
+})           
+
+           $('#alarm_deal_cancel').click(function (e) {
+            var id = e.currentTarget.id
+            console.log(id)
             var ret = confirm("暂时退出不会保存任何信息，确认退出吗?")
              if (ret==true)
     {
@@ -294,7 +310,7 @@ return
                 var audio = window.alarm_audio;
                 var telephone = window.alarm_telephone;
                 
-                var filename = getFileName($("#file1").val());
+                var filename = getFileName($("#file").val());
                 if (filename != "" )
                 {
                  if( filename != audio)
@@ -303,6 +319,18 @@ return
                                alert("上传文件不一致")
                                return
                 }
+                else
+                {
+                               console.log(filename + "== " + audio)
+                }
+                }
+                else
+                {
+                    if (remark == "")
+                     {
+                           alert("内容为空")
+                           return
+                     }
                 }
                 commit_alarm_record(alarmid, telephone, remark, audio, function (data) {
                     var result = JSON.parse(data);
@@ -316,6 +344,7 @@ return
                         var index = window.current_page
                         get_alarm_list_refresh(index);
                         //上传
+                        $("#alarmRemark").val("");
                         
                         ajaxFileUpload('file')
                         $("#alarmAlert").attr('style', "display:None");
@@ -347,6 +376,9 @@ return
                         //上传
                         ajaxFileUpload('file1')
 
+                        var alarmid = $("#td_alarm_id").text();
+                        fresh_alarm_modal(alarmid);
+                        $("#alarm_detail").trigger("click")
 
                 })
 
@@ -570,7 +602,6 @@ return
 
                         <div id="modal_alarm_deal" class="modal hide fade in" style=" display: none; ">
                             <div class="modal-header">
-                                <a class="close" data-dismiss="modal">×</a>
                                 <h3>告警处理</h3>
                             </div>
 
@@ -595,7 +626,7 @@ return
 
                             <div class="modal-footer">
                                 <a href="#" class="btn btn-success" id="alarm_deal_commit">提交</a>
-                                <a href="#" class="btn btn-close" data-dismiss="modal">暂时关闭</a>
+                                <a href="#" class="btn btn-close" data-dismiss="modal" id="alarm_deal_cancel">暂时关闭</a>
                             </div>
                         </div>
                         <p><a data-toggle="modal" href="#modal_alarm_deal" class="btn btn-primary"

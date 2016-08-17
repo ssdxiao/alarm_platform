@@ -33,7 +33,7 @@ from utils.log import log
 from utils.config import SERVERPORT
 from utils.config import MAIN_URL
 
-from app.database import db
+from app.database import DB
 
 from app.base import BaseHandler
 from app.base import authenticated_self
@@ -47,26 +47,27 @@ AUDIO_PATH = "/tmp/audio"
 client = HttpClient(MAIN_URL)
 
 def alarm_sync():
+    db =DB()
     client.get_token()
     while True:
-        time.sleep(10)
-        lastid = db.get_sync_id()
-        events = client.get_alarm(lastid)
-        if events == None:
-            client.get_token()
-            continue
-        else:
-            if events == []:
-                #log.debug("not has any event")
+        try:
+            time.sleep(10)
+            lastid = db.get_sync_id()
+            events = client.get_alarm(lastid)
+            if events == None:
+                client.get_token()
                 continue
-            for one in events:
-                try:
+            else:
+                if events == []:
+                    #log.debug("not has any event")
+                    continue
+                for one in events:
                     print one
                     db.save_event(one["id"], one["type"],one["deviceid"],one["zwavedeviceid"],one["eventtime"],one["objparam"])
-                except:
-                    import traceback
-                    traceback.print_exc()
-                    break
+        except:
+            import traceback
+            traceback.print_exc()
+            continue
 
 
 class RedirectHandler(tornado.web.RequestHandler):

@@ -6,7 +6,8 @@ from base import BASEDIR
 from base import authenticated_self
 from utils.log import log
 
-from database import db
+from database import DB
+db = DB()
 from utils.mysqlpasswd import mysql_password
 import uuid
 import json

@@ -471,6 +471,7 @@ function pause(media) {
 
 
 function getFileName(o){
+    console.log(o)
     var pos=o.lastIndexOf("\\");
     return o.substring(pos+1);  
 }

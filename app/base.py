@@ -6,7 +6,7 @@ from utils.log import log
 BASEDIR = "../static"
 import json
 import functools
-from database import db
+from database import DB
 
 
 def authenticated_self(method):
@@ -18,6 +18,7 @@ def authenticated_self(method):
         result = {}
         result["result"] = "error"
         result["message"] = "token error please login "
+        db =DB()
 
         if cookie:
             #try:
