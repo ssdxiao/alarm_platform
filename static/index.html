@@ -309,19 +309,20 @@ return
                 var remark = $("#alarmRemark").val();
                 var audio = window.alarm_audio;
                 var telephone = window.alarm_telephone;
-                
+               
+                var audiofile = audio + ".wav"; 
                 var filename = getFileName($("#file").val());
                 if (filename != "" )
                 {
-                 if( filename != audio)
+                 if( filename != audiofile)
                 {
-                               console.log(filename + "!= " + audio)
+                               console.log(filename + "!= " + audiofile)
                                alert("上传文件不一致")
                                return
                 }
                 else
                 {
-                               console.log(filename + "== " + audio)
+                               console.log(filename + "== " + audiofile)
                 }
                 }
                 else
@@ -339,7 +340,6 @@ return
                         console.log("增加处理日志失败")
                     }
                     else {
-                        $('#modal_alarm_deal').modal('hide');
                         //重新刷新用户列表
                         var index = window.current_page
                         get_alarm_list_refresh(index);
@@ -350,6 +350,8 @@ return
                         $("#alarmAlert").attr('style', "display:None");
                         var alarmid = $("#td_alarm_id").text();
                         fresh_alarm_modal(alarmid);
+                        
+                        $('#modal_alarm_deal').modal('hide');
                         $("#alarm_detail").trigger("click")
 
                     }
@@ -369,7 +371,6 @@ return
                                return
                         }
 
-                        $('#modal_upload').modal('hide');
                         //重新刷新用户列表
                         var index = window.current_page
                         get_alarm_list_refresh(index);
@@ -378,7 +379,9 @@ return
 
                         var alarmid = $("#td_alarm_id").text();
                         fresh_alarm_modal(alarmid);
+                        $('#modal_upload').modal('hide');
                         $("#alarm_detail").trigger("click")
+                        
 
                 })
 

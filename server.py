@@ -76,7 +76,7 @@ class RedirectHandler(tornado.web.RequestHandler):
         self.redirect("/static/index.html")
         pass
 
-
+db =DB()
 class ReleaseAlarmHandler(BaseHandler):
     @authenticated_self
     def post(self):
@@ -86,11 +86,11 @@ class ReleaseAlarmHandler(BaseHandler):
             log.debug(data)
             if data.has_key("alarmId"):
                 zwaveid = db.get_zwaveid_from_alarm(data["alarmId"])
-                client.releasealarm(zwaveid, self.login_user)
                 result = {}
                 result["result"] = "ok"
                 self.send_data(result)
 
+                client.releasealarm(zwaveid, self.login_user)
                 return
             else:
                 result = {}
