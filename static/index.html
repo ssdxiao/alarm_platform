@@ -346,13 +346,17 @@ return
                         //上传
                         $("#alarmRemark").val("");
                         
-                        ajaxFileUpload('file')
-                        $("#alarmAlert").attr('style', "display:None");
-                        var alarmid = $("#td_alarm_id").text();
-                        fresh_alarm_modal(alarmid);
-                        
+                        ajaxFileUpload('file',function (data, status) {
+                                       console.log("upload success " + data.error)
+                                       var alarmid = $("#td_alarm_id").text();
+                                       fresh_alarm_modal(alarmid);
+                                       $('#modal_wait').modal('hide');
+                                       $("#alarm_detail").trigger("click")
+                                       
+                                     })
                         $('#modal_alarm_deal').modal('hide');
-                        $("#alarm_detail").trigger("click")
+                        $("#alarmAlert").attr('style', "display:None");
+                        $('#wait').trigger("click")
 
                     }
 
@@ -375,14 +379,17 @@ return
                         var index = window.current_page
                         get_alarm_list_refresh(index);
                         //上传
-                        ajaxFileUpload('file1')
+                        ajaxFileUpload('file1',function (data, status) {
+                                       console.log("upload success" + data.error)
+                                       var alarmid = $("#td_alarm_id").text();
+                                       fresh_alarm_modal(alarmid);
+                                       $('#modal_wait').modal('hide');
+                                       $("#alarm_detail").trigger("click")
+                                       
+                                     })
 
-                        var alarmid = $("#td_alarm_id").text();
-                        fresh_alarm_modal(alarmid);
                         $('#modal_upload').modal('hide');
-                        $("#alarm_detail").trigger("click")
-                        
-
+                        $('#wait').trigger("click")
                 })
 
 
@@ -580,6 +587,16 @@ return
                 <div class="tab-content">
                     <div class="tab-pane active" id="panel-alarm">
 
+                        <div id="modal_wait" class="modal hide fade in" style=" display: none; ">
+
+                            <div class="modal-body">
+                                <h4>请等待上传</h4>
+                            </div>
+                        </div>
+                         <p><a data-toggle="modal" href="#modal_wait" class="btn btn-primary"
+                              id="wait" style="display: none"></a>
+                        </p>
+
                         <div id="modal_upload" class="modal hide fade in" style=" display: none; ">
                             <div class="modal-header">
                                 <a class="close" data-dismiss="modal">×</a>
@@ -643,6 +660,7 @@ return
 
                             <div class="modal-body">
                                 <h3>告警id：<span id="td_alarm_id"></span> </h3>
+                                <h3>告警设备：<span id="alarm_device"></span> </h3>
                                 <h3>处理人：<span id="deal_user"></span> 处理进度：<span id="deal_progress"></span></h3>
                                 <table class="table table-hover table-condensed" id="modal_alarm_table">
                                     <thead>
@@ -721,13 +739,13 @@ return
                                         <th width="10%">
                                             处理人
                                         </th>
-                                        <th>
+                                        <th width = "18%">
                                             处理电话
                                         </th>
                                         <th width="18%">
                                             处理时间
                                         </th>
-                                        <th>
+                                        <th width="40%">
                                             处理内容
                                         </th>
                                         <th>

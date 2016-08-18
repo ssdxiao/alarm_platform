@@ -76,6 +76,15 @@ function get_alarm_list_refresh(index) {
 }
 
 function fresh_alarm_modal(alarmid){
+                    //清理痕迹
+                            $("#modal_alarm_table tbody").empty();
+                            $("#alarm_deal_progress_table tbody").empty();
+                            $("#alarm_table_other tbody").empty();
+                                    $("#custumer_telephone").text("")
+                                    $("#custumerName").text("")
+                                    $("#custumerAddress").text("")
+                                    $("#custumerRemark").text("")
+
                     get_alarm(alarmid, function (data) {
                         var result = JSON.parse(data);
                         console.log(result);
@@ -96,6 +105,7 @@ function fresh_alarm_modal(alarmid){
                             }
                             $("#deal_user").text(result.data.deal_user)
                             $("#td_alarm_id").text(result.data.id)
+                            $("#alarm_device").text(result.data.deviceid)
 
                             $("#modal_alarm_table tbody").empty();
                             get_event_list(result.data.id, function(data) {
@@ -132,7 +142,9 @@ function fresh_alarm_modal(alarmid){
                                     for (var i = 0; i < result.data.other.length; i++) {
                                         insert_to_alarm_other_table(result.data.other[i])
                                     }
+                                    } })
 
+                                    $("#alarm_deal_progress_table tbody").empty();
                                     //处理记录
                                     get_audio_list($("#td_alarm_id").text(), function (data) {
                                         var result = JSON.parse(data);
@@ -140,7 +152,6 @@ function fresh_alarm_modal(alarmid){
                                         if (result.result == "error") {
                                             console.log("获取告警处理记录失败")
                                         } else {
-                                            $("#alarm_deal_progress_table tbody").empty()
                                             var audio_dom
                                             for (var i = 0; i < result.data.length; i++) {
                                                 if (result.data[i].has_audio == 1){
@@ -154,13 +165,11 @@ function fresh_alarm_modal(alarmid){
 
 
                                                 $("#alarm_deal_progress_table tbody").append("<tr class='default'> <td>" + result.data[i].deal_user +
-                                                    "</td> <td>" + result.data[i].telephone+ "</td> <td>" + result.data[i].deal_time + "</td> <td>" + result.data[i].deal_remark + "</td> <td>" + audio_dom + "</td> </tr>")
+                                                    "</td> <td>" + result.data[i].telephone+ "</td> <td>" + result.data[i].deal_time + "</td> <td><p>" + result.data[i].deal_remark + "</p></td> <td>" + audio_dom + "</td> </tr>")
                                             }
                                         }
                                     })
 
-                                }
-                            })
 
                         }
                     });

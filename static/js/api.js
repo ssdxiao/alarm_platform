@@ -414,24 +414,14 @@ function get_userid() {
     }
 }
 
-function ajaxFileUpload( id) {
+function ajaxFileUpload( id, func) {
     console.log("ajaxFileUpload")
     $.ajaxFileUpload({
         url: '/app/upload',
         secureuri: true,
         fileElementId: id,
         dataType: 'json',
-        success: function (data, status) {
-            console.log("upload success")
-            if (typeof(data.error) != 'undefined') {
-                if (data.error != '') {
-                    console.log(data.error)
-                }
-                else {
-                    console.log("upload ok")
-                }
-            }
-        },
+        success: func,
         error: function (data, status, e) {
             console.log("return value error");
         }
