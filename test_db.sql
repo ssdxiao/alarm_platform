@@ -36,6 +36,15 @@ CREATE TABLE `alarm` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `alarm`
+--
+
+LOCK TABLES `alarm` WRITE;
+/*!40000 ALTER TABLE `alarm` DISABLE KEYS */;
+/*!40000 ALTER TABLE `alarm` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `alarm_deal`
 --
 
@@ -53,6 +62,15 @@ CREATE TABLE `alarm_deal` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `alarm_deal`
+--
+
+LOCK TABLES `alarm_deal` WRITE;
+/*!40000 ALTER TABLE `alarm_deal` DISABLE KEYS */;
+/*!40000 ALTER TABLE `alarm_deal` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `custumer`
@@ -96,6 +114,15 @@ CREATE TABLE `custumer` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `custumer`
+--
+
+LOCK TABLES `custumer` WRITE;
+/*!40000 ALTER TABLE `custumer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `custumer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `record`
 --
 
@@ -116,6 +143,15 @@ CREATE TABLE `record` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `record`
+--
+
+LOCK TABLES `record` WRITE;
+/*!40000 ALTER TABLE `record` DISABLE KEYS */;
+/*!40000 ALTER TABLE `record` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `sync_event`
 --
 
@@ -134,6 +170,15 @@ CREATE TABLE `sync_event` (
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sync_event`
+--
+
+LOCK TABLES `sync_event` WRITE;
+/*!40000 ALTER TABLE `sync_event` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sync_event` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `user`
@@ -159,6 +204,16 @@ CREATE TABLE `user` (
   UNIQUE KEY `token_4` (`token`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 PACK_KEYS=0;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'admin','','*4ACFE3202A5FF5CF467898FC58AAB1D615029441',NULL,NULL,NULL);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -169,4 +224,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-08-24 10:00:29
+-- Dump completed on 2016-08-24 11:19:30
