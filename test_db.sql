@@ -1,8 +1,8 @@
--- MySQL dump 10.14  Distrib 5.5.47-MariaDB, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.1.73, for redhat-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: alarm_platform
 -- ------------------------------------------------------
--- Server version	5.5.47-MariaDB
+-- Server version	5.1.73
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -36,15 +36,6 @@ CREATE TABLE `alarm` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `alarm`
---
-
-LOCK TABLES `alarm` WRITE;
-/*!40000 ALTER TABLE `alarm` DISABLE KEYS */;
-/*!40000 ALTER TABLE `alarm` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `alarm_deal`
 --
 
@@ -54,46 +45,14 @@ DROP TABLE IF EXISTS `alarm_deal`;
 CREATE TABLE `alarm_deal` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `alarm_id` int(11) DEFAULT NULL,
-  `deal_manage` int(11) DEFAULT NULL,
+  `deal_manage` char(20) DEFAULT NULL,
   `telephone` char(20) DEFAULT NULL,
   `deal_time` char(20) DEFAULT NULL,
   `deal_remark` text,
-  `audio` char(20) DEFAULT NULL,
+  `audio` char(40) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `alarm_deal`
---
-
-LOCK TABLES `alarm_deal` WRITE;
-/*!40000 ALTER TABLE `alarm_deal` DISABLE KEYS */;
-/*!40000 ALTER TABLE `alarm_deal` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `config`
---
-
-DROP TABLE IF EXISTS `config`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `config` (
-  `name` char(20) DEFAULT NULL,
-  `value` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `config`
---
-
-LOCK TABLES `config` WRITE;
-/*!40000 ALTER TABLE `config` DISABLE KEYS */;
-INSERT INTO `config` VALUES ('sync_id',0);
-/*!40000 ALTER TABLE `config` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `custumer`
@@ -111,8 +70,8 @@ CREATE TABLE `custumer` (
   `other` text,
   `deviceid` char(30) DEFAULT NULL,
   `phone` char(20) DEFAULT NULL,
-  `state` char(20) DEFAULT NULL,
-  `city` char(20) DEFAULT NULL,
+  `state` char(20) DEFAULT '0',
+  `city` char(20) DEFAULT '0',
   `street` char(20) DEFAULT NULL,
   `postelcode` char(20) DEFAULT NULL,
   `monleave` char(20) DEFAULT NULL,
@@ -131,19 +90,10 @@ CREATE TABLE `custumer` (
   `sunreturn` char(20) DEFAULT NULL,
   `holleave` char(20) DEFAULT NULL,
   `holreturn` char(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 PACK_KEYS=0;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `deviceid` (`deviceid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 PACK_KEYS=0;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `custumer`
---
-
-LOCK TABLES `custumer` WRITE;
-/*!40000 ALTER TABLE `custumer` DISABLE KEYS */;
-INSERT INTO `custumer` VALUES (24,'123','17791432496','123','范德萨发斯蒂芬','[{\"famliyphone\": \"32132\", \"token\": \"323\", \"workphone\": \"\", \"name\": \"312\", \"telphone\": \"\"}]','iRemote2005000000720','1','2','3','4','5','6','7','8','9','0','10','11','12','13','14','15','16','17','18','19','20'),(36,'abc','sbb','','','{}','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-/*!40000 ALTER TABLE `custumer` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `record`
@@ -166,15 +116,6 @@ CREATE TABLE `record` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `record`
---
-
-LOCK TABLES `record` WRITE;
-/*!40000 ALTER TABLE `record` DISABLE KEYS */;
-/*!40000 ALTER TABLE `record` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `sync_event`
 --
 
@@ -193,15 +134,6 @@ CREATE TABLE `sync_event` (
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sync_event`
---
-
-LOCK TABLES `sync_event` WRITE;
-/*!40000 ALTER TABLE `sync_event` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sync_event` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `user`
@@ -225,18 +157,8 @@ CREATE TABLE `user` (
   UNIQUE KEY `token_2` (`token`),
   UNIQUE KEY `token_3` (`token`),
   UNIQUE KEY `token_4` (`token`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 PACK_KEYS=0;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 PACK_KEYS=0;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user`
---
-
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin',NULL,'*4ACFE3202A5FF5CF467898FC58AAB1D615029441',NULL,'2016-07-19 07:17:39','2016-07-19 07:20:14'),(2,'123','22','*23AE809DDACAF96AF0FD78ED04B6A265E05AA257','bef9de08-50aa-11e6-9460-000c299eb467','2016-07-23 03:54:56','2016-07-23 03:54:54'),(3,'abc','abc','*0D3CED9BEC10A777AEC23CCC353A8C08A633045E',NULL,NULL,NULL);
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -247,4 +169,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-23  4:46:04
+-- Dump completed on 2016-08-24 10:00:29
