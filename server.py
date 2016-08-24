@@ -62,7 +62,7 @@ def alarm_sync():
                     #log.debug("not has any event")
                     continue
                 for one in events:
-                    print one
+                    log.debug(one)
                     db.save_event(one["id"], one["type"],one["deviceid"],one["zwavedeviceid"],one["eventtime"],one["objparam"])
         except:
             import traceback

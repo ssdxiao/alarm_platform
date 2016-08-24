@@ -20,9 +20,41 @@ function get_custumer_list_refresh(index) {
 
             $('#custumer_table tbody tr').each(function () {
                 $(this).click(function (e) {
-                    console.log("click custmer tr " + ($(this).text()).split(" ")[1]);
+                            $("#inputCustumerCityDetail").val("");
+                            $("#inputCustumerIdDetail").val("");
+                            $("#inputCustumerNameDetail").val("");
+                            $("#inputCustumerTelephoneDetail").val("");
+                            $("#inputCustumerEmailDetail").val("");
+                            $("#inputCustumerRemarkDetail").val("");
+                            $("#inputCustumerDeviceidDetail").val("");
+                            $("#inputCustumerPhoneDetail").val("");
+                            $("#inputCustumerStreetDetail").val("");
+                            $("#inputCustumerPostelCodeDetail").val("");
+                            $("#Monleave").val("");
+                            $("#Monreturn").val("");
+                            $("#Tueleave").val("");
+                            $("#Tuereturn").val("");
+                             $("#Wedleave").val("");
+                            $("#Wedreturn").val("");
+                            $("#Thuleave").val("");
+                            $("#Thureturn").val("");
+                            $("#Frileave").val("");
+                            $("#Frireturn").val("");
+                            $("#Satleave").val("");
+                            $("#Satreturn").val("");
+                            $("#Sunleave").val("");
+                            $("#Sunreturn").val("");
+                            $("#Holleave").val("");
+                            $("#Holreturn").val("");
+                            $("#inputCustumerStateDetail").empty(); 
+                            $("#inputCustumerCityDetail").empty();
+                            $("#custumer_table_detail tbody").empty();
+
+                    var deviceinfo = ($(this).text()).split(" ")
+                    var deviceid = deviceinfo[deviceinfo.length-2]
+                    console.log("click custmer tr " + deviceid);
                     //用户详情信息写入
-                    get_custumer($(this).text().split(" ")[4], function (data) {
+                    get_custumer(deviceid, function (data) {
                         var result = JSON.parse(data);
                         console.log(result);
                         if (result.result == "error") {

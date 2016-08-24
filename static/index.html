@@ -420,6 +420,8 @@ return
                 }
                 var data = {};
                 data.alarmId = $("#td_alarm_id").text()
+                $("#deal_alarm_ok").attr("class","btn");
+                $("#deal_alarm_ok").attr("disabled", "true");
                 release_alarm(data, function (data) {
                     var result = JSON.parse(data);
                     console.log(result);

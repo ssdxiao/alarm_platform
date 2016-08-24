@@ -108,6 +108,10 @@ class CustumerHandler(BaseHandler):
             if data.has_key("CustumerTelephone") and data.has_key("CustumerEmail") \
                     and data.has_key("CustumerName") and data.has_key("CustumerRemark") \
                     and data.has_key("CustumerId") and data.has_key("other"):
+                if data["CustumerState"] == None:
+                   data["CustumerState"] = 0
+                if data["CustumerCity"] == None:
+                   data["CustumerCity"] = 0
                 db.update_custumer(data["CustumerId"], data["CustumerName"], data["CustumerTelephone"],
                                    data["CustumerEmail"], data["CustumerRemark"], json.dumps(data["other"],ensure_ascii=False),
                                    data["CustumerDeviceid"],data["CustumerPhone"],data["CustumerState"],
