@@ -306,14 +306,18 @@ where  id= %s '''%\
 
         if type.startswith("unalarm"):
             alarm = self.get_last_alarmid_from_zaveid(zwaveid)
-            alarmid = alarm[0]
-            if alarm[0] :
-                self.update_alarm_progress(alarmid, 2)
-                if objparam.has_key("phonenumber"):
-                    self.update_alarm_deal_user(alarmid, 0)
-                HttpsClient("https://127.0.0.1:%d"%WEBSOCKET).sync_alarm(alarm[5])
+            if alarm == None:
+                alarmid = 0
+                log.error("not want unalarm %d", zwaveid)
             else:
-                return
+                alarmid = alarm[0]
+                if alarm[0] :
+                    self.update_alarm_progress(alarmid, 2)
+                    if objparam.has_key("phonenumber"):
+                        self.update_alarm_deal_user(alarmid, 0)
+                    HttpsClient("https://127.0.0.1:%d"%WEBSOCKET).sync_alarm(alarm[5])
+                else:
+                    return
 
         else:
             alarmid = self.get_progress_alarmid_from_zaveid(zwaveid)
