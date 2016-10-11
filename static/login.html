@@ -20,10 +20,15 @@ function load() {
           loadProperties(function (){
                 $('title').html($.i18n.prop('title'));
                 $('h2').html($.i18n.prop('title'));
+                $('#username').text($.i18n.prop('user_name'));
+                $('#password').text($.i18n.prop('password'));
                 $('#login_example').text($.i18n.prop('login'));
+                $('#language').text($.i18n.prop('language'));
+
+                $("#login-error h3").text($.i18n.prop('user_or_password_error'))
           })
 
-          $('#title').click(function (e) {
+          $('#login_example').click(function (e) {
               $("#message_modal_login").text("");
               login($("#inputUser").val(),
                       $("#inputPassword").val(),
@@ -54,8 +59,14 @@ function load() {
           })
     $("#inputPassword").focus(function(){
     $("#inputPassword").attr("type", "password")
+
 });
 
+    $("#language").click(function (e) {
+        console.log($("#language").text())
+        setCookie("language", $("#language").text())
+        window.location.reload();
+    })
 }
 </script>
 </head>
@@ -87,15 +98,16 @@ function load() {
 <div class="login-box">
     <div>
         <img src="/static/image/login-logo.png"/>
-	<h2>监控告警后台管理系统</h2>
+	<h2></h2>
         </div>
 
 
-    <div><div class="input_box"><img src="/static/image/user.png"/><span>用户名</span><input id="inputUser"   type="text" /></div></div>
-    <div><div class="input_box"><img src="/static/image/password.png"/><span>密码&emsp;</span><input id="inputPassword" type="text" /></div></div>
+    <div><div class="input_box"><img src="/static/image/user.png"/><span id="username"></span><input id="inputUser"   type="text" /></div></div>
+    <div><div class="input_box"><img src="/static/image/password.png"/><span id = "password"></span><input id="inputPassword" type="text" /></div></div>
 
     <div>
     <a href="#" class="btn login-btn" id="login_example"></a>
+    <a href="#" class="btn login-btn" id="language"></a>
         </div>
 </div>
 

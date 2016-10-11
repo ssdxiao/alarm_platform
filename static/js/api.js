@@ -467,12 +467,24 @@ function getFileName(o){
 }
 
 
-function loadProperties( func){
+function loadProperties(func){
+     var language = getCookie("language")     
+     var lan
+     if (language == "English"){
+         lan = "en"
+     }
+     else if (language == "中文"){
+         lan = "zh-CN"
+     }
+     else{
+         lan = ""
+     }
+     
      jQuery.i18n.properties({
             name : 'strings', //资源文件名称
             path : '/static/js/', //资源文件路径
             mode : 'map', //用Map的方式使用资源文件中的值
-            language : 'en',
+            language : lan,
             callback : func
             
         });

@@ -102,8 +102,8 @@ margin-right: auto;}
 
 
 
-.input_box{width: 310px; border-bottom: 1px solid white; margin-top:4px;}
-
+.input_box{width: 350px; border-bottom: 1px solid white; margin-top:4px;}
+.input_box span{width:80px;display:inline-block;}
 
 .login-btn {
   text-shadow: 0 -1px 0 rgba(0, 0, 0, .2);
