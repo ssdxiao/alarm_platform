@@ -65,18 +65,9 @@
       settings.language = '';
     }
 
-    var indexFileUrl = settings.path + 'languages.json';
 
-    var languages = [];
-
-    $.ajax({
-      url: indexFileUrl,
-      async: false,
-      cache: false,
-      success: function (data, status) {
-          languages = data.languages;
-      }
-    });
+    var languages = [settings.language];
+    console.log(languages)
 
     // load and parse bundle files
     var files = getFiles(settings.name);

@@ -12,12 +12,18 @@
     <script src="/static/js/manage.js"></script>
     <script src="/static/js/record.js"></script>
     <script src="/static/js/ajaxfileupload.js"></script>
+    <script src="/static/js/jquery.i18n.properties-1.0.9.js"></script>
     <script type="text/javascript">
 
 function load() {
       $(function () {
+          loadProperties(function (){
+                $('title').html($.i18n.prop('title'));
+                $('h2').html($.i18n.prop('title'));
+                $('#login_example').text($.i18n.prop('login'));
+          })
 
-          $('#login_example').click(function (e) {
+          $('#title').click(function (e) {
               $("#message_modal_login").text("");
               login($("#inputUser").val(),
                       $("#inputPassword").val(),
@@ -89,7 +95,7 @@ function load() {
     <div><div class="input_box"><img src="/static/image/password.png"/><span>密码&emsp;</span><input id="inputPassword" type="text" /></div></div>
 
     <div>
-    <a href="#" class="btn login-btn" id="login_example">登陆</a>
+    <a href="#" class="btn login-btn" id="login_example"></a>
         </div>
 </div>
 
