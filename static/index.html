@@ -5,6 +5,7 @@
     <link href="/static/css/bootstrap-combined.min.css" rel="stylesheet">
     <link href="/static/css/all.css" rel="stylesheet">
     <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/jquery.i18n.properties-1.0.9.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/api.js"></script>
     <script src="/static/js/custumer.js"></script>
@@ -16,6 +17,44 @@
     <script type="text/javascript">
 
         function load() {
+           loadProperties(function (){
+                $('title').html($.i18n.prop('title'));
+                $('.self_foot div span').html($.i18n.prop('footer'));
+                alarm_string = new Array();
+                alarm_string[0] = $.i18n.prop('undeal');
+                alarm_string[1] = $.i18n.prop('deal');
+                alarm_string[2] = $.i18n.prop('deal_complete');
+                alarm_string[3] = $.i18n.prop('other_deal');
+                string_upload = $.i18n.prop('upload')
+
+                //$(".self_title h2").html($.i18n.prop('title'));
+                $(".self_title h4 span").html($.i18n.prop('welcome'));
+                $("#logout_index").html($.i18n.prop('logout'));
+                $("#alarm_list").html($.i18n.prop('alarm_list')) 
+                $("#custumer_list").html($.i18n.prop('custumer_list')) 
+                $("#record_list").html($.i18n.prop('record_list')) 
+                $("#manage_list").html($.i18n.prop('manage_list')) 
+                $("#alarm_table tr th").eq(0).html($.i18n.prop('event_id'))
+                $("#alarm_table tr th").eq(1).html($.i18n.prop('event_time'))
+                $("#alarm_table tr th").eq(2).html($.i18n.prop('event_detail'))
+                $("#alarm_table tr th").eq(3).html($.i18n.prop('proccessing_status'))
+                $("#alarm_table tr th").eq(4).html($.i18n.prop('responsible_staff'))
+                $("#alarmAlert strong span").html($.i18n.prop('caution')) 
+                $("#alarmAlert strong span").html($.i18n.prop('caution')) 
+                $("#alarm_title").text($.i18n.prop('warning_detail')) 
+                $("#alarm_id").html($.i18n.prop('alarm_id')) 
+                $("#alarm_dev").html($.i18n.prop('alarm_device')) 
+                $("#deal_person").html($.i18n.prop('deal_person')) 
+                $("#deal_progress_lable").html($.i18n.prop('deal_progress_lable')) 
+                
+                $("#modal_alarm_table tr th").eq(0).html($.i18n.prop('event_id'))
+                $("#modal_alarm_table tr th").eq(1).html($.i18n.prop('event_type'))
+                $("#modal_alarm_table tr th").eq(2).html($.i18n.prop('event_time'))
+                $("#modal_alarm_table tr th").eq(3).html($.i18n.prop('event_detail'))
+
+                
+
+          })
 
             var value = getCookie("user");
             console.log(value);
@@ -547,7 +586,7 @@ return
             </h2>
             </div>
         <div class="span3">
-                <h4>欢迎您！<img src="/static/image/user.png"/><span id="manage_index"></span>
+                <h4><span></span><img src="/static/image/user.png"/><span id="manage_index"></span>
                 <a class="logout" id="logout_index">退出</a>
                     </h4>
             </div>
@@ -565,7 +604,7 @@ return
                 <a href="#" class="close" id="alarm_close">
                     &times;
                 </a>
-                <strong><img src="/static/image/remind.png"/>提醒: </strong>
+                <strong><img src="/static/image/remind.png"/><span>提醒:<span> </strong>
                 <span id="alarm_message"></span>
             </div>
 
@@ -657,13 +696,13 @@ return
                         <div id="modal_alarm_detail" class="modal hide fade in" style=" display: none; width :800px">
                             <div class="modal-header">
                                 <a class="close" data-dismiss="modal">×</a>
-                                <h3>告警详情</h3>
+                                <h3 id="alarm_title">告警详情</h3>
                             </div>
 
                             <div class="modal-body">
-                                <h3>告警id：<span id="td_alarm_id"></span> </h3>
-                                <h3>告警设备：<span id="alarm_device"></span> </h3>
-                                <h3>处理人：<span id="deal_user"></span> 处理进度：<span id="deal_progress"></span></h3>
+                                <h3><span id="alarm_id">告警id：</span><span id="td_alarm_id"></span> </h3>
+                                <h3><span id="alarm_dev">告警设备：</span><span id="alarm_device"></span> </h3>
+                                <h3><span id="deal_person" >处理人：</span><span id="deal_user"></span> <span id="deal_progress_lable"></span><span id="deal_progress"></span></h3>
                                 <table class="table table-hover table-condensed" id="modal_alarm_table">
                                     <thead>
                                     <tr>

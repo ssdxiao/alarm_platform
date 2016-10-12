@@ -9,12 +9,6 @@ alarm_css[0] = "error"; //未处理
 alarm_css[1] = "success";//已处理，未完成
 alarm_css[2] = "default"; //已完成
 
-alarm_string = new Array();
-
-alarm_string[0] = "未处理";
-alarm_string[1] = "处理中";
-alarm_string[2] = "处理完成";
-alarm_string[3] = "他人处理"
 
 
 function get_alarm_list_refresh(index) {
@@ -160,7 +154,7 @@ function fresh_alarm_modal(alarmid){
                                                 }
                                                 else
                                                 {
-                                                    audio_dom = "<a href=javascript:void(0); onclick=upload_model(event);return false; id= '"+result.data[i].audio+"'class='btn'>上传</a>" + result.data[i].audio
+                                                    audio_dom = "<a href=javascript:void(0); onclick=upload_model(event);return false; id= '"+result.data[i].audio+"'class='btn'>"+string_upload+"</a>" + result.data[i].audio
                                                 }
 
 

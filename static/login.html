@@ -19,13 +19,17 @@ function load() {
       $(function () {
           loadProperties(function (){
                 $('title').html($.i18n.prop('title'));
+                $('.login-foot div span').html($.i18n.prop('footer'));
                 $('h2').html($.i18n.prop('title'));
                 $('#username').text($.i18n.prop('user_name'));
                 $('#password').text($.i18n.prop('password'));
                 $('#login_example').text($.i18n.prop('login'));
                 $('#language').text($.i18n.prop('language'));
+                $("#login-error h3").text($.i18n.prop('login_failed'))
+                $("#error_content").text($.i18n.prop('user_or_password_error'))
+                $("#login-error div a").text($.i18n.prop('ok'))
+           
 
-                $("#login-error h3").text($.i18n.prop('user_or_password_error'))
           })
 
           $('#login_example').click(function (e) {
@@ -77,16 +81,16 @@ function load() {
 
                             <div class="modal-body" style ="text-align: center">
                                 <div>
-                                <h3 style="color:red">登录失败！</h3>
-                                    </div><div>
-                                用户名或密码错误
+                                <h3 style="color:red"></h3>
+                                    </div><div id=error_content>
+                                
                                 </div>
                                 </div>
 
 
 
                             <div >
-                                <a href="#" data-dismiss="modal" class="btn btn-remind">确定</a>
+                                <a href="#" data-dismiss="modal" class="btn btn-remind"></a>
                             </div>
                         </div>
                         <p><a data-toggle="modal"  href="#login-error"
@@ -115,7 +119,7 @@ function load() {
 
   <div class="login-foot">
         <div>
-            <span>技术支持：深圳经纬纵横科技有限公司</span></div></div>
+            <span></span></div></div>
 
 
 
