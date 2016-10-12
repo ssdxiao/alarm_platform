@@ -20,6 +20,7 @@
            loadProperties(function (){
                 $('title').html($.i18n.prop('title'));
                 $('.self_foot div span').html($.i18n.prop('footer'));
+                $(".btn-close").html($.i18n.prop('close')) 
                 alarm_string = new Array();
                 alarm_string[0] = $.i18n.prop('undeal');
                 alarm_string[1] = $.i18n.prop('deal');
@@ -51,8 +52,107 @@
                 $("#modal_alarm_table tr th").eq(1).html($.i18n.prop('event_type'))
                 $("#modal_alarm_table tr th").eq(2).html($.i18n.prop('event_time'))
                 $("#modal_alarm_table tr th").eq(3).html($.i18n.prop('event_detail'))
+                $("#user_label").html($.i18n.prop('user'))
+                $("#addr_label").html($.i18n.prop('address'))
+                $("#remark_label").html($.i18n.prop('remark'))
 
+                $("#alarm_table_other tr th").eq(0).html($.i18n.prop('name'))
+                $("#alarm_table_other tr th").eq(1).html($.i18n.prop('pass_code'))
+                $("#alarm_table_other tr th").eq(2).html($.i18n.prop('home_phone'))
+                $("#alarm_table_other tr th").eq(3).html($.i18n.prop('worker_phone'))
+                $("#alarm_table_other tr th").eq(4).html($.i18n.prop('cell_phone'))
+                $("#alarm_deal_progress_table tr th").eq(0).html($.i18n.prop('staff_of_proccessed'))
+                $("#alarm_deal_progress_table tr th").eq(1).html($.i18n.prop('phone_of_proccessed'))
+                $("#alarm_deal_progress_table tr th").eq(2).html($.i18n.prop('proccessed_time'))
+                $("#alarm_deal_progress_table tr th").eq(3).html($.i18n.prop('proccesse_detail'))
+                $("#alarm_deal_progress_table tr th").eq(4).html($.i18n.prop('attachment'))
+                $("#deal_alarm_ok").html($.i18n.prop('deal_ok'))
+                $("#temporary_pause").html($.i18n.prop('temporary_pause'))
+
+                $("#modal_custumer_detail .modal-header h3").html($.i18n.prop('custom_detail'))
+                $("[for=inputCustumerIdDetail]").html($.i18n.prop('custom_id'))
+                $("[for=inputCustumerNameDetail]").html($.i18n.prop('custom_name'))
+                $("[for=inputCustumerTelephoneDetail]").html($.i18n.prop('custom_phone'))
+                $("[for=inputCustumerEmailDetail]").html($.i18n.prop('custom_email'))
+                $("[for=inputCustumerDeviceidDetail]").html($.i18n.prop('device_id'))
+                $("[for=inputCustumerPhoneDetail]").html($.i18n.prop('landline_number'))
+                $("[for=inputCustumerStateDetail]").html($.i18n.prop('state'))
+                $("[for=inputCustumerCityDetail]").html($.i18n.prop('city'))
+                $("[for=inputCustumerStreetDetail]").html($.i18n.prop('addr'))
+                $("[for=inputCustumerPostelCodeDetail]").html($.i18n.prop('zip_code'))
+                $("[for=inputCustumerRemarkDetail]").html($.i18n.prop('remark_'))
+                $("#modal_custumer_detail .modal-body p").html($.i18n.prop('custumer_tips'))
                 
+                $("#leave_time").val($.i18n.prop('leave_time'))
+                $("#arrive_time").val($.i18n.prop('arrive_time'))
+                $("#Mon").html($.i18n.prop('Mon'))
+                $("#Tue").html($.i18n.prop('Tue'))
+                $("#Wed").html($.i18n.prop('Wed'))
+                $("#Thu").html($.i18n.prop('Thu'))
+                $("#Fri").html($.i18n.prop('Fri'))
+                $("#Sat").html($.i18n.prop('Sat'))
+                $("#Sun").html($.i18n.prop('Sun'))
+                $("#Hol").html($.i18n.prop('Hol'))
+
+                $("#custumer_table_detail tr th").eq(0).html($.i18n.prop('name'))
+                $("#custumer_table_detail tr th").eq(1).html($.i18n.prop('pass_code'))
+                $("#custumer_table_detail tr th").eq(2).html($.i18n.prop('home_phone'))
+                $("#custumer_table_detail tr th").eq(3).html($.i18n.prop('worker_phone'))
+                $("#custumer_table_detail tr th").eq(4).html($.i18n.prop('cell_phone'))
+                
+                $("#custumer_add_other").html($.i18n.prop('add'))
+                $("#update_custumer_modal").html($.i18n.prop('modify'))
+
+                $("#modal_add_custumer .modal-header h3").html($.i18n.prop('new_custom'))
+                $("[for=inputCustumerName]").html($.i18n.prop('custom_name'))
+                $("[for=inputCustumerTelephone]").html($.i18n.prop('custom_phone'))
+                $("[for=inputCustumerEmail]").html($.i18n.prop('custom_email'))
+                $("[for=inputCustumerDeviceidDetail]").html($.i18n.prop('device_id'))
+                $("[for=inputCustumerDeviceid]").html($.i18n.prop('device_id'))
+                $("[for=inputCustumerRemark]").html($.i18n.prop('remark_'))
+                $("#add_custumer_modal").html($.i18n.prop('add'))
+                $("#add_custumer").html($.i18n.prop('new_custom'))
+                
+                $("#custumer_table tr th").eq(0).html($.i18n.prop('custom_id'))
+                $("#custumer_table tr th").eq(1).html($.i18n.prop('custom_name'))
+                $("#custumer_table tr th").eq(2).html($.i18n.prop('custom_phone'))
+                $("#custumer_table tr th").eq(3).html($.i18n.prop('device_id'))
+
+                $("#record_table tr th").eq(0).html($.i18n.prop('journal_id'))
+                $("#record_table tr th").eq(1).html($.i18n.prop('operator'))
+                $("#record_table tr th").eq(2).html($.i18n.prop('object'))
+                $("#record_table tr th").eq(3).html($.i18n.prop('detail'))
+                $("#record_table tr th").eq(4).html($.i18n.prop('time'))
+
+                $("#modal_change_passwd .modal-header h3").html($.i18n.prop('change_password'))
+                $("[for=inputManagePasswdDetail]").html($.i18n.prop('admin_password'))
+                $("#update_change_modal").html($.i18n.prop('modify'))
+                
+                $("#modal_manage_detail .modal-header h3").html($.i18n.prop('admin_detail'))
+                $("[for=inputManageIdDetail]").html($.i18n.prop('admin_id'))
+                $("[for=inputManageNameDetail]").html($.i18n.prop('admin_name'))
+                $("[for=inputManageTelephoneDetail]").html($.i18n.prop('admin_phone'))
+                $("#change_passwd").html($.i18n.prop('change_password'))
+                $("#update_manage_modal").html($.i18n.prop('modify'))
+
+                $("#modal_add_manage .modal-header h3").html($.i18n.prop('add_admin'))
+                $("[for=inputManageName]").html($.i18n.prop('admin_name'))
+                $("[for=inputManageTelephone]").html($.i18n.prop('admin_phone'))
+                $("[for=inputManagePassword]").html($.i18n.prop('admin_password'))
+                $("#add_manage_modal").html($.i18n.prop('add'))
+                $("#add_manage").html($.i18n.prop('add_admin'))
+                $("#manage_table tr th").eq(0).html($.i18n.prop('admin_id'))
+                $("#manage_table tr th").eq(1).html($.i18n.prop('admin_name'))
+                $("#manage_table tr th").eq(2).html($.i18n.prop('admin_phone'))
+                $("#manage_table tr th").eq(3).html($.i18n.prop('last_time_login'))
+                $("#manage_table tr th").eq(4).html($.i18n.prop('last_time_logout'))
+                
+                $("#modal_alarm_deal .modal-header h3").html($.i18n.prop('event_proccess'))
+                $("#hungup").html($.i18n.prop('hungup'))
+                $("[for=alarmRemark]").html($.i18n.prop('proccessed_record'))
+                $("#alarm_deal_commit").html($.i18n.prop('commit'))
+                $("#alarm_deal_cancel").html($.i18n.prop('temporary_pause'))
+
 
           })
 
@@ -737,13 +837,13 @@ return
                                 </div>
                                 <br/>
                                 
-                                <div><span class="mylabel">用户: </span>
+                                <div><span class="mylabel" id=user_label>用户: </span>
                                     <div id="custumerName"></div>
                                 </div>
-                                <div><span class="mylabel">地址: </span>
+                                <div><span class="mylabel" id = addr_label>地址: </span>
                                     <div id="custumerAddress"></div>
                                 </div>
-                                <div><span class="mylabel">备注: </span>
+                                <div><span class="mylabel" id=remark_label>备注: </span>
                                     <div id="custumerRemark"></div>
                                 </div>
                                 <br/>
@@ -802,7 +902,7 @@ return
 
                             <div class="modal-footer">
                                 <a href="#" class="btn btn-success" id="deal_alarm_ok">处理完成</a>
-                                <a href="#" class="btn btn-close" data-dismiss="modal">暂时关闭</a>
+                                <a href="#" class="btn btn-close" data-dismiss="modal" id="temporary_pause">暂时关闭</a>
                             </div>
                         </div>
                         <p><a data-toggle="modal" href="#modal_alarm_detail" class="btn btn-primary"
@@ -906,30 +1006,30 @@ return
                                      </div>
 
                                 <p>安防设置计划: （温馨提示：离开时间和到达时间请按照24小时格式！（如：08:00 18:00））</p>
-                                <div><span>&emsp;&emsp;&emsp;&emsp;</span><input value="离开时间" type="text" disabled/>
-                                    <input value="到达时间" type="text" disabled/></div>
-                                <div><span>星期一：</span><input  id="Monleave" type="text">
+                                <div><span>&emsp;&emsp;&emsp;&emsp;</span><input value="离开时间" type="text" id=leave_time disabled/>
+                                    <input value="到达时间" type="text" id=arrive_time disabled/></div>
+                                <div><span id="Mon">星期一：</span><input  id="Monleave" type="text">
                                     <input  id="Monreturn" type="text">
                                     </div>
-                                <div><span>星期二：</span><input id="Tueleave" type="text">
+                                <div><span id="Tue">星期二：</span><input id="Tueleave" type="text">
                                     <input id="Tuereturn" type="text">
                                     </div>
-                                <div><span>星期三：</span><input id="Wedleave" type="text">
+                                <div><span id="Wed">星期三：</span><input id="Wedleave" type="text">
                                     <input id="Wedreturn" type="text">
                                     </div>
-                                <div><span>星期四：</span><input id="Thuleave" type="text">
+                                <div><span id="Thu">星期四：</span><input id="Thuleave" type="text">
                                     <input id="Thureturn" type="text">
                                     </div>
-                                <div>星期五：<input id="Frileave" type="text">
+                                <div><span id="Fri">星期五：</span><input id="Frileave" type="text">
                                     <input id="Frireturn" type="text">
                                     </div>
-                                <div>星期六：<input id="Satleave" type="text">
+                                <div><span id="Sat">星期六：</span><input id="Satleave" type="text">
                                     <input id="Satreturn" type="text">
                                     </div>
-                                <div>星期天：<input id="Sunleave" type="text">
+                                <div><span id="Sun">星期天：</span><input id="Sunleave" type="text">
                                     <input id="Sunreturn" type="text">
                                     </div>
-                                <div>节假日：<input id="Holleave" type="text">
+                                <div><span id=Hol>节假日：</span><input id="Holleave" type="text">
                                     <input id="Holreturn" type="text">
                                     </div>
 
@@ -966,7 +1066,7 @@ return
 
                             <div class="modal-footer">
                                 <a href="#" class="btn btn-success" id="update_custumer_modal">修改</a>
-                                <a href="#" class="btn btn-close" data-dismiss="modal">关闭</a>
+                                <a href="#" class="btn btn-close" data-dismiss="modal" id="update_custumer_close">关闭</a>
                             </div>
                         </div>
                         <p><a data-toggle="modal" href="#modal_custumer_detail" class="btn btn-primary"
