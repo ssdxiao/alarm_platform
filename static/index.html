@@ -38,6 +38,7 @@
                 here=$.i18n.prop('here');
                 new_alarm=$.i18n.prop('new_alarm');
                 please_check=$.i18n.prop('please_check');
+                check_device_id=$.i18n.prop('check_device_id');
 
                 //$(".self_title h2").html($.i18n.prop('title'));
                 $(".self_title h4 span").html($.i18n.prop('welcome'));
@@ -315,7 +316,7 @@ $('#modal_alarm_deal').on('hidden.bs.modal', function () {
                 var deviceid = $("#inputCustumerDeviceid").val()
                 if (deviceid.length !=20)
 {
-   alert("请检查绑定设备id")
+   alert(check_device_id)
 return
 }
                 add_custumer($("#inputCustumerName").val(),

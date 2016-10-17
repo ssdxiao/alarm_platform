@@ -59,8 +59,8 @@ class ManageHandler(BaseHandler):
                     result ={}
                     result["result"] = "ok"
                     self.send_data(result)
-                    str = "添加管理员 姓名 %s 电话 %s"%(data["ManageName"].encode('utf-8'),data["ManageTelephone"].encode('utf-8') )
-                    save_record(self.login_user, "管理员", 0, "add", str)
+                    str = "add manage name %s telephone %s"%(data["ManageName"].encode('utf-8'),data["ManageTelephone"].encode('utf-8') )
+                    save_record(self.login_user, "manage", 0, "add", str)
                     return
 
             else:
@@ -85,9 +85,9 @@ class ManageHandler(BaseHandler):
                 result = {}
                 result["result"] = "ok"
                 self.send_data(result)
-                str = "更新管理员 姓名 %s 电话 %s" % (
+                str = "update manage name %s telephone %s" % (
                 data["ManageName"].encode('utf-8'), data["ManageTelephone"].encode('utf-8'))
-                save_record(self.login_user, "管理员", data["ManageId"], "update", str)
+                save_record(self.login_user, "manage", data["ManageId"], "update", str)
                 return
             else:
                 result = {}
@@ -148,7 +148,7 @@ class ManageChangePasswordHandler(BaseHandler):
                 result = {}
                 result["result"] = "ok"
                 self.send_data(result)
-                save_record(self.login_user, "管理员",data["ManageId"], "change_passwd", "更新管理员密码")
+                save_record(self.login_user, "manage",data["ManageId"], "change_passwd", "update manage password")
                 return
                 return
             else:
