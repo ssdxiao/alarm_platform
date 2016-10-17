@@ -126,7 +126,7 @@ function fresh_alarm_modal(alarmid){
                                     //设置主人电话
                                     $("#custumer_telephone").text(result.data.custumertelephone)
                                     $("#custumerName").text(result.data.custumername)
-                                    $("#custumerAddress").text(StateList[result.data.state] + "省" + State[result.data.state][result.data.city]+ "市"+ result.data.street)
+                                    $("#custumerAddress").text(StateList[result.data.state] + " " + State[result.data.state][result.data.city]+ " "+ result.data.street)
                                     $("#custumerRemark").text(result.data.custumerremark)
 
 

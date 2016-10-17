@@ -72,14 +72,14 @@ function RestServiceJs(newurl) {
                 console.log(status)
                 console.log(ex)
                 if (status == "timeout"){
-                    alert("请检查电话服务是否启动")
+                    alert(check_phone_server_start)
                 }
                 if (status == "error"){
                     if("undefined" == typeof server)
                     {
                         server=""
                     }
-                    alert("请检查"+server+"服务是否正常")
+                    alert(check_phone_server_start)
                 }
             },
             timeout: 60000
@@ -277,15 +277,15 @@ function tr_del(e) {
 function do_call(alarmid, telephone, callback) {
     url = new RestServiceJs("http://localhost:8080/callout.html?u="+alarmid+"&c="+telephone);
     //window.location.href="http://localhost:8080/callout.html?u="+alarmid+"&c="+telephone
-    url.telephone_use(callback, "电话")
+    url.telephone_use(callback, telephone)
 
 
 }
 
 function do_hangup( callback) {
-    $("#deal_message").text("挂机")
+    $("#deal_message").text(hungup)
     url = new RestServiceJs("http://localhost:8080/hangup.html")
-    url.telephone_use(callback, "电话")
+    url.telephone_use(callback, telephone)
 }
 
 function callup(e) {
@@ -301,8 +301,8 @@ function callup(e) {
     var timestamp = Date.parse(new Date());
     window.alarm_audio = $("#td_alarm_id").text()+"+"+timestamp;
     window.alarm_telephone = telephone
-    $("#deal_message").text("电话中...")
-    $("#audiofile_message").text("本次录音文件为 " + window.alarm_audio + ".wav")
+    $("#deal_message").text(telephoneing)
+    $("#audiofile_message").text(record_file+ " " + window.alarm_audio + ".wav")
     console.log("callup")
     do_call(window.alarm_audio, telephone, function (data){
         //data = JSON.parse(data)
@@ -343,7 +343,7 @@ function get_audio_list(alarm_id, callback) {
 function split_page(name, result, fresh_function) {
     window.current_page = result.curruntindex;
     $("#" + name + "_page ul").empty();
-    $("#" + name + "_page ul").append("<li> <a >上一页</a> </li>");
+    $("#" + name + "_page ul").append("<li> <a ><<</a> </li>");
     var start_index = 0;
     var end_index = 0;
     if (result.curruntindex > 3) {
@@ -380,16 +380,16 @@ function split_page(name, result, fresh_function) {
         $("#" + name + "_page ul").append("<li> <a >" + (i + 1) + "</a> </li>");
         }
     }
-    $("#" + name + "_page ul").append("<li> <a >下一页</a> </li>");
+    $("#" + name + "_page ul").append("<li> <a >>></a> </li>");
 
     $("#" + name + "_page").attr("style", "display:''");
     $("#" + name + "_page ul a").each(function () {
         $(this).click(function (e) {
             var index;
-            if ($(this).text() == "上一页") {
+            if ($(this).text() == "<<") {
                 index = window.current_page - 1;
             }
-            else if ($(this).text() == "下一页") {
+            else if ($(this).text() == ">>") {
                 index = window.current_page + 1;
             }
             else {
@@ -471,7 +471,7 @@ function loadProperties(func){
      var language = getCookie("language")     
      var lan
      if (language == "English"){
-         lan = "en"
+         lan = "en-US"
      }
      else if (language == "中文"){
          lan = "zh-CN"

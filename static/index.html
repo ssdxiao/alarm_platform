@@ -27,6 +27,17 @@
                 alarm_string[2] = $.i18n.prop('deal_complete');
                 alarm_string[3] = $.i18n.prop('other_deal');
                 string_upload = $.i18n.prop('upload')
+                telephone=$.i18n.prop('telephone');
+                telephoneing=$.i18n.prop('telephoneing');
+                record_file=$.i18n.prop('record_file');
+                hungup=$.i18n.prop('hungup');
+                check_phone_server_start=$.i18n.prop('check_phone_server_start');
+                uploadfile_unmatch=$.i18n.prop('uploadfile_unmatch');
+                temporary_logout_nosave=$.i18n.prop('temporary_logout_nosave');
+                please_add_https=$.i18n.prop('please_add_https');
+                here=$.i18n.prop('here');
+                new_alarm=$.i18n.prop('new_alarm');
+                please_check=$.i18n.prop('please_check');
 
                 //$(".self_title h2").html($.i18n.prop('title'));
                 $(".self_title h4 span").html($.i18n.prop('welcome'));
@@ -153,6 +164,9 @@
                 $("#alarm_deal_commit").html($.i18n.prop('commit'))
                 $("#alarm_deal_cancel").html($.i18n.prop('temporary_pause'))
 
+                $("#modal_upload .modal-header h3").html($.i18n.prop('upload'))
+                $("#select").html($.i18n.prop('user'))
+                $("#upload_commit").html($.i18n.prop('commit'))
 
           })
 
@@ -186,8 +200,8 @@
                         };
                         ws.onclose = function () {
                             console.log("Close connection to websocket");
-                            $("#alarm_message").text("请添加https证书，点击" )
-                            $("#alarm_message").append("<a href=https://"+window.location.hostname + ":9001/https_verify>这里</a>")
+                            $("#alarm_message").text(please_add_https)
+                            $("#alarm_message").append(" "+"<a href=https://"+window.location.hostname + ":9001/https_verify>"+here+"</a>")
                             $("#alarmAlert").attr('style', "display:''");
                         };
                         ws.onmessage = function (e) {
@@ -195,7 +209,7 @@
                             var data = JSON.parse(e.data);
                             console.log(data)
                             if (data.type == "alarm" ){
-                            $("#alarm_message").text("您有新的告警 "+data.num+" 条需要处理，请尽快查看。")
+                            $("#alarm_message").text(new_alarm+data.num+please_check)
                             $("#alarmAlert").attr('style', "display:''")
                             get_alarm_list_refresh(1)
                             }
@@ -241,7 +255,7 @@ $('#modal_alarm_deal').on('hidden.bs.modal', function () {
            $('#alarm_deal_cancel').click(function (e) {
             var id = e.currentTarget.id
             console.log(id)
-            var ret = confirm("暂时退出不会保存任何信息，确认退出吗?")
+            var ret = confirm(temporary_logout_nosave)
              if (ret==true)
     {
            return true
@@ -456,7 +470,7 @@ return
                  if( filename != audiofile)
                 {
                                console.log(filename + "!= " + audiofile)
-                               alert("上传文件不一致")
+                               alert(uploadfile_unmatch)
                                return
                 }
                 else
@@ -510,7 +524,7 @@ return
                         if (filename != $("#upload_message").text())
                         {
                                console.log(filename + "!= " + $("#upload_message").text())
-                               alert("上传文件不一致")
+                               alert(uploadfile_unmatch)
                                return
                         }
 
@@ -745,7 +759,7 @@ return
                             </div>
 
                             <div class="modal-body">
-                                <h4>请选择：<span id=upload_message></span></h4>
+                                <h4><span id="select">请选择：</span><span id=upload_message></span></h4>
                                 <div>
                                     <input id="file1" name="file" type="file">
                                 </div>
@@ -777,7 +791,7 @@ return
                                 </div>
                                 <div>
                                 <label for="alarmRemark">处理记录</label>
-                                <textarea id="alarmRemark" placeholder="处理记录"></textarea>
+                                <textarea id="alarmRemark" ></textarea>
                                 </div>
                                 <div>
                                     <input id="file" name="file" type="file">
@@ -956,29 +970,28 @@ return
                                     </div>
                                 <div>
                                 <label for="inputCustumerNameDetail">客户姓名</label>
-                                <input id="inputCustumerNameDetail" placeholder="客户姓名"
+                                <input id="inputCustumerNameDetail" 
                                        type="text">
                                     </div>
                                 <div>
                                 <label for="inputCustumerTelephoneDetail">客户电话</label>
                                 <input id="inputCustumerTelephoneDetail"
-                                       placeholder="客户电话"
                                        type="text">
                                     </div>
                                 <div>
                                 <label for="inputCustumerEmailDetail">客户邮箱</label>
-                                <input id="inputCustumerEmailDetail" placeholder="客户邮箱"
+                                <input id="inputCustumerEmailDetail" 
                                        type="text">
                                 </div>
                                 <div>
                                 <label for="inputCustumerDeviceidDetail">设备id</label>
-                                <input id="inputCustumerDeviceidDetail" placeholder="设备id"
+                                <input id="inputCustumerDeviceidDetail" 
                                        type="text">
 
                                 </div>
                                 <div>
                                   <label for="inputCustumerPhoneDetail">固定电话</label>
-                                <input id="inputCustumerPhoneDetail" placeholder="固定电话"
+                                <input id="inputCustumerPhoneDetail" 
                                        type="text">
                                  </div>
                                 <div>
@@ -991,17 +1004,17 @@ return
                                      </div>
                                 <div>
                                 <label for="inputCustumerStreetDetail">地址</label>
-                                <input id="inputCustumerStreetDetail" placeholder="地址"
+                                <input id="inputCustumerStreetDetail" 
                                        type="text">
                                      </div>
                                 <div>
                                  <label for="inputCustumerPostelCodeDetail">邮编</label>
-                                <input id="inputCustumerPostelCodeDetail" placeholder="邮编"
+                                <input id="inputCustumerPostelCodeDetail" 
                                        type="text">
                                      </div>
                                 <div>
                                 <label for="inputCustumerRemarkDetail">备注</label>
-                        <textarea id="inputCustumerRemarkDetail" placeholder="备注"
+                        <textarea id="inputCustumerRemarkDetail" 
                         ></textarea>
                                      </div>
 
@@ -1083,28 +1096,28 @@ return
                             <div class="modal-body">
                                  <div>
                                 <label for="inputCustumerName">客户姓名</label>
-                                <input id="inputCustumerName" placeholder="客户姓名" class="form-control"
+                                <input id="inputCustumerName"  class="form-control"
                                        type="text">
                                      </div>
                                 <div>
                                 <label for="inputCustumerTelephone">客户电话</label>
                                 <input id="inputCustumerTelephone"
-                                       placeholder="客户电话"
+                                       
                                        type="text" >
                                     </div>
                                  <div>
                                 <label for="inputCustumerEmail">客户邮箱</label>
-                                <input id="inputCustumerEmail" placeholder="客户邮箱"
+                                <input id="inputCustumerEmail" 
                                        type="text">
                                  </div>
                                 <div>
                                 <label for="inputCustumerDeviceid">设备id</label>
-                                <input id="inputCustumerDeviceid" placeholder="设备id"
+                                <input id="inputCustumerDeviceid" 
                                        type="text">
                                 </div>
                                 <div>
                                 <label for="inputCustumerRemark">备注</label>
-                        <textarea id="inputCustumerRemark" placeholder="备注"
+                        <textarea id="inputCustumerRemark" 
                         ></textarea>
                                     </div>
                                 <div id="message_modal_custumer"></div>
@@ -1213,12 +1226,11 @@ return
                                 <input id="inputManageIdDetail" type="text" disabled>
                                     </div><div>
                                 <label for="inputManageNameDetail">管理员姓名</label>
-                                <input id="inputManageNameDetail" placeholder="管理员姓名"
+                                <input id="inputManageNameDetail" 
                                        type="text">
                                 </div><div>
                                 <label for="inputManageTelephoneDetail">管理员电话</label>
                                 <input id="inputManageTelephoneDetail"
-                                       placeholder="管理员电话"
                                        type="text">
                                 </div>
 
@@ -1246,16 +1258,16 @@ return
                             <div class="modal-body">
                                 <div>
                                 <label for="inputManageName">管理员姓名</label>
-                                <input id="inputManageName" placeholder="管理员姓名" class="form-control"
+                                <input id="inputManageName" class="form-control"
                                        type="text">
                                     </div><div>
                                 <label for="inputManageTelephone">管理员电话</label>
                                 <input id="inputManageTelephone"
-                                       placeholder="管理员电话"
+                                       
                                        type="text">
                                 </div><div>
                                 <label for="inputManagePassword">管理员密码</label>
-                                <input id="inputManagePassword" placeholder="管理员密码"
+                                <input id="inputManagePassword" 
                                        type="text">
                                 </div>
 
