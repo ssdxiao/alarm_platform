@@ -39,8 +39,9 @@
                 new_alarm=$.i18n.prop('new_alarm');
                 please_check=$.i18n.prop('please_check');
                 check_device_id=$.i18n.prop('check_device_id');
+                undeal_alarm=$.i18n.prop('undeal_alarm');
 
-                //$(".self_title h2").html($.i18n.prop('title'));
+                $(".self_title h2").html($.i18n.prop('title_small'));
                 $(".self_title h4 span").html($.i18n.prop('welcome'));
                 $("#logout_index").html($.i18n.prop('logout'));
                 $("#alarm_list").html($.i18n.prop('alarm_list')) 
@@ -169,6 +170,12 @@
                 $("#select").html($.i18n.prop('user'))
                 $("#upload_commit").html($.i18n.prop('commit'))
 
+                
+                $("#fire").html($.i18n.prop('fire')) 
+                $("#emergency").html($.i18n.prop('emergency')) 
+                $("#water_leaking").html($.i18n.prop('water_leaking')) 
+                $("#gas_leaking").html($.i18n.prop('gas_leaking')) 
+                $("#owner").html($.i18n.prop('owner')) 
           })
 
             var value = getCookie("user");
@@ -569,7 +576,7 @@ return
                 }
                 if ($("#deal_progress").text() == alarm_string [0])
                 {
-                    alert("没有处理的告警不能关闭")
+                    alert(undeal_alarm)
                     return
                 }
                 var data = {};
@@ -692,10 +699,10 @@ return
 
     <div class = "self_title" >
         <div class="row">
-        <div class="span5">
+        <div class="span4">
             <img src="/static/image/login-logo.png" />
         </div>
-        <div class="span4">
+        <div class="span5">
             <h2>
                 监控告警后台管理系统
             </h2>
@@ -841,11 +848,11 @@ return
 
 
                                 <div class="span">
-                                    <div class="span2"><span>火警: </span><a href="#" class="btn call">911</a></div>
-                                    <div class="span2"><span>急救: </span><a href="#" class="btn call">120</a></div>
-                                    <div class="span2 "><span>漏水: </span><a href="#" class="btn call">111</a></div>
-                                    <div class="span2 "><span>漏气: </span><a href="#" class="btn call">112</a></div>
-                                    <div class="span4 "><span>主人: </span><a href="#"
+                                    <div class="span3"><span id=fire>火警: </span><a href="#" class="btn call">911</a></div>
+                                    <div class="span3"><span id=emergency>急救: </span><a href="#" class="btn call">120</a></div>
+                                    <div class="span3 "><span id=water_leaking>漏水: </span><a href="#" class="btn call">111</a></div>
+                                    <div class="span3 "><span id=gas_leaking>漏气: </span><a href="#" class="btn call">112</a></div>
+                                    <div class="span3 "><span id=owner>主人: </span><a href="#"
                                                                             class="btn call"
                                                                             id="custumer_telephone"></a>
                                     </div>
