@@ -33,7 +33,7 @@ class LoginHandler(BaseHandler):
                         result["token"] = str(token)
                         result["id"] = db_reulst[0]
                         self.send_data(result)
-                        save_record("无".decode("utf-8"), data["user"],db_reulst[0],"login", "login".decode("utf-8"))
+                        save_record("null".decode("utf-8"), data["user"],db_reulst[0],"login", "login".decode("utf-8"))
                         return
                     else:
                         log.error("password  %s is not correct"%data["passwd"])
@@ -65,7 +65,7 @@ class LogoutHandler(BaseHandler):
                     result["result"] = "ok"
                     result["user"] = data["user"]
                     self.send_data(result)
-                    save_record("无".decode("utf-8"), data["user"], db_reulst[0], "logout", "logout".decode("utf-8"))
+                    save_record("null".decode("utf-8"), data["user"], db_reulst[0], "logout", "logout".decode("utf-8"))
                     return
                 else:
                     log.error("logout  token %s is not correct"%data["token"])

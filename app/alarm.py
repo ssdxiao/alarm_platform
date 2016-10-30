@@ -93,7 +93,7 @@ class AlarmAllHandler(BaseHandler):
                 for event in eventlist:
                     context = context + event[5] + " "
                 if one[5] == 0:
-                   user = "客户关闭"
+                   user = "Client reset"
                 else:
                    user = db.get_username_by_id(one[5])
                 result["data"].append({"id" : one[0],

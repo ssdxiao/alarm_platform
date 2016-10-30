@@ -330,9 +330,9 @@ where  id= %s '''%\
         if objparam.has_key("content"):
             context = objparam["content"]
         elif objparam.has_key("phonenumber"):
-            context = "关闭人电话 ".encode('utf-8')+objparam["phonenumber"]
+            context = "Reset Phone".encode('utf-8')+objparam["phonenumber"]
         elif objparam.has_key("employeename"):
-            context = "关闭人 ".encode('utf-8')+objparam["employeename"]
+            context = "Reset ".encode('utf-8')+objparam["employeename"]
         else:
             context = ""
             
